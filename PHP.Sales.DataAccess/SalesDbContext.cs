@@ -1,4 +1,5 @@
 ﻿using PHP.Sales.Core.Models.System;
+using PHP.Sales.DataAccess.Configurations;
 using System.Data.Entity;
 
 namespace PHP.Sales.DataAccess
@@ -14,5 +15,13 @@ namespace PHP.Sales.DataAccess
 
         public DbSet<Transaction> Transactions { get; set; }
         public DbSet<Report> Reports { get; set; }
+        public DbSet<Sale> Sales { get; set; }
+
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        {
+            modelBuilder.Configurations.Add(new SaleConfiguration());
+
+            base.OnModelCreating(modelBuilder);
+        }
     }
 }

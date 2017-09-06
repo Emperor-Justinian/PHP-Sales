@@ -43,6 +43,7 @@
     <Compile Include="Extensions\EntityExtensions.cs" />
     <Compile Include="Models\BaseEntity.cs" />
     <Compile Include="Models\System\Report.cs" />
+    <Compile Include="Models\System\Sale.cs" />
     <Compile Include="Models\System\Transaction.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

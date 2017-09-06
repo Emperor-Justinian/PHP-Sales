@@ -56,5 +56,15 @@
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\PHP.Sales.Core\PHP.Sales.Core.csproj">
+      <Project>{B45996C5-B0F3-4CC6-AC77-2294E3C9BD26}</Project>
+      <Name>PHP.Sales.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PHP.Sales.DataAccess\PHP.Sales.DataAccess.csproj">
+      <Project>{3C32233E-4E0D-4634-B921-C9FA87D4AD6A}</Project>
+      <Name>PHP.Sales.DataAccess</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

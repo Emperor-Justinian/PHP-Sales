@@ -1,15 +1,42 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using PHP.Sales.Core.Extensions;
+using PHP.Sales.Core.Models.System;
+using PHP.Sales.DataAccess;
 
 namespace PHP.Sales.GenerateDatabase
 {
-    class Program
+    public class Program
     {
-        static void Main(string[] args)
+        public static void Main(string[] args)
         {
+            using (var ctx = new SalesDbContext())
+            {
+                ctx.Database.Delete();
+                ctx.Database.CreateIfNotExists();
+
+                //CREATE YOUR OBJECTS
+                var transaction = new Transaction()
+                {
+                    PayMethod = PaymentType.VISA
+                };
+
+                var sale = new Sale()
+                {
+                    Name = "Panodole",
+                    QTY = 4,
+                    Price = 12.32m,
+                    GST = true,
+                    Void = false,
+                };
+
+                sale.Update();
+
+                transaction.Sales.Add(sale);
+
+                transaction.Update();
+
+                ctx.Transactions.Add(transaction);
+                ctx.SaveChanges();
+            }
         }
     }
 }
