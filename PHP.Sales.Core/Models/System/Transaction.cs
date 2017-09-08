@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace PHP.Sales.Core.Models.System
 {
@@ -21,5 +22,6 @@ namespace PHP.Sales.Core.Models.System
 
         public virtual ICollection<Sale> Sales { get; set; }
         public PaymentType PayMethod { get; set; }
+        public DateTime SaleTime { get; set; }
     }
 }

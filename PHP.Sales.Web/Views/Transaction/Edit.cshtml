@@ -1,0 +1,33 @@
+﻿@using PHP.Sales.Core.Models.System
+@model Transaction
+
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Edit</h2>
+
+<div class="edit-transaction">
+    <div class="edit-transaction__form">
+        @using(Html.BeginForm()) {
+            @Html.HiddenFor(x => x.ID)
+
+            <div class="form-group">
+                <!-- LIST OUT SALES CONTENTS -->
+
+                @foreach (var sale in Model.Sales)
+                {
+                    @Html.TextBoxFor(sale.Name, new { @class = "form-control" });
+                    @Html.TextBoxFor(sale.Price, new { @class = "form-control" });
+                    @Html.TextBoxFor(sale.QTY, new { @class = "form-control" });
+                    @Html.CheckBoxFor(sale.GST, new { @class = "form-control" });
+                    @Html.CheckBoxFor(sale.Void, new { @class = "form-control" });
+                }
+
+            </div>
+            <input type="submit" value="Submit"/>
+        }
+    </div>
+</div>
+
