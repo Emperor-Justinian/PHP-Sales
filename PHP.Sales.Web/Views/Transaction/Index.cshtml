@@ -1,5 +1,4 @@
 ﻿@using PHP.Sales.Core.Models.System
-@model Transaction
 
 @{
     ViewBag.Title = "Index";
@@ -8,3 +7,9 @@
 
 <h2>Index</h2>
 
+@foreach (Transaction t in Model)
+{
+    @Html.DisplayFor(modelItem => t.ID);
+    @Html.DisplayFor(modelItem => t.PayMethod);
+    @Html.DisplayFor(modelItem => t.SaleTime);
+}

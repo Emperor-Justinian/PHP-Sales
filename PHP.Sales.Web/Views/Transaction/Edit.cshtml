@@ -18,11 +18,10 @@
 
                 @foreach (var sale in Model.Sales)
                 {
-                    @Html.TextBoxFor(sale.Name, new { @class = "form-control" });
-                    @Html.TextBoxFor(sale.Price, new { @class = "form-control" });
-                    @Html.TextBoxFor(sale.QTY, new { @class = "form-control" });
-                    @Html.CheckBoxFor(sale.GST, new { @class = "form-control" });
-                    @Html.CheckBoxFor(sale.Void, new { @class = "form-control" });
+                    @Html.DisplayFor(modelItem => sale.Name);
+                    @Html.DisplayFor(modelItem => sale.QTY);
+                    @Html.DisplayFor(modelItem => sale.Price);
+                    @Html.DisplayFor(modelItem => sale.GST);
                 }
 
             </div>

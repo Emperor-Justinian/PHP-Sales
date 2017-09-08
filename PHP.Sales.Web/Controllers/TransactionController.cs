@@ -22,9 +22,32 @@ namespace PHP.Sales.Web.Controllers
             return View(models);
         }
 
+        /// <summary>
+        /// Create an empty transaction
+        /// </summary>
+        /// <returns></returns>
         public ActionResult Create()
         {
             return View();
+        }
+
+        /// <summary>
+        /// Create a transaction with items that are being negated from another transaction.
+        /// </summary>
+        /// <param name="sales">List of Sales to be negated</param>
+        /// <returns></returns>
+        [HttpPost]
+        public ActionResult Create(List<Sale> sales)
+        {
+            foreach(Sale s in sales)
+            {
+                if(s.QTY < 0)
+                {
+                    s.QTY *= -1;
+                }
+            }
+
+            return View(sales);
         }
 
         /// <summary>
@@ -50,7 +73,7 @@ namespace PHP.Sales.Web.Controllers
 
             using (var ctx = new SalesDbContext())
             {
-                t = ctx.Transactions.Where(t => t.ID == id).FirstOrDefault();
+                t = ctx.Transactions.Where(model => model.ID == id).FirstOrDefault();
             }
 
             return View(t);
