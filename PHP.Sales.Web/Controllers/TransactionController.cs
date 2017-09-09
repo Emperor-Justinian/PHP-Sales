@@ -108,5 +108,15 @@ namespace PHP.Sales.Web.Controllers
 
             return View(viewModel);
         }
+
+        public ViewResult TransactionRenderPartial(Sale sale)
+        {
+            return View(sale);
+        }
+
+        public ViewResult BlankRowEditor()
+        {
+            return View("TransactionRenderPartial", new Sale());
+        }
     }
 }

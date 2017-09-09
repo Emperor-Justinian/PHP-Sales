@@ -1,0 +1,11 @@
+﻿@using PHP.Sales.Core.Models.System
+@model Sale
+
+<h2>TransactionEditorRow</h2>
+
+@Html.DisplayFor(modelItem => Model.Name);
+@Html.DisplayFor(modelItem => Model.QTY);
+@Html.DisplayFor(modelItem => Model.Price);
+@Html.DisplayFor(modelItem => Model.GST);
+
+<a href="#" class="deleteRow">delete</a>
