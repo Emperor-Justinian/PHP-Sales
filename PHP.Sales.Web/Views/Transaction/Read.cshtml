@@ -57,6 +57,6 @@
 </table>
 
 
-@Html.ActionLink("Edit", "Edit")
+@Html.ActionLink("Edit", "Edit", new { id = Model.First().TransactionID })
 <br />
 @Html.ActionLink("Return", "Create", "");

@@ -1,25 +1,23 @@
 ﻿@using PHP.Sales.Core.Models.System
 @model Sale
 
-<!-- <h2>TransactionEditorRow</h2> -->
-
-<tr>
-    <td>
-        @Html.DisplayFor(modelItem => Model.ProductID);
-    </td>
-    <td>
-        @Html.DisplayFor(modelItem => Model.Name);
-    </td>
-    <td>
-        @Html.DisplayFor(modelItem => Model.QTY);
-    </td>
-    <td>
-        @Html.DisplayFor(modelItem => Model.Price);
-    </td>
-    <td>
-        @Html.DisplayFor(modelItem => Model.GST);
-    </td>
-    <td>
+<div class="form-row">
+    <div>
+        @Html.TextBoxFor(modelItem => Model.ProductID)
+    </div>
+    <div>
+        @Html.TextBoxFor(modelItem => Model.Name)
+    </div>
+    <div>
+        @Html.TextBoxFor(modelItem => Model.QTY)
+    </div>
+    <div>
+        @Html.TextBoxFor(modelItem => Model.Price)
+    </div>
+    <div>
+        @Html.CheckBoxFor(modelItem => Model.GST)
+    </div>
+    <div>
         <a href="#" class="deleteRow">delete</a>
-    </td>
-</tr>
+    </div>
+</div>

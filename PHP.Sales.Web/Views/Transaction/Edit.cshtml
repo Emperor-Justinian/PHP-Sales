@@ -1,5 +1,5 @@
 ﻿@using PHP.Sales.Core.Models.System
-@model Transaction
+@model IEnumerable<Sale>
 
 @{
     ViewBag.Title = "Edit";
@@ -10,50 +10,52 @@
 
 <div class="edit-transaction">
     <div class="edit-transaction__form">
-        @using(Html.BeginForm()) {
-            @Html.HiddenFor(x => x.ID)
+        @using (Html.BeginForm()) {
+            @Html.HiddenFor(x => x.First().TransactionID)
 
             <div class="form-group">
                 <!-- LIST OUT SALES CONTENTS -->
 
                 <table>
-                    <tr>
-                        <th>
-                            @Html.DisplayFor(modelItem => Model.Sales.First().ProductID);
-                        </th>
-                        <th>
-                            @Html.DisplayFor(modelItem => Model.Sales.First().Name);
-                        </th>
-                        <th>
-                            @Html.DisplayFor(modelItem => Model.Sales.First().QTY);
-                        </th>
-                        <th>
-                            @Html.DisplayFor(modelItem => Model.Sales.First().Price);
-                        </th>
-                        <th>
-                            @Html.DisplayFor(modelItem => Model.Sales.First().GST);
-                        </th>
-                    </tr>
-                    @foreach (var sale in Model.Sales)
-                    {
+                    <tbody>
                         <tr>
-                            <td>
-                                @Html.DisplayFor(modelItem => sale.ProductID);
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => sale.Name);
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => sale.QTY);
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => sale.Price);
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => sale.GST);
-                            </td>
+                            <th>
+                                Product ID
+                            </th>
+                            <th>
+                                Name
+                            </th>
+                            <th>
+                               QTY
+                            </th>
+                            <th>
+                                Price
+                            </th>
+                            <th>
+                                GST
+                            </th>
                         </tr>
-                    }
+                        @foreach (var sale in Model)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.TextBoxFor(modelItem => sale.ProductID)
+                                </td>
+                                <td>
+                                    @Html.TextBoxFor(modelItem => sale.Name)
+                                </td>
+                                <td>
+                                    @Html.TextBoxFor(modelItem => sale.QTY)
+                                </td>
+                                <td>
+                                    @Html.TextBoxFor(modelItem => sale.Price)
+                                </td>
+                                <td>
+                                    @Html.CheckBoxFor(modelItem => sale.GST)
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
             </table>
 
             </div>

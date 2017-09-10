@@ -14,40 +14,40 @@
         {
             @Html.HiddenFor(x => x.ID)
 
-            <div class="form-group">
+            <div class="form-group" id="editorRows">
                 <!-- LIST OUT SALES CONTENTS -->
                 
-                <table>
-                    <tr>
-                        <th>
-                            @Html.DisplayFor(modelItem => Model.Sales.First().ProductID);
-                        </th>
-                        <th>
-                            @Html.DisplayFor(modelItem => Model.Sales.First().Name);
-                        </th>
-                        <th>
-                            @Html.DisplayFor(modelItem => Model.Sales.First().QTY);
-                        </th>
-                        <th>
-                            @Html.DisplayFor(modelItem => Model.Sales.First().Price);
-                        </th>
-                        <th>
-                            @Html.DisplayFor(modelItem => Model.Sales.First().GST);
-                        </th>
-                    </tr>
-                    @foreach (var sale in Model.Sales)
+                <div class="form-header">
+                    <div>
+                        Product ID
+                    </div>
+
+                    <div>
+                        Name
+                    </div>
+                    <div>
+                        Quantity
+                    </div>
+                    <div>
+                        Price
+                    </div>
+                    <div>
+                        GST
+                    </div>
+                </div>
+                @if (Model != null)
+                {
+                    foreach (var sale in Model.Sales)
                     {
                         @Html.Partial("TransactionEditorRow", sale);
                     }
-                    
-                    <tr>
-                        <td colspan="5">
-                            @Html.ActionLink("Add another...", "BlankRowEditor", null, new { id = "addItem" });
-                        </td>
-                    </tr>
-                </table>
-
+                }
+                else
+                {
+                    @Html.Partial("TransactionEditorRow", new Sale())
+                }
             </div>
+            @Html.ActionLink("Add another...", "BlankRowEditor", null, new { id = "addItem" })
             <input type="submit" value="Submit" />
         }
     </div>
@@ -55,13 +55,13 @@
 
 <script>
 $("#addItem").click(function () {
-        $.ajax({
-            url: this.href,
-            cache: false,
-            success: function (html) { $("#editorRows").append(html); }
-        });
-        return false;
+    $.ajax({
+        url: this.href,
+        cache: false,
+        success: function (html) { $("#editorRows").append(html); }
     });
+    return false;
+});
 
 $("a.deleteRow").live("click", function () {
     $(this).parents("div.editorRow:first").remove();
