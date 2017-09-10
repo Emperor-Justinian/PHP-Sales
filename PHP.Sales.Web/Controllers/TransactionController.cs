@@ -69,11 +69,19 @@ namespace PHP.Sales.Web.Controllers
 
         public ActionResult Read(Guid id)
         {
-            Transaction t = null;
+            /*Transaction t = null;
 
             using (var ctx = new SalesDbContext())
             {
                 t = ctx.Transactions.Where(model => model.ID == id).FirstOrDefault();
+                t.Sales = ctx.Sales.Where(model => model.TransactionID == id).ToList();
+            }*/
+
+            List<Sale> t = null;
+
+            using (var ctx = new SalesDbContext())
+            {
+                t = ctx.Sales.Where(model => model.TransactionID == id).ToList();
             }
 
             return View(t);

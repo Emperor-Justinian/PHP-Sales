@@ -17,13 +17,35 @@
             <div class="form-group">
                 <!-- LIST OUT SALES CONTENTS -->
                 
-                @Html.
-                @foreach (var sale in Model.Sales)
-                {
-                    @Html.Partial("TransactionEditorRow", sale);
-                }
-
-                @Html.ActionLink("Add another...", "BlankRowEditor", null, new { id = "addItem" });
+                <table>
+                    <tr>
+                        <th>
+                            @Html.DisplayFor(modelItem => Model.Sales.First().ProductID);
+                        </th>
+                        <th>
+                            @Html.DisplayFor(modelItem => Model.Sales.First().Name);
+                        </th>
+                        <th>
+                            @Html.DisplayFor(modelItem => Model.Sales.First().QTY);
+                        </th>
+                        <th>
+                            @Html.DisplayFor(modelItem => Model.Sales.First().Price);
+                        </th>
+                        <th>
+                            @Html.DisplayFor(modelItem => Model.Sales.First().GST);
+                        </th>
+                    </tr>
+                    @foreach (var sale in Model.Sales)
+                    {
+                        @Html.Partial("TransactionEditorRow", sale);
+                    }
+                    
+                    <tr>
+                        <td colspan="5">
+                            @Html.ActionLink("Add another...", "BlankRowEditor", null, new { id = "addItem" });
+                        </td>
+                    </tr>
+                </table>
 
             </div>
             <input type="submit" value="Submit" />

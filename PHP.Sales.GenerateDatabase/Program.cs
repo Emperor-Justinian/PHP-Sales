@@ -1,6 +1,7 @@
 ﻿using PHP.Sales.Core.Extensions;
 using PHP.Sales.Core.Models.System;
 using PHP.Sales.DataAccess;
+using System;
 
 namespace PHP.Sales.GenerateDatabase
 {
@@ -16,13 +17,15 @@ namespace PHP.Sales.GenerateDatabase
                 //CREATE YOUR OBJECTS
                 var transaction = new Transaction()
                 {
-                    PayMethod = PaymentType.VISA
+                    PayMethod = PaymentType.VISA,
+                    SaleTime = DateTime.Now                    
                 };
 
                 var sale = new Sale()
                 {
                     Name = "Panodole",
-                    QTY = 4,
+                    ProductID = "1000121",
+                    QTY = 4.00m,
                     Price = 12.32m,
                     GST = true,
                     Void = false,

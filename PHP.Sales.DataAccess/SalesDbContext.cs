@@ -9,7 +9,7 @@ namespace PHP.Sales.DataAccess
         public SalesDbContext() 
             :base("sales.db")
         {
-            Configuration.LazyLoadingEnabled = true;
+            Configuration.LazyLoadingEnabled = false;
             Configuration.ProxyCreationEnabled = true;
         }
 
