@@ -1,7 +1,7 @@
 ﻿@using PHP.Sales.Core.Models.System
 @model Sale
 
-<div class="form-row">
+<div class="form-row editorRow">
     <div>
         @Html.TextBoxFor(modelItem => Model.ProductID)
     </div>
@@ -17,7 +17,5 @@
     <div>
         @Html.CheckBoxFor(modelItem => Model.GST)
     </div>
-    <div>
-        <a href="#" class="deleteRow">delete</a>
-    </div>
+    <a href="#" class="deleteRow">delete</a>
 </div>
