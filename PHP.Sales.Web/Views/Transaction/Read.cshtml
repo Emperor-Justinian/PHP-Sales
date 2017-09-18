@@ -8,6 +8,8 @@
 
 <h2>Read</h2>
 
+@using (Html.BeginForm("Create", "Transaction"))
+{
 <table class="table">
     <tr>
         <th>
@@ -29,7 +31,6 @@
             Return
         </th>
     </tr>
-
     @foreach (var s in Model)
     {
         <tr>
@@ -49,7 +50,8 @@
                 @Html.DisplayFor(modelItem => s.GST)
             </td>
             <td>
-                <input type="checkbox" />
+                @Html.HiddenFor(modelItem => s.ID)
+                @Html.CheckBoxFor(modelItem => s.Void)
             </td>
         </tr>
     }
@@ -59,4 +61,6 @@
 
 @Html.ActionLink("Edit", "Edit", new { id = Model.First().TransactionID })
 <br />
-@Html.ActionLink("Return", "Create", "");
+@*@Html.ActionLink("Return", "Create", new { sales = Model.ToList() })*@
+<input type="submit" value="Return Goods" />
+}

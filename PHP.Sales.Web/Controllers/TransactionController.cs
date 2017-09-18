@@ -37,17 +37,26 @@ namespace PHP.Sales.Web.Controllers
         /// <param name="sales">List of Sales to be negated</param>
         /// <returns></returns>
         [HttpPost]
-        public ActionResult Create(List<Sale> sales)
+        public ActionResult Create(Sale s)
         {
-            foreach(Sale s in sales)
+            //TODO: HANDLE LIST OF SALES
+            List<Sale> sales = new List<Sale>();
+            using(var ctx = new SalesDbContext())
             {
-                if(s.QTY < 0)
+                sales.Add(ctx.Sales.Where(t => t.ID == s.ID).FirstOrDefault());
+            }
+            foreach(Sale ss in sales)
+            {
+                if(ss.QTY > 0)
                 {
-                    s.QTY *= -1;
+                    ss.QTY *= -1;
                 }
             }
 
-            return View(sales);
+            Transaction transact = new Transaction();
+            transact.Sales = sales;
+
+            return View(transact);
         }
 
         /// <summary>
