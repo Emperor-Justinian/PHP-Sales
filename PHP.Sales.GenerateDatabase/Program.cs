@@ -2,6 +2,7 @@
 using PHP.Sales.Core.Models.System;
 using PHP.Sales.DataAccess;
 using System;
+using System.IO;
 
 namespace PHP.Sales.GenerateDatabase
 {
@@ -9,6 +10,7 @@ namespace PHP.Sales.GenerateDatabase
     {
         public static void Main(string[] args)
         {
+            AppDomain.CurrentDomain.SetData("DataDirectory", Path.GetFullPath("..\\..\\..\\PHP.Sales.Web\\App_Data"));
             using (var ctx = new SalesDbContext())
             {
                 ctx.Database.Delete();
