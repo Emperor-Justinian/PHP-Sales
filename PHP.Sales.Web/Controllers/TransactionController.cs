@@ -10,6 +10,10 @@ namespace PHP.Sales.Web.Controllers
     public class TransactionController : Controller
     {
         // GET: Transaction
+        /// <summary>
+        /// Display the Transaction landing page
+        /// </summary>
+        /// <returns>List of all transactions</returns>
         public ActionResult Index()
         {
             var models = new List<Transaction>();
@@ -43,18 +47,29 @@ namespace PHP.Sales.Web.Controllers
             List<Sale> sales = new List<Sale>();
             using(var ctx = new SalesDbContext())
             {
-                sales.Add(ctx.Sales.Where(t => t.ID == s.ID).FirstOrDefault());
+                Sale q = ctx.Sales.Where(t => t.ID == s.ID).FirstOrDefault();
+                sales.Add(new Sale()
+                {
+                    ProductID = q.ProductID,
+                    QTY = q.QTY * -1,
+                    Name = q.Name,
+                    Price = q.Price,
+                    GST = q.GST,
+                });
             }
-            foreach(Sale ss in sales)
+            /*foreach(Sale ss in sales)
             {
+                ss.ID = new Guid();
                 if(ss.QTY > 0)
                 {
                     ss.QTY *= -1;
                 }
-            }
+            }*/
 
-            Transaction transact = new Transaction();
-            transact.Sales = sales;
+            Transaction transact = new Transaction
+            {
+                Sales = sales
+            };
 
             return View(transact);
         }
