@@ -112,6 +112,12 @@ namespace PHP.Sales.Web.Controllers
         }
 
         //VALIDATOR
+        /// <summary>
+        /// Validate the incoming data for an Edit form
+        /// </summary>
+        /// <param name="viewModel"></param>
+        /// <returns>Transaction Index</returns>
+        //TODO: PARSE A LIST OF SALES
         [HttpPost]
         public ActionResult Edit(Transaction viewModel)
         {
@@ -141,11 +147,20 @@ namespace PHP.Sales.Web.Controllers
             return View(viewModel);
         }
 
+        /// <summary>
+        /// Creates a new row for the Creator Form
+        /// </summary>
+        /// <param name="sale"></param>
+        /// <returns>A row form</returns>
         public ViewResult TransactionEditorRow(Sale sale)
         {
             return View(sale);
         }
 
+        /// <summary>
+        /// Creates a new empty row for the Creator Form
+        /// </summary>
+        /// <returns>An empty row</returns>
         public ViewResult BlankRowEditor()
         {
             return View("TransactionEditorRow", new Sale());
