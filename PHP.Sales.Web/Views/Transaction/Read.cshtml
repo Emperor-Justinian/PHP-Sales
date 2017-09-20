@@ -1,0 +1,66 @@
+﻿@using PHP.Sales.Core.Models.System
+@model IEnumerable<Sale>
+
+@{
+    ViewBag.Title = "Read";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Read</h2>
+
+@using (Html.BeginForm("Create", "Transaction"))
+{
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.ProductID)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.QTY)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Price)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.GST)
+        </th>
+        <th>
+            Return
+        </th>
+    </tr>
+    @foreach (var s in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => s.ProductID)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => s.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => s.QTY)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => s.Price)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => s.GST)
+            </td>
+            <td>
+                @Html.HiddenFor(modelItem => s.ID)
+                @Html.CheckBoxFor(modelItem => s.Void)
+            </td>
+        </tr>
+    }
+
+</table>
+
+
+@Html.ActionLink("Edit", "Edit", new { id = Model.First().TransactionID })
+<br />
+@*@Html.ActionLink("Return", "Create", new { sales = Model.ToList() })*@
+<input type="submit" value="Return Goods" />
+}

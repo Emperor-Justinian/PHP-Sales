@@ -1,0 +1,45 @@
+﻿@using PHP.Sales.Core.Models.System
+@model IEnumerable<Transaction>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Index</h2>
+
+<p>@Html.ActionLink("Create New", "Create")</p>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.ID)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PayMethod)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.SaleTime)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var t in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => t.ID)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => t.PayMethod)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => t.SaleTime)
+            </td>
+            <td>
+                @Html.ActionLink("View", "Read", new { id = t.ID })
+            </td>
+        </tr>
+    }
+
+</table>

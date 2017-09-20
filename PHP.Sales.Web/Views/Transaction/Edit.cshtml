@@ -1,0 +1,66 @@
+﻿@using PHP.Sales.Core.Models.System
+@model IEnumerable<Sale>
+
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Edit</h2>
+
+<div class="edit-transaction">
+    <div class="edit-transaction__form">
+        @using (Html.BeginForm()) {
+            @Html.HiddenFor(x => x.First().TransactionID)
+
+            <div class="form-group">
+                <!-- LIST OUT SALES CONTENTS -->
+
+                <table>
+                    <tbody>
+                        <tr>
+                            <th>
+                                Product ID
+                            </th>
+                            <th>
+                                Name
+                            </th>
+                            <th>
+                               QTY
+                            </th>
+                            <th>
+                                Price
+                            </th>
+                            <th>
+                                GST
+                            </th>
+                        </tr>
+                        @foreach (var sale in Model)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.TextBoxFor(modelItem => sale.ProductID)
+                                </td>
+                                <td>
+                                    @Html.TextBoxFor(modelItem => sale.Name)
+                                </td>
+                                <td>
+                                    @Html.TextBoxFor(modelItem => sale.QTY)
+                                </td>
+                                <td>
+                                    @Html.TextBoxFor(modelItem => sale.Price)
+                                </td>
+                                <td>
+                                    @Html.CheckBoxFor(modelItem => sale.GST)
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+            </table>
+
+            </div>
+            <input type="submit" value="Submit"/>
+        }
+    </div>
+</div>
+

@@ -1,0 +1,75 @@
+﻿@using PHP.Sales.Core.Models.System
+@model Transaction
+
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Create</h2>
+
+<div class="edit-transaction">
+    <div class="edit-transaction__form">
+        @using (Html.BeginForm())
+        {
+            @Html.HiddenFor(x => x.ID)
+
+            <div class="form-group" id="editorRows">
+                <!-- LIST OUT SALES CONTENTS -->
+                
+                <div class="form-header">
+                    <div>
+                        Product ID
+                    </div>
+                    <div>
+                        Name
+                    </div>
+                    <div>
+                        Quantity
+                    </div>
+                    <div>
+                        Price
+                    </div>
+                    <div>
+                        GST
+                    </div>
+                </div>
+                @if (Model != null)
+                {
+                    foreach (var sale in Model.Sales)
+                    {
+                        @Html.Partial("TransactionEditorRow", sale);
+                    }
+                }
+                else
+                {
+                    @Html.Partial("TransactionEditorRow", new Sale())
+                }
+            </div>
+            @Html.ActionLink("Add another...", "BlankRowEditor", null, new { id = "addItem" })
+            <input type="submit" value="Submit" />
+        }
+    </div>
+</div>
+
+<script>
+$("#addItem").click(function () {
+    $.ajax({
+        url: this.href,
+        cache: false,
+        success: function (html) {
+            $("#editorRows").append(html);
+
+            $("a.deleteRow").on("click", function () {
+                $(this).parents("div.editorRow:first").remove();
+                return false;
+            });}
+    });
+    return false;
+});
+
+$("a.deleteRow").on("click", function () {
+    $(this).parents("div.editorRow:first").remove();
+    return false;
+});
+</script>
