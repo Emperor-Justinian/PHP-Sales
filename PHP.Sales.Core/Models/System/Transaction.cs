@@ -29,5 +29,8 @@ namespace PHP.Sales.Core.Models.System
 
         [DisplayName("Purchase Time")]
         public DateTime SaleTime { get; set; }
+
+        [DisplayName("Staff Member")]
+        public DateTime StaffID { get; set; }
     }
 }
