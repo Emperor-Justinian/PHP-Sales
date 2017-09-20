@@ -1,23 +1,21 @@
-﻿﻿﻿@using PHP.Sales.Web.ViewModels
-﻿﻿@using PHP.Sales.Core.Models.System
+﻿@using PHP.Sales.Core.Models.System
+@using PHP.Sales.Web.ViewModels
 @model TransactionRowViewModel
 
 @{
-    ViewBag.Title = "Create";
+    ViewBag.Title = "Return";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Create</h2>
+<h2>Return</h2>
 
 <div class="edit-transaction">
     <div class="edit-transaction__form">
         @using (Html.BeginForm())
         {
-            <b>@Html.DisplayNameFor(model => model.Payment): </b>
-            @Html.EnumDropDownListFor(model => model.Payment)
             <div class="form-group" id="editorRows">
                 <!-- LIST OUT SALES CONTENTS -->
-                
+
                 <div class="form-header">
                     <div>
                         Product ID

@@ -1,5 +1,6 @@
-﻿@using PHP.Sales.Core.Models.System
-@model IEnumerable<Sale>
+﻿﻿﻿@using PHP.Sales.Web.ViewModels
+
+@model TransactionRowViewModel
 
 @{
     ViewBag.Title = "Edit";
@@ -11,7 +12,7 @@
 <div class="edit-transaction">
     <div class="edit-transaction__form">
         @using (Html.BeginForm()) {
-            @Html.HiddenFor(x => x.First().TransactionID)
+            @Html.HiddenFor(x => x.TransactionId)
 
             <div class="form-group">
                 <!-- LIST OUT SALES CONTENTS -->
@@ -23,6 +24,7 @@
                                 Product ID
                             </th>
                             <th>
+
                                 Name
                             </th>
                             <th>
@@ -35,26 +37,29 @@
                                 GST
                             </th>
                         </tr>
-                        @foreach (var sale in Model)
+
+                        @for (int i = 0; i < Model.SalesList.Count; i++)
                         {
                             <tr>
                                 <td>
-                                    @Html.TextBoxFor(modelItem => sale.ProductID)
-                                </td>
-                                <td>
-                                    @Html.TextBoxFor(modelItem => sale.Name)
-                                </td>
-                                <td>
-                                    @Html.TextBoxFor(modelItem => sale.QTY)
-                                </td>
-                                <td>
-                                    @Html.TextBoxFor(modelItem => sale.Price)
-                                </td>
-                                <td>
-                                    @Html.CheckBoxFor(modelItem => sale.GST)
+                                    @Html.HiddenFor(m => m.SalesList[i].ID)
+                                    @Html.TextBoxFor(m => m.SalesList[i].ProductID)
+                                </td>                      
+                                <td>                       
+                                    @Html.TextBoxFor(m => m.SalesList[i].Name)
+                                </td>                      
+                                <td>                       
+                                    @Html.TextBoxFor(m => m.SalesList[i].QTY)
+                                </td>                      
+                                <td>                       
+                                    @Html.TextBoxFor(m => m.SalesList[i].Price)
+                                </td>                      
+                                <td>                       
+                                    @Html.CheckBoxFor(m => m.SalesList[i].GST)
                                 </td>
                             </tr>
                         }
+
                     </tbody>
             </table>
 

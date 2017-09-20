@@ -1,0 +1,26 @@
+﻿@using PHP.Sales.Core.Models.System
+@{
+    Layout = null;
+}
+
+@model Sale
+
+<tr>
+    <td>
+        @Html.TextBoxFor(m => m.ProductID)
+    </td>
+    <td>
+        @Html.TextBoxFor(m => m.Name)
+    </td>
+    <td>
+        @Html.TextBoxFor(m => m.QTY)
+    </td>
+    <td>
+        @Html.TextBoxFor(m => m.Price)
+    </td>
+    <td>
+        @Html.CheckBoxFor(m => m.GST)
+
+        <a href="#" class="deleteRow">delete</a>
+    </td>
+</tr>

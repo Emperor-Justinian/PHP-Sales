@@ -1,9 +1,11 @@
-﻿using PHP.Sales.Core.Models.System;
+﻿﻿﻿using PHP.Sales.Core.Models.System;
 using PHP.Sales.DataAccess;
+using PHP.Sales.Core.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
+using PHP.Sales.Web.ViewModels;
 
 namespace PHP.Sales.Web.Controllers
 {
@@ -41,21 +43,41 @@ namespace PHP.Sales.Web.Controllers
         /// <param name="sales">List of Sales to be negated</param>
         /// <returns></returns>
         [HttpPost]
-        public ActionResult Create(Sale s)
+        public ActionResult Create(TransactionRowViewModel viewModel)
+        {
+            if (ModelState.IsValid)
+            {
+                using (var ctx = new SalesDbContext())
+                {
+                    var transact = new Transaction()
+                    {
+                        PayMethod = viewModel.Payment,
+                        Sales = viewModel.SalesList
+                    };
+
+                    transact.Update();
+
+                    ctx.Transactions.Add(transact);
+                    ctx.SaveChanges();
+
+                    return RedirectToAction("Read", new { id = viewModel.TransactionId });
+                }
+            }
+
+            return View(viewModel);
+        }
+
+        /// <summary>
+        /// Create a transaction with items that are being negated from another transaction.
+        /// </summary>
+        /// <param name="sales">List of Sales to be negated</param>
+        /// <returns></returns>
+        public ActionResult Return(List<Sale> s)
         {
             //TODO: HANDLE LIST OF SALES
             List<Sale> sales = new List<Sale>();
-            using(var ctx = new SalesDbContext())
+            using (var ctx = new SalesDbContext())
             {
-                Sale q = ctx.Sales.Where(t => t.ID == s.ID).FirstOrDefault();
-                sales.Add(new Sale()
-                {
-                    ProductID = q.ProductID,
-                    QTY = q.QTY * -1,
-                    Name = q.Name,
-                    Price = q.Price,
-                    GST = q.GST,
-                });
             }
             /*foreach(Sale ss in sales)
             {
@@ -81,6 +103,7 @@ namespace PHP.Sales.Web.Controllers
         /// <returns>View with Sales data from the Transaction</returns>
         public ActionResult Edit(Guid id)
         {
+            /*
             List<Sale> sales = null;
 
             using(var ctx = new SalesDbContext())
@@ -89,6 +112,29 @@ namespace PHP.Sales.Web.Controllers
             }
 
             return View(sales);
+            */
+
+            using (var ctx = new SalesDbContext())
+            {
+                var txn = ctx.Transactions.Include("Sales").Where(t => t.ID.Equals(id)).FirstOrDefault();
+
+                if(txn != null)
+                {
+                    var viewModel = new TransactionRowViewModel()
+                    {
+                        TransactionId = txn.ID,
+                        SalesList = txn.Sales.ToList()
+                    };
+
+                    return View(viewModel);
+                }
+            }
+
+            return View(new TransactionRowViewModel()
+            {
+                TransactionId = Guid.Empty,
+                SalesList = new List<Sale>()
+            });
         }
 
         public ActionResult Read(Guid id)
@@ -101,14 +147,27 @@ namespace PHP.Sales.Web.Controllers
                 t.Sales = ctx.Sales.Where(model => model.TransactionID == id).ToList();
             }*/
 
-            List<Sale> t = null;
-
             using (var ctx = new SalesDbContext())
             {
-                t = ctx.Sales.Where(model => model.TransactionID == id).ToList();
-            }
+                var txn = ctx.Transactions.Include("Sales").Where(t => t.ID.Equals(id)).FirstOrDefault();
 
-            return View(t);
+                if (txn != null)
+                {
+                    var viewModel = new TransactionRowViewModel()
+                    {
+                        TransactionId = txn.ID,
+                        SalesList = txn.Sales.ToList()
+                    };
+
+                    return View(viewModel);
+                }
+            }
+            
+            return View(new TransactionRowViewModel()
+            {
+                TransactionId = Guid.Empty,
+                SalesList = new List<Sale>()
+            });
         }
 
         //VALIDATOR
@@ -117,25 +176,40 @@ namespace PHP.Sales.Web.Controllers
         /// </summary>
         /// <param name="viewModel"></param>
         /// <returns>Transaction Index</returns>
-        //TODO: PARSE A LIST OF SALES
         [HttpPost]
-        public ActionResult Edit(Transaction viewModel)
+        public ActionResult Edit(TransactionRowViewModel viewModel)
         {
             if(ModelState.IsValid)
             {
-                //CHECK FOR INVALID RESULTS
-
-                //AIM TO SAVE DATA
                 using(var ctx = new SalesDbContext())
                 {
-                    var oldTransaction = ctx.Transactions.Where(t => t.ID == viewModel.ID).FirstOrDefault();
+                    var oldTransaction = ctx.Transactions.Include("Sales").Where(t => t.ID == viewModel.TransactionId).FirstOrDefault();
 
                     if(oldTransaction != null)
                     {
-                        oldTransaction.Sales = viewModel.Sales;
+                        foreach(var item in viewModel.SalesList)
+                        {
+                            var oldSale = oldTransaction.Sales.Where(x => x.ID == item.ID).FirstOrDefault();
+
+                            if(oldSale == null)
+                            {
+                                oldSale = new Sale();
+                                oldTransaction.Sales.Add(oldSale);
+                                oldTransaction.Update();
+                            }
+
+                            oldSale.Name = item.Name;
+                            oldSale.GST = item.GST;
+                            oldSale.Price = item.Price;
+                            oldSale.ProductID = item.ProductID;
+                            oldSale.QTY = item.QTY;
+
+                            oldSale.Update();
+                        }
+
                         ctx.SaveChanges();
 
-                        return RedirectToAction("Index");
+                        return RedirectToAction("Read", new { id = viewModel.TransactionId });
                     }
                     else
                     {
@@ -152,7 +226,7 @@ namespace PHP.Sales.Web.Controllers
         /// </summary>
         /// <param name="sale"></param>
         /// <returns>A row form</returns>
-        public ViewResult TransactionEditorRow(Sale sale)
+        public ViewResult TransactionEditorRow(List<Sale> sale)
         {
             return View(sale);
         }
@@ -163,7 +237,10 @@ namespace PHP.Sales.Web.Controllers
         /// <returns>An empty row</returns>
         public ViewResult BlankRowEditor()
         {
-            return View("TransactionEditorRow", new Sale());
+            return View("TransactionEditorRow", new List<Sale>()
+            {
+                new Sale()
+            });
         }
     }
 }
