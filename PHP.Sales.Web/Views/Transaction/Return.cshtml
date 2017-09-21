@@ -11,11 +11,11 @@
 
 <div class="edit-transaction">
     <div class="edit-transaction__form">
-        @using (Html.BeginForm())
+        @using (Html.BeginForm("Create", "Transaction"))
         {
+            <b>@Html.DisplayNameFor(model => model.Payment): </b>
+            @Html.EnumDropDownListFor(model => model.Payment)
             <div class="form-group" id="editorRows">
-                <!-- LIST OUT SALES CONTENTS -->
-
                 <div class="form-header">
                     <div>
                         Product ID
@@ -35,7 +35,10 @@
                 </div>
                 @if (Model != null)
                 {
-                    @Html.Partial("_SalesRowEditor", Model.SalesList)
+                    for(int i = 0; i < Model.SalesList.Count; i++)
+                    {
+                        @Html.Partial("_SalesRowEditor", Model.SalesList.ElementAt(i), new ViewDataDictionary { { "num", i } });
+                    }
                 }
                 else
                 {

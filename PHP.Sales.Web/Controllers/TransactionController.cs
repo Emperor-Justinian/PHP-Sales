@@ -55,12 +55,17 @@ namespace PHP.Sales.Web.Controllers
                         Sales = viewModel.SalesList
                     };
 
+                    foreach(Sale s in viewModel.SalesList)
+                    {
+                        s.Update();
+                    }
+
                     transact.Update();
 
                     ctx.Transactions.Add(transact);
                     ctx.SaveChanges();
 
-                    return RedirectToAction("Read", new { id = viewModel.TransactionId });
+                    return RedirectToAction("Read", new { id = transact.ID });
                 }
             }
 
@@ -72,28 +77,26 @@ namespace PHP.Sales.Web.Controllers
         /// </summary>
         /// <param name="sales">List of Sales to be negated</param>
         /// <returns></returns>
-        public ActionResult Return(List<Sale> s)
+        public ActionResult Return(TransactionRowViewModel t)
         {
-            //TODO: HANDLE LIST OF SALES
-            List<Sale> sales = new List<Sale>();
-            using (var ctx = new SalesDbContext())
+            using(var ctx = new SalesDbContext())
             {
-            }
-            /*foreach(Sale ss in sales)
-            {
-                ss.ID = new Guid();
-                if(ss.QTY > 0)
+                for(int i = 0; i < t.SalesList.Count; i++)
                 {
-                    ss.QTY *= -1;
+                    if (t.SalesList.ElementAt(i).Void == false)
+                    {
+                        t.SalesList.RemoveAt(i--);
+                    } else
+                    {
+                        Guid g = t.SalesList.ElementAt(i).ID;
+                        Sale s = ctx.Sales.Where(m => m.ID == g).FirstOrDefault();
+                        t.SalesList[i] = s;
+                        t.SalesList.ElementAt(i).QTY *= -1;
+                    }
                 }
-            }*/
+            }
 
-            Transaction transact = new Transaction
-            {
-                Sales = sales
-            };
-
-            return View(transact);
+            return View(t);
         }
 
         /// <summary>
@@ -137,6 +140,11 @@ namespace PHP.Sales.Web.Controllers
             });
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public ActionResult Read(Guid id)
         {
             /*Transaction t = null;
@@ -219,28 +227,6 @@ namespace PHP.Sales.Web.Controllers
             }
 
             return View(viewModel);
-        }
-
-        /// <summary>
-        /// Creates a new row for the Creator Form
-        /// </summary>
-        /// <param name="sale"></param>
-        /// <returns>A row form</returns>
-        public ViewResult TransactionEditorRow(List<Sale> sale)
-        {
-            return View(sale);
-        }
-
-        /// <summary>
-        /// Creates a new empty row for the Creator Form
-        /// </summary>
-        /// <returns>An empty row</returns>
-        public ViewResult BlankRowEditor()
-        {
-            return View("TransactionEditorRow", new List<Sale>()
-            {
-                new Sale()
-            });
         }
     }
 }
