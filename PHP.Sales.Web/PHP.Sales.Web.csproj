@@ -152,7 +152,7 @@
     <Content Include="Views\Transaction\Create.cshtml" />
     <Content Include="Views\Transaction\Read.cshtml" />
     <Content Include="Views\Transaction\Return.cshtml" />
-    <Content Include="Views\Shared\EditorTemplates\_SalesRowEditor.cshtml" />
+    <Content Include="Views\Shared\_SalesRowEditor.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

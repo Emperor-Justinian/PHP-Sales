@@ -8,6 +8,8 @@
 
 <h2>Read</h2>
 
+@Html.ActionLink("Back to Transactions", "Index", "Transaction", new { area = "" })
+
 @using (Html.BeginForm("Return", "Transaction"))
 {
     <table class="table">
