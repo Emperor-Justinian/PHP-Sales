@@ -18,13 +18,13 @@ namespace PHP.Sales.GenerateDatabase
 
                 //CREATE YOUR OBJECTS
                 //First Transaction and Sale 
-                var transaction = new Transaction()
+                var tran1 = new Transaction()
                 {
                     PayMethod = PaymentType.VISA,
                     SaleTime = DateTime.Now                    
                 };
                 
-                var sale = new Sale()
+                var sale11 = new Sale()
                 {
                     Name = "Panodol",
                     ProductID = "1000121",
@@ -39,10 +39,9 @@ namespace PHP.Sales.GenerateDatabase
                 {
                     PayMethod = PaymentType.CASH,
                     SaleTime = DateTime.Now,
-
                 };
                     
-                var sale2 = new Sale()
+                var sale21 = new Sale()
                 {
                     Name = "Nurofen",
                     ProductID = "1000221",
@@ -52,12 +51,12 @@ namespace PHP.Sales.GenerateDatabase
                     Void = false,
                 };
                 
-                var sale3 = new Sale()
+                var sale22 = new Sale()
                 {
                     Name = "Panodol",
                     ProductID = "1000121",
                     QTY = 3.00m,
-                    Price = 6.32m,
+                    Price = 9.24m,
                     GST = true,
                     Void = false,
                 };
@@ -69,7 +68,7 @@ namespace PHP.Sales.GenerateDatabase
                     SaleTime = DateTime.Now,
                 };
                 
-                var sale4 = new Sale()
+                var sale31 = new Sale()
                 {
                     Name = "Anti-Fungal",
                     ProductID = "1000135",
@@ -79,58 +78,380 @@ namespace PHP.Sales.GenerateDatabase
                     Void = false,    
                 };
                 
-                var sale5 = new Sale()
+                var sale32 = new Sale()
                 {
                     Name = "Antibiotic",
-                    ProductID = "1000621",
+                    ProductID = "1000821",
                     QTY = 1.00m,
                     Price = 8.99m,
                     GST = false,
                     Void = false,
                 };
                 
-                var sale6 = new Sale()
+                var sale33 = new Sale()
                 {
                     Name = "Antihistermine",
                     ProductID = "1000171",
                     QTY = 2.00m,
-                    Price = 18.01m,
+                    Price = 18.02m,
                     GST = true,
                     Void = false,
                 };
                 
-                //Update Sale 3
-                sale4.Update();
-                sale5.Update();
-                sale6.Update();
+                //Fourth Transaction and Sale (Large Quantities)
+                var tran4 = new Transaction()
+                {
+                    PayMethod = PaymentType.CASH,
+                    SaleTime = DateTime.Now,
+                };
+                
+                var sale41 = new Sale()
+                {
+                    Name = "Sunscreen",
+                    ProductID = "1000655",
+                    QTY = 250.00m,
+                    Price = 3372.5m,
+                    GST = true,
+                    Void = false,    
+                };
+                
+                var sale42 = new Sale()
+                {
+                    Name = "Multivitamin 90",
+                    ProductID = "1000621",
+                    QTY = 5000.00m,
+                    Price = 112400.00m,
+                    GST = true,
+                    Void = false,
+                };
+                
+                var sale43 = new Sale()
+                {
+                    Name = "Vitamin D",
+                    ProductID = "1000178",
+                    QTY = 1000.00m,
+                    Price = 8990.00m,
+                    GST = true,
+                    Void = false,
+                };
+                
+                //Fifth Transaction and Sale (One of Everything)
+                var tran5 = new Transaction()
+                {
+                    PayMethod = PaymentType.CASH,
+                    SaleTime = DateTime.Now,
+                };
+                
+                var sale51 = new Sale()
+                {
+                    Name = "Panodol",
+                    ProductID = "1000121",
+                    QTY = 1.00m,
+                    Price = 3.08m,
+                    GST = true,
+                    Void = false, 
+                };
+                
+                var sale52 = new Sale()
+                {
+                    Name = "Nurofen",
+                    ProductID = "1000221",
+                    QTY = 1.00m,
+                    Price = 3.16m,
+                    GST = true,
+                    Void = false,
+                };
+                
+                var sale53 = new Sale()
+                {
+                    Name = "Antihistermine",
+                    ProductID = "1000171",
+                    QTY = 1.00m,
+                    Price = 9.02m,
+                    GST = true,
+                    Void = false,
+                };
+                
+                var sale54 = new Sale()
+                {
+                    Name = "Sunscreen",
+                    ProductID = "1000655",
+                    QTY = 1.00m,
+                    Price = 13.49m,
+                    GST = true,
+                    Void = false,    
+                };
+                
+                var sale55 = new Sale()
+                {
+                    Name = "Multivitamin 90",
+                    ProductID = "1000621",
+                    QTY = 1.00m,
+                    Price = 22.48m,
+                    GST = true,
+                    Void = false,
+                };
+                
+                var sale56 = new Sale()
+                {
+                    Name = "Vitamin D",
+                    ProductID = "1000178",
+                    QTY = 10.00m,
+                    Price = 8.99m,
+                    GST = true,
+                    Void = false,
+                };
+                
+                var sale57 = new Sale()
+                {
+                    Name = "Antibiotic",
+                    ProductID = "1000821",
+                    QTY = 1.00m,
+                    Price = 8.99m,
+                    GST = false,
+                    Void = false,    
+                };
+                
+                var sale58 = new Sale()
+                {
+                    Name = "HS Pain Killer",
+                    ProductID = "1000285",
+                    QTY = 1.00m,
+                    Price = 8.99m,
+                    GST = false,
+                    Void = false,
+                };
+                
+                var sale59 = new Sale()
+                {
+                    Name = "Baby Paracetemol",
+                    ProductID = "1000129",
+                    QTY = 1.00m,
+                    Price = 12.59m,
+                    GST = true,
+                    Void = false,
+                };
+                
+                var sale510 = new Sale()
+                {
+                    Name = "Anti-Fungal",
+                    ProductID = "1000135",
+                    QTY = 1.00m,
+                    Price = 7.29m,
+                    GST = true,
+                    Void = false,   
+                };
+                
+                var sale511 = new Sale()
+                {
+                    Name = "Cold and Flu 24",
+                    ProductID = "1000359",
+                    QTY = 1.00m,
+                    Price = 7.29m,
+                    GST = true,
+                    Void = false,   
+                };
+                
+                //Sixth Sale and Trnasaction
+                var tran6 = new Transaction()
+                {
+                    PayMethod = PaymentType.VISA,
+                    SaleTime = DateTime.Now,
+                };
 
-                tran3.Sales.Add(sale4);
-                tran3.Sales.Add(sale5);
-                tran3.Sales.Add(sale6);
+                var sale61 = new Sale()
+                {
+                    Name = "Cold and Flu 24",
+                    ProductID = "1000359",
+                    QTY = 1.00m,
+                    Price = 7.29m,
+                    GST = true,
+                    Void = false,
+                };
+                    
+                var sale62 = new Sale()
+                {
+                    Name = "HS Pain Killer",
+                    ProductID = "1000285",
+                    QTY = 1.00m,
+                    Price = 8.99m,
+                    GST = false,
+                    Void = false,
+                };
+                
+                var sale63 = new Sale()
+                {
+                    Name = "Multivitamin 90",
+                    ProductID = "1000621",
+                    QTY = 1.00m,
+                    Price = 22.48m,
+                    GST = true,
+                    Void = false,
+                };
+                
+                //Seventh Sale and Transaction (Same product sold multiple times)
+                var tran7 = new Transaction()
+                {
+                    PayMethod = PaymentType.MASTERCARD,
+                    SaleTime = DateTime.Now,
+                };
+                
+                var sale71 = new Sale()
+                {
+                    Name = "Multivitamin 90",
+                    ProductID = "1000621",
+                    QTY = 10.00m,
+                    Price = 224.80m,
+                    GST = true,
+                    Void = false,
+                };
+                
+                var sale72 = new Sale()
+                {
+                    Name = "Multivitamin 90",
+                    ProductID = "1000621",
+                    QTY = 1.00m,
+                    Price = 22.48m,
+                    GST = true,
+                    Void = false,
+                };
+                
+                var sale73 = new Sale()
+                {
+                    Name = "Multivitamin 90",
+                    ProductID = "1000621",
+                    QTY = 1.00m,
+                    Price = 22.48m,
+                    GST = true,
+                    Void = false,
+                };
+                
+                var sale74 = new Sale()
+                {
+                    Name = "Cold and Flu 24",
+                    ProductID = "1000359",
+                    QTY = 1.00m,
+                    Price = 7.29m,
+                    GST = true,
+                    Void = false,   
+                };
+                
+                var sale75 = new Sale()
+                {
+                    Name = "Multivitamin 90",
+                    ProductID = "1000621",
+                    QTY = 1.00m,
+                    Price = 22.48m,
+                    GST = true,
+                    Void = false,
+                };
+                
+                //Update Sale 7
+                sale71.Update();
+                sale72.Update();
+                sale73.Update();
+                sale74.Update();
+                sale75.Update();
+                
+                tran7.Sales.Add(sale71);
+                tran7.Sales.Add(sale72);
+                tran7.Sales.Add(sale73);
+                tran7.Sales.Add(sale74);
+                tran7.Sales.Add(sale75);
+                
+                tran7.Update();
+
+                ctx.Transactions.Add(tran7);
+
+                //Update Sale 6 
+                sale61.Update();
+                sale62.Update();
+                sale63.Update();
+                
+                tran6.Sales.Add(sale61);
+                tran6.Sales.Add(sale62);
+                tran6.Sales.Add(sale63);
+                
+                tran6.Update();
+
+                ctx.Transactions.Add(tran6);
+
+                //Update Sale 5
+                sale51.Update();
+                sale52.Update();
+                sale53.Update();
+                sale54.Update();
+                sale55.Update();
+                sale56.Update();
+                sale57.Update();
+                sale58.Update();
+                sale59.Update();
+                sale510.Update();
+                sale511.Update();
+                
+                tran5.Sales.Add(sale51);
+                tran5.Sales.Add(sale52);
+                tran5.Sales.Add(sale53);
+                tran5.Sales.Add(sale54);
+                tran5.Sales.Add(sale55);
+                tran5.Sales.Add(sale56);
+                tran5.Sales.Add(sale57);
+                tran5.Sales.Add(sale58);
+                tran5.Sales.Add(sale59);
+                tran5.Sales.Add(sale510);
+                tran5.Sales.Add(sale511);
+                
+                tran5.Update();
+
+                ctx.Transactions.Add(tran5);
+                
+                //Update Sale 4 
+                sale41.Update();
+                sale42.Update();
+                sale43.Update();
+                
+                tran4.Sales.Add(sale41);
+                tran4.Sales.Add(sale42);
+                tran4.Sales.Add(sale43);
+                
+                tran4.Update();
+
+                ctx.Transactions.Add(tran4);
+                
+                //Update Sale 3
+                sale31.Update();
+                sale32.Update();
+                sale33.Update();
+
+                tran3.Sales.Add(sale31);
+                tran3.Sales.Add(sale32);
+                tran3.Sales.Add(sale33);
                 
                 tran3.Update();
 
                 ctx.Transactions.Add(tran3);
                 
                 //Update Sale 2
-                sale2.Update();
-                sale3.Update();
+                sale21.Update();
+                sale22.Update();
                 
-                tran2.Sales.Add(sale2);
-                tran2.Sales.Add(sale3);
+                tran2.Sales.Add(sale21);
+                tran2.Sales.Add(sale22);
                 
                 tran2.Update();
                 
                 ctx.Transactions.Add(tran2);
                 
                 //Update Sale 1
-                sale.Update();
+                sale11.Update();
 
-                transaction.Sales.Add(sale);
+                tran1.Sales.Add(sale11);
 
-                transaction.Update();
+                tran1.Update();
 
-                ctx.Transactions.Add(transaction);
+                ctx.Transactions.Add(tran1);
+                
+                // Save Transaction Database
                 ctx.SaveChanges();
             }
         }
