@@ -28,9 +28,6 @@ namespace PHP.Sales.Core.Models.System
         public PaymentType PayMethod { get; set; }
 
         [DisplayName("Purchase Time")]
-        public DateTime SaleTime { get; set; }
-
-        [DisplayName("Staff Member")]
-        public DateTime StaffID { get; set; }
+        public DateTime? SaleTime { get; set; }
     }
 }
