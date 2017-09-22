@@ -4,6 +4,8 @@
 @{
     ViewBag.Title = "Read";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    decimal sale = 0m;
+    decimal total = 0m;
 }
 
 <h2>Read</h2>
@@ -29,6 +31,10 @@
             <th>
                 @Html.DisplayNameFor(model => model.SalesList.First().GST)
             </th>
+            <th></th>
+            <th>
+                Item Total
+            </th>
             <th>
                 Return
             </th>
@@ -53,11 +59,34 @@
                 <td>
                     @Html.DisplayFor(m => m.SalesList[i].GST)
                 </td>
+                <td></td>
+                <td>
+                    @if (Model.SalesList[i].GST == false)
+                    {
+                            @(sale = Math.Round(Model.SalesList[i].QTY * Model.SalesList[i].Price, 2))
+                    } else
+                    {
+                            @(sale = Math.Round(Model.SalesList[i].QTY * (Model.SalesList[i].Price * (decimal)1.1), 2))
+                    }
+                    @{
+                        total += sale;
+                    }
+                </td>
                 <td>
                     @Html.CheckBoxFor(m => m.SalesList[i].Void)
                 </td>
             </tr>
+
         }
+        <tr>
+
+            <td colspan="5"></td>
+            <td><b>Total Price: </b></td>
+            <td>
+               @(total)
+            </td>
+            <td></td>
+        </tr>
 
     </table>
 

@@ -5,6 +5,7 @@
 @{
     ViewBag.Title = "Create";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    int i = 0;
 }
 
 <h2>Create</h2>
@@ -37,14 +38,17 @@
                 </div>
                 @if (Model != null)
                 {
-                    @Html.Partial("_SalesRowEditor", Model.SalesList)
+                    for (i = 0; i < Model.SalesList.Count; i++)
+                    {
+                        @Html.Partial("_SalesRowEditor", Model.SalesList.ElementAt(i), new ViewDataDictionary { { "num", i } });
+                    }
                 }
                 else
                 {
-                    @Html.Partial("_SalesRowEditor", new Sale())
+                    @Html.Partial("_SalesRowEditor", new Sale(), new ViewDataDictionary { { "num", i } })
                 }
             </div>
-            @Html.ActionLink("Add another...", "BlankRowEditor", null, new { id = "addItem" })
+            @Html.ActionLink("Add another...", "_SalesRowEditor", new Sale(), new { id = "addItem" })
             <input type="submit" value="Submit" />
         }
     </div>

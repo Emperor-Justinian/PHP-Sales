@@ -92,6 +92,7 @@ namespace PHP.Sales.Web.Controllers
                         Sale s = ctx.Sales.Where(m => m.ID == g).FirstOrDefault();
                         t.SalesList[i] = s;
                         t.SalesList.ElementAt(i).QTY *= -1;
+                        t.SalesList.ElementAt(i).Void = true;
                     }
                 }
             }
@@ -106,17 +107,6 @@ namespace PHP.Sales.Web.Controllers
         /// <returns>View with Sales data from the Transaction</returns>
         public ActionResult Edit(Guid id)
         {
-            /*
-            List<Sale> sales = null;
-
-            using(var ctx = new SalesDbContext())
-            {
-                sales = ctx.Sales.Where(t => t.TransactionID == id).ToList();
-            }
-
-            return View(sales);
-            */
-
             using (var ctx = new SalesDbContext())
             {
                 var txn = ctx.Transactions.Include("Sales").Where(t => t.ID.Equals(id)).FirstOrDefault();
@@ -147,14 +137,6 @@ namespace PHP.Sales.Web.Controllers
         /// <returns></returns>
         public ActionResult Read(Guid id)
         {
-            /*Transaction t = null;
-
-            using (var ctx = new SalesDbContext())
-            {
-                t = ctx.Transactions.Where(model => model.ID == id).FirstOrDefault();
-                t.Sales = ctx.Sales.Where(model => model.TransactionID == id).ToList();
-            }*/
-
             using (var ctx = new SalesDbContext())
             {
                 var txn = ctx.Transactions.Include("Sales").Where(t => t.ID.Equals(id)).FirstOrDefault();
@@ -227,6 +209,28 @@ namespace PHP.Sales.Web.Controllers
             }
 
             return View(viewModel);
+        }
+
+        /// <summary>
+        /// Creates a new row for the Creator Form
+        /// </summary>
+        /// <param name="sale"></param>
+        /// <returns>A row form</returns>
+        public ViewResult TransactionEditorRow(List<Sale> sale)
+        {
+            return View(sale);
+        }
+
+        /// <summary>
+        /// Creates a new empty row for the Creator Form
+        /// </summary>
+        /// <returns>An empty row</returns>
+        public ViewResult BlankRowEditor()
+        {
+            return View("TransactionEditorRow", new List<Sale>()
+            {
+                new Sale()
+            });
         }
     }
 }
