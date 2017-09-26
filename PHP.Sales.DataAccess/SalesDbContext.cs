@@ -10,16 +10,18 @@ namespace PHP.Sales.DataAccess
             :base("sales.db")
         {
             Configuration.LazyLoadingEnabled = false;
-            Configuration.ProxyCreationEnabled = false;
+            Configuration.ProxyCreationEnabled = true;
         }
 
         public DbSet<Transaction> Transactions { get; set; }
         public DbSet<Report> Reports { get; set; }
+        public DbSet<Product> Products { get; set; }
         public DbSet<Sale> Sales { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             modelBuilder.Configurations.Add(new SaleConfiguration());
+            modelBuilder.Configurations.Add(new ProductConfiguration());
 
             base.OnModelCreating(modelBuilder);
         }

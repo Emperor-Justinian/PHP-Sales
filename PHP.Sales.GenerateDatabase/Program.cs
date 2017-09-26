@@ -2,6 +2,7 @@
 using PHP.Sales.Core.Models.System;
 using PHP.Sales.DataAccess;
 using System;
+using System.Collections.Generic;
 using System.IO;
 
 namespace PHP.Sales.GenerateDatabase
@@ -17,6 +18,84 @@ namespace PHP.Sales.GenerateDatabase
                 ctx.Database.CreateIfNotExists();
 
                 //CREATE YOUR OBJECTS
+
+                //CREATE THE PRODUCTS
+                List<Product> prods = new List<Product>(new Product[] {
+                    new Product()
+                    {
+                        Name = "Panodol",
+                        Price = 12.32m,
+                        QTY = 30
+                    },
+                    new Product()
+                    {
+                        Name = "Nurofen",
+                        Price = 6.32m,
+                        QTY = 40
+                    },
+                    new Product()
+                    {
+                        Name = "Anti-Fungal",
+                        Price = 7.29m,
+                        QTY = 10
+                    },
+                    new Product()
+                    {
+                        Name = "Antibiotic",
+                        Price = 8.99m,
+                        QTY = 5
+                    },
+                    new Product()
+                    {
+                        Name = "Antihistermine",
+                        Price = 18.02m,
+                        QTY = 10
+                    },
+                    new Product()
+                    {
+                        Name = "Sunscreen",
+                        Price = 3372.5m,
+                        QTY = 1000
+                    },
+                    new Product()
+                    {
+                        Name = "Multivitamin 90",
+                        Price = 112400.00m,
+                        QTY = 7500
+                    },
+                    new Product()
+                    {
+                        Name = "Vitamin D",
+                        QTY = 1000.00m,
+                        Price = 8990.00m,
+                    },
+                    new Product()
+                    {
+                        Name = "HS Pain Killer",
+                        QTY = 10m,
+                        Price = 8.99m,
+                    },
+                    new Product()
+                    {
+                        Name = "Baby Paracetemol",
+                        QTY = 5.00m,
+                        Price = 12.59m,
+                    },
+                    new Product()
+                    {
+                        Name = "Cold and Flu 24",
+                        QTY = 4.00m,
+                        Price = 7.29m,
+                    },
+                });
+
+                foreach(Product p in prods)
+                {
+                    p.Update();
+                }
+                ctx.Products.AddRange(prods);
+
+                //CREATE THE TRANSACTIONS
                 //First Transaction and Sale 
                 var tran1 = new Transaction()
                 {
@@ -26,8 +105,7 @@ namespace PHP.Sales.GenerateDatabase
                 
                 var sale11 = new Sale()
                 {
-                    Name = "Panodol",
-                    ProductID = "1000121",
+                    Product = prods[0],
                     QTY = 4.00m,
                     Price = 12.32m,
                     GST = true,
@@ -43,8 +121,7 @@ namespace PHP.Sales.GenerateDatabase
                     
                 var sale21 = new Sale()
                 {
-                    Name = "Nurofen",
-                    ProductID = "1000221",
+                    Product = prods[1],
                     QTY = 2.00m,
                     Price = 6.32m,
                     GST = true,
@@ -53,8 +130,7 @@ namespace PHP.Sales.GenerateDatabase
                 
                 var sale22 = new Sale()
                 {
-                    Name = "Panodol",
-                    ProductID = "1000121",
+                    Product = prods[0],
                     QTY = 3.00m,
                     Price = 9.24m,
                     GST = true,
@@ -70,8 +146,7 @@ namespace PHP.Sales.GenerateDatabase
                 
                 var sale31 = new Sale()
                 {
-                    Name = "Anti-Fungal",
-                    ProductID = "1000135",
+                    Product = prods[2],
                     QTY = 1.00m,
                     Price = 7.29m,
                     GST = true,
@@ -80,8 +155,7 @@ namespace PHP.Sales.GenerateDatabase
                 
                 var sale32 = new Sale()
                 {
-                    Name = "Antibiotic",
-                    ProductID = "1000821",
+                    Product = prods[3],
                     QTY = 1.00m,
                     Price = 8.99m,
                     GST = false,
@@ -90,8 +164,7 @@ namespace PHP.Sales.GenerateDatabase
                 
                 var sale33 = new Sale()
                 {
-                    Name = "Antihistermine",
-                    ProductID = "1000171",
+                    Product = prods[4],
                     QTY = 2.00m,
                     Price = 18.02m,
                     GST = true,
@@ -107,8 +180,7 @@ namespace PHP.Sales.GenerateDatabase
                 
                 var sale41 = new Sale()
                 {
-                    Name = "Sunscreen",
-                    ProductID = "1000655",
+                    Product = prods[5],
                     QTY = 250.00m,
                     Price = 3372.5m,
                     GST = true,
@@ -117,8 +189,7 @@ namespace PHP.Sales.GenerateDatabase
                 
                 var sale42 = new Sale()
                 {
-                    Name = "Multivitamin 90",
-                    ProductID = "1000621",
+                    Product = prods[6],
                     QTY = 5000.00m,
                     Price = 112400.00m,
                     GST = true,
@@ -127,8 +198,7 @@ namespace PHP.Sales.GenerateDatabase
                 
                 var sale43 = new Sale()
                 {
-                    Name = "Vitamin D",
-                    ProductID = "1000178",
+                    Product = prods[7],
                     QTY = 1000.00m,
                     Price = 8990.00m,
                     GST = true,
@@ -144,8 +214,7 @@ namespace PHP.Sales.GenerateDatabase
                 
                 var sale51 = new Sale()
                 {
-                    Name = "Panodol",
-                    ProductID = "1000121",
+                    Product = prods[0],
                     QTY = 1.00m,
                     Price = 3.08m,
                     GST = true,
@@ -154,8 +223,7 @@ namespace PHP.Sales.GenerateDatabase
                 
                 var sale52 = new Sale()
                 {
-                    Name = "Nurofen",
-                    ProductID = "1000221",
+                    Product = prods[1],
                     QTY = 1.00m,
                     Price = 3.16m,
                     GST = true,
@@ -164,8 +232,7 @@ namespace PHP.Sales.GenerateDatabase
                 
                 var sale53 = new Sale()
                 {
-                    Name = "Antihistermine",
-                    ProductID = "1000171",
+                    Product = prods[2],
                     QTY = 1.00m,
                     Price = 9.02m,
                     GST = true,
@@ -174,8 +241,7 @@ namespace PHP.Sales.GenerateDatabase
                 
                 var sale54 = new Sale()
                 {
-                    Name = "Sunscreen",
-                    ProductID = "1000655",
+                    Product = prods[5],
                     QTY = 1.00m,
                     Price = 13.49m,
                     GST = true,
@@ -184,8 +250,7 @@ namespace PHP.Sales.GenerateDatabase
                 
                 var sale55 = new Sale()
                 {
-                    Name = "Multivitamin 90",
-                    ProductID = "1000621",
+                    Product = prods[6],
                     QTY = 1.00m,
                     Price = 22.48m,
                     GST = true,
@@ -194,8 +259,7 @@ namespace PHP.Sales.GenerateDatabase
                 
                 var sale56 = new Sale()
                 {
-                    Name = "Vitamin D",
-                    ProductID = "1000178",
+                    Product = prods[7],
                     QTY = 10.00m,
                     Price = 8.99m,
                     GST = true,
@@ -204,8 +268,7 @@ namespace PHP.Sales.GenerateDatabase
                 
                 var sale57 = new Sale()
                 {
-                    Name = "Antibiotic",
-                    ProductID = "1000821",
+                    Product = prods[4],
                     QTY = 1.00m,
                     Price = 8.99m,
                     GST = false,
@@ -214,8 +277,7 @@ namespace PHP.Sales.GenerateDatabase
                 
                 var sale58 = new Sale()
                 {
-                    Name = "HS Pain Killer",
-                    ProductID = "1000285",
+                    Product = prods[8],
                     QTY = 1.00m,
                     Price = 8.99m,
                     GST = false,
@@ -224,8 +286,7 @@ namespace PHP.Sales.GenerateDatabase
                 
                 var sale59 = new Sale()
                 {
-                    Name = "Baby Paracetemol",
-                    ProductID = "1000129",
+                    Product = prods[9],
                     QTY = 1.00m,
                     Price = 12.59m,
                     GST = true,
@@ -234,8 +295,7 @@ namespace PHP.Sales.GenerateDatabase
                 
                 var sale510 = new Sale()
                 {
-                    Name = "Anti-Fungal",
-                    ProductID = "1000135",
+                    Product = prods[2],
                     QTY = 1.00m,
                     Price = 7.29m,
                     GST = true,
@@ -244,8 +304,7 @@ namespace PHP.Sales.GenerateDatabase
                 
                 var sale511 = new Sale()
                 {
-                    Name = "Cold and Flu 24",
-                    ProductID = "1000359",
+                    Product = prods[10],
                     QTY = 1.00m,
                     Price = 7.29m,
                     GST = true,
@@ -261,8 +320,7 @@ namespace PHP.Sales.GenerateDatabase
 
                 var sale61 = new Sale()
                 {
-                    Name = "Cold and Flu 24",
-                    ProductID = "1000359",
+                    Product = prods[10],
                     QTY = 1.00m,
                     Price = 7.29m,
                     GST = true,
@@ -271,8 +329,7 @@ namespace PHP.Sales.GenerateDatabase
                     
                 var sale62 = new Sale()
                 {
-                    Name = "HS Pain Killer",
-                    ProductID = "1000285",
+                    Product = prods[8],
                     QTY = 1.00m,
                     Price = 8.99m,
                     GST = false,
@@ -281,8 +338,7 @@ namespace PHP.Sales.GenerateDatabase
                 
                 var sale63 = new Sale()
                 {
-                    Name = "Multivitamin 90",
-                    ProductID = "1000621",
+                    Product = prods[6],
                     QTY = 1.00m,
                     Price = 22.48m,
                     GST = true,
@@ -298,8 +354,7 @@ namespace PHP.Sales.GenerateDatabase
                 
                 var sale71 = new Sale()
                 {
-                    Name = "Multivitamin 90",
-                    ProductID = "1000621",
+                    Product = prods[6],
                     QTY = 10.00m,
                     Price = 224.80m,
                     GST = true,
@@ -308,8 +363,7 @@ namespace PHP.Sales.GenerateDatabase
                 
                 var sale72 = new Sale()
                 {
-                    Name = "Multivitamin 90",
-                    ProductID = "1000621",
+                    Product = prods[6],
                     QTY = 1.00m,
                     Price = 22.48m,
                     GST = true,
@@ -318,8 +372,7 @@ namespace PHP.Sales.GenerateDatabase
                 
                 var sale73 = new Sale()
                 {
-                    Name = "Multivitamin 90",
-                    ProductID = "1000621",
+                    Product = prods[6],
                     QTY = 1.00m,
                     Price = 22.48m,
                     GST = true,
@@ -328,8 +381,7 @@ namespace PHP.Sales.GenerateDatabase
                 
                 var sale74 = new Sale()
                 {
-                    Name = "Cold and Flu 24",
-                    ProductID = "1000359",
+                    Product = prods[10],
                     QTY = 1.00m,
                     Price = 7.29m,
                     GST = true,
@@ -338,8 +390,7 @@ namespace PHP.Sales.GenerateDatabase
                 
                 var sale75 = new Sale()
                 {
-                    Name = "Multivitamin 90",
-                    ProductID = "1000621",
+                    Product = prods[6],
                     QTY = 1.00m,
                     Price = 22.48m,
                     GST = true,

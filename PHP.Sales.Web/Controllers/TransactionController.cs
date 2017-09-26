@@ -22,7 +22,7 @@ namespace PHP.Sales.Web.Controllers
 
             using (var ctx = new SalesDbContext())
             {
-                models = ctx.Transactions.ToList();
+                models = ctx.Transactions.OrderBy(x => x.SaleTime).ToList();
             }
 
             return View(models);
@@ -188,7 +188,7 @@ namespace PHP.Sales.Web.Controllers
                                 oldTransaction.Update();
                             }
 
-                            oldSale.Name = item.Name;
+                            //oldSale.Name = item.Name;
                             oldSale.GST = item.GST;
                             oldSale.Price = item.Price;
                             oldSale.ProductID = item.ProductID;
