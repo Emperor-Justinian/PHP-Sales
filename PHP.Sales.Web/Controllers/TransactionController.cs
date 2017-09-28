@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 using PHP.Sales.Web.ViewModels;
+using System.Net;
 
 namespace PHP.Sales.Web.Controllers
 {
@@ -105,8 +106,12 @@ namespace PHP.Sales.Web.Controllers
         /// </summary>
         /// <param name="id">Transaction ID</param>
         /// <returns>View with Sales data from the Transaction</returns>
-        public ActionResult Edit(Guid id)
+        public ActionResult Edit(Guid? id)
         {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
             using (var ctx = new SalesDbContext())
             {
                 var txn = ctx.Transactions.Include("Sales").Where(t => t.ID.Equals(id)).FirstOrDefault();
@@ -135,8 +140,12 @@ namespace PHP.Sales.Web.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public ActionResult Read(Guid id)
+        public ActionResult Read(Guid? id)
         {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
             using (var ctx = new SalesDbContext())
             {
                 var txn = ctx.Transactions.Include("Sales").Where(t => t.ID.Equals(id)).FirstOrDefault();
