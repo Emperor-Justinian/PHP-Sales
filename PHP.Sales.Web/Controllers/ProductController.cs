@@ -8,7 +8,7 @@ using PHP.Sales.DataAccess;
 
 namespace PHP.Sales.Web.Controllers
 {
-    public class ProductsController : Controller
+    public class ProductController : Controller
     {
         //private SalesctxContext ctx = new SalesctxContext();
 
