@@ -22,6 +22,7 @@ namespace PHP.Sales.DataAccess
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             modelBuilder.Configurations.Add(new SaleConfiguration());
+            modelBuilder.Configurations.Add(new ReportConfiguration());
             modelBuilder.Configurations.Add(new ProductConfiguration());
             modelBuilder.Configurations.Add(new ReportConfiguration());
 
