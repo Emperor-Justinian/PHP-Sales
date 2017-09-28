@@ -23,6 +23,7 @@ namespace PHP.Sales.DataAccess
         {
             modelBuilder.Configurations.Add(new SaleConfiguration());
             modelBuilder.Configurations.Add(new ProductConfiguration());
+            modelBuilder.Configurations.Add(new ReportConfiguration());
 
             base.OnModelCreating(modelBuilder);
         }

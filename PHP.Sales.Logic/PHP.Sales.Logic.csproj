@@ -54,6 +54,9 @@
     <Folder Include="ViewModels\" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="ViewModels\" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\PHP.Sales.Core\PHP.Sales.Core.csproj">
       <Project>{B45996C5-B0F3-4CC6-AC77-2294E3C9BD26}</Project>
       <Name>PHP.Sales.Core</Name>
