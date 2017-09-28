@@ -15,10 +15,11 @@
         <th>
             @Html.DisplayNameFor(model => model.Name)
         </th>
-        <th>
+
+        <th style="text-align: right">
             @Html.DisplayNameFor(model => model.QTY)
         </th>
-        <th>
+        <th style="text-align: right">
             @Html.DisplayNameFor(model => model.Price)
         </th>
         <th>
@@ -32,10 +33,10 @@
         <td>
             @Html.DisplayFor(modelItem => item.Name)
         </td>
-        <td>
+        <td style="text-align: right">
             @Html.DisplayFor(modelItem => item.QTY)
         </td>
-        <td>
+        <td style="text-align: right">
             @Html.DisplayFor(modelItem => item.Price)
         </td>
         <td>
@@ -43,8 +44,13 @@
         </td>
         <td>
             @Html.ActionLink("Edit", "Edit", new { id=item.ID }) |
-            @Html.ActionLink("Details", "Details", new { id=item.ID }) |
-            @Html.ActionLink("Discontinue", "Delete", new { id=item.ID })
+            @Html.ActionLink("Details", "Details", new { id=item.ID })
+            @if (item.Discontinued == false)
+            {
+                @Html.Raw("| ")
+                @Html.ActionLink("Discontinue", "Delete", new { id = item.ID })
+            }
+            
         </td>
     </tr>
 }
