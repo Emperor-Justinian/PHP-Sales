@@ -22,16 +22,10 @@ namespace PHP.Sales.DataAccess
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             modelBuilder.Configurations.Add(new SaleConfiguration());
+            modelBuilder.Configurations.Add(new ReportConfiguration());
             modelBuilder.Configurations.Add(new ProductConfiguration());
 
             base.OnModelCreating(modelBuilder);
-        }
-
-        //still being worked on
-        public override int SaveChanges()
-        {
-
-            return base.SaveChanges();
         }
     }
 }

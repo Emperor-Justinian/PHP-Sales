@@ -134,8 +134,9 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\LogController.cs" />
-    <Compile Include="Controllers\ProductController.cs" />
+      <Compile Include="Controllers\ReportsController.cs" />
+      <Compile Include="Controllers\LogController.cs" />
+      <Compile Include="Controllers\ProductController.cs" />
     <Compile Include="Controllers\TransactionController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -161,14 +162,19 @@
     <Content Include="Views\Transaction\Read.cshtml" />
     <Content Include="Views\Transaction\Return.cshtml" />
     <Content Include="Views\Shared\_SalesRowEditor.cshtml" />
-    <Content Include="Views\Product\Create.cshtml" />
-    <Content Include="Views\Product\Delete.cshtml" />
-    <Content Include="Views\Product\Details.cshtml" />
-    <Content Include="Views\Product\Edit.cshtml" />
-    <Content Include="Views\Product\Index.cshtml" />
-    <Content Include="Views\_ViewStart.cshtml" />
-    <Content Include="Views\Log\Index.cshtml" />
-    <Content Include="Views\Shared\_ProductListSelector.cshtml" />
+    <Content Include="Views\Reports\Create.cshtml" />
+    <Content Include="Views\Reports\Delete.cshtml" />
+    <Content Include="Views\Reports\Details.cshtml" />
+    <Content Include="Views\Reports\Edit.cshtml" />
+    <Content Include="Views\Reports\Index.cshtml" />
+      <Content Include="Views\Product\Create.cshtml" />
+      <Content Include="Views\Product\Delete.cshtml" />
+      <Content Include="Views\Product\Details.cshtml" />
+      <Content Include="Views\Product\Edit.cshtml" />
+      <Content Include="Views\Product\Index.cshtml" />
+      <Content Include="Views\_ViewStart.cshtml" />
+      <Content Include="Views\Log\Index.cshtml" />
+      <Content Include="Views\Shared\_ProductListSelector.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
