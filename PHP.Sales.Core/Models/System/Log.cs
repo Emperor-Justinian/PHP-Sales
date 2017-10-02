@@ -24,10 +24,10 @@ namespace PHP.Sales.Core.Models.System
 
         [Required(ErrorMessage = "A Product Name is required")]
         [DisplayName("Product ID")]
-        public String ProductID { get; set; }
+        public Guid ProductID { get; set; }
 
         [Required(ErrorMessage = "An update message is required")]
-        [DisplayName("Message")]
-        public String Message { get; set; }
+        [DisplayName("StockChange")]
+        public decimal QTY { get; set; }
     }
 }

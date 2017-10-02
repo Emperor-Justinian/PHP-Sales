@@ -167,10 +167,6 @@
     <Content Include="Views\Product\Edit.cshtml" />
     <Content Include="Views\Product\Index.cshtml" />
     <Content Include="Views\_ViewStart.cshtml" />
-    <Content Include="Views\Log\Create.cshtml" />
-    <Content Include="Views\Log\Delete.cshtml" />
-    <Content Include="Views\Log\Details.cshtml" />
-    <Content Include="Views\Log\Edit.cshtml" />
     <Content Include="Views\Log\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
