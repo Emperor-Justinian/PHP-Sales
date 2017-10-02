@@ -58,6 +58,14 @@ namespace PHP.Sales.Web.Controllers
 
                     foreach(Sale s in viewModel.SalesList)
                     {
+                        Decimal OldQTY = ctx.Products.Where(x => x.ID == s.ProductID).FirstOrDefault().QTY;
+                        Log l = new Log()
+                        {
+                            ProductID = s.ProductID,
+                            QTY = OldQTY - s.QTY
+                        };
+                        l.Update();
+                        ctx.Logs.Add(l);
                         s.Update();
                     }
 
@@ -193,7 +201,7 @@ namespace PHP.Sales.Web.Controllers
                             if(oldSale == null)
                             {
                                 oldSale = new Sale();
-                                oldTransaction.Sales.Add(oldSale);
+                                oldTransaction.Sales.Add(oldSale); 
                                 oldTransaction.Update();
                             }
 
@@ -201,7 +209,17 @@ namespace PHP.Sales.Web.Controllers
                             oldSale.GST = item.GST;
                             oldSale.Price = item.Price;
                             oldSale.ProductID = item.ProductID;
+                            Decimal qtyChanged = oldSale.QTY - item.QTY;
                             oldSale.QTY = item.QTY;
+                            oldSale.Product.QTY += qtyChanged;
+                            Log l = new Log()
+                            {
+                                ProductID = oldSale.ProductID,
+                                QTY = qtyChanged
+                            };
+                            l.Update();
+                            ctx.Logs.Add(l);
+
 
                             oldSale.Update();
                         }
