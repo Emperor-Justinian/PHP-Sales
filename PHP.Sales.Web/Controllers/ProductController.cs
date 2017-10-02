@@ -93,7 +93,7 @@ namespace PHP.Sales.Web.Controllers
                 if (ModelState.IsValid)
                 {
                     ctx.Entry(product).State = EntityState.Modified;
-                    ctx.SaveChanges();
+                    ctx.SaveChanges();                    
                     return RedirectToAction("Index");
                 }
                 return View(product);
@@ -132,6 +132,8 @@ namespace PHP.Sales.Web.Controllers
                 return RedirectToAction("Index");
             }
         }
+
+        //location of temporary change tracker storage to be bundled and sent to Logs Controller
 
         //protected override void Dispose(bool disposing)
         //{
