@@ -12,7 +12,7 @@ namespace PHP.Sales.Core.Models.System
         public Guid TransactionID { get; set; }
         public virtual Transaction Transaction { get; set; }
 
-        [Required(ErrorMessage = "A product name is required")]
+        [Required(ErrorMessage = "A product ID is required")]
         [DisplayName("Product ID")]
         public Guid ProductID { get; set; }
         public virtual Product Product { get; set; }
