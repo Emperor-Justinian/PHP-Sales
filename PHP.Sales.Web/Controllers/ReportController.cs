@@ -11,7 +11,7 @@ using PHP.Sales.DataAccess;
 
 namespace PHP.Sales.Web.Controllers
 {
-    public class ReportsController : Controller
+    public class ReportController : Controller
     {
         private SalesDbContext db = new SalesDbContext();
 
