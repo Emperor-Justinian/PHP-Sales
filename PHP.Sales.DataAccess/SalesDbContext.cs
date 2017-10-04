@@ -17,6 +17,7 @@ namespace PHP.Sales.DataAccess
         public DbSet<Report> Reports { get; set; }
         public DbSet<Product> Products { get; set; }
         public DbSet<Sale> Sales { get; set; }
+        public DbSet<Log> Logs { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
@@ -24,6 +25,13 @@ namespace PHP.Sales.DataAccess
             modelBuilder.Configurations.Add(new ProductConfiguration());
 
             base.OnModelCreating(modelBuilder);
+        }
+
+        //still being worked on
+        public override int SaveChanges()
+        {
+
+            return base.SaveChanges();
         }
     }
 }
