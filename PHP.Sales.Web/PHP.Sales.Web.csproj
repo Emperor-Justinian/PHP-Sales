@@ -168,6 +168,7 @@
     <Content Include="Views\Product\Index.cshtml" />
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Log\Index.cshtml" />
+    <Content Include="Views\Shared\_ProductListSelector.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

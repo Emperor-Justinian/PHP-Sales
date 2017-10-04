@@ -12,6 +12,29 @@ namespace PHP.Sales.Web.Controllers
 {
     public class TransactionController : Controller
     {
+        public IEnumerable<SelectListItem> GetProducts()
+        {
+            SalesDbContext ctx = new SalesDbContext();
+
+            var Products = ctx.Products.Select(x => new SelectListItem
+            {
+                Value = x.ID.ToString(),
+                Text = x.Name
+            });
+
+            return new SelectList(Products, "Value", "Text");
+        }
+
+        public ViewResult AddProduct()
+        {
+            var model = new ProductListViewModel()
+            {
+                Products = GetProducts()
+            };
+
+            return View("_ProductListSelector", model);
+        }
+
         // GET: Transaction
         /// <summary>
         /// Display the Transaction landing page
@@ -118,11 +141,11 @@ namespace PHP.Sales.Web.Controllers
         {
             if (id == null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                return RedirectToAction("Index");
             }
             using (var ctx = new SalesDbContext())
             {
-                var txn = ctx.Transactions.Include("Sales").Where(t => t.ID.Equals(id)).FirstOrDefault();
+                var txn = ctx.Transactions.Include("Sales").Where(t => t.ID == id).FirstOrDefault();
 
                 if(txn != null)
                 {
@@ -152,11 +175,11 @@ namespace PHP.Sales.Web.Controllers
         {
             if (id == null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                return RedirectToAction("Index");
             }
             using (var ctx = new SalesDbContext())
             {
-                var txn = ctx.Transactions.Include("Sales").Where(t => t.ID.Equals(id)).FirstOrDefault();
+                var txn = ctx.Transactions.Include("Sales").Where(t => t.ID == id).FirstOrDefault();
 
                 if (txn != null)
                 {

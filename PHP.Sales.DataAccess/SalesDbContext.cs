@@ -10,7 +10,7 @@ namespace PHP.Sales.DataAccess
             :base("sales.db")
         {
             Configuration.LazyLoadingEnabled = false;
-            Configuration.ProxyCreationEnabled = true;
+            Configuration.ProxyCreationEnabled = false;
         }
 
         public DbSet<Transaction> Transactions { get; set; }

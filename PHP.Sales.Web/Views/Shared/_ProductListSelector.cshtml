@@ -1,0 +1,10 @@
+﻿﻿﻿@using PHP.Sales.Web.ViewModels
+@{
+    Layout = null;
+    string num = "0";
+    //string value = this.ViewData["num"].ToString();
+}
+
+@model ProductListViewModel
+
+@Html.DropDownListFor(m => m.ProductId, Model.Products)
