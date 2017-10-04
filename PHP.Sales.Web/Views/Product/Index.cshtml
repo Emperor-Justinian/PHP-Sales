@@ -19,6 +19,10 @@
         <th style="text-align: right">
             @Html.DisplayNameFor(model => model.QTY)
         </th>
+
+        <th style="text-align: right">
+            @Html.DisplayNameFor(model => model.LowWarn)
+        </th>
         <th style="text-align: right">
             @Html.DisplayNameFor(model => model.Price)
         </th>
@@ -35,6 +39,9 @@
         </td>
         <td style="text-align: right">
             @Html.DisplayFor(modelItem => item.QTY)
+        </td>
+        <td style="text-align: right">
+            @Html.DisplayFor(modelItem => item.LowWarn)
         </td>
         <td style="text-align: right">
             @Html.DisplayFor(modelItem => item.Price)

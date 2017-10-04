@@ -7,6 +7,7 @@ using System.Linq;
 using System.Web.Mvc;
 using PHP.Sales.Web.ViewModels;
 using System.Net;
+using PHP.Sales.Logic;
 
 namespace PHP.Sales.Web.Controllers
 {
@@ -81,14 +82,16 @@ namespace PHP.Sales.Web.Controllers
 
                     foreach(Sale s in viewModel.SalesList)
                     {
-                        Decimal OldQTY = ctx.Products.Where(x => x.ID == s.ProductID).FirstOrDefault().QTY;
+                        /*Decimal OldQTY = ctx.Products.Where(x => x.ID == s.ProductID).FirstOrDefault().QTY;
                         Log l = new Log()
                         {
                             ProductID = s.ProductID,
                             QTY = OldQTY - s.QTY
                         };
                         l.Update();
-                        ctx.Logs.Add(l);
+                        ctx.Logs.Add(l);*/
+
+                        ProductLog.GenerateLog(ctx, s.ProductID, -s.QTY);
                         s.Update();
                     }
 
@@ -235,14 +238,14 @@ namespace PHP.Sales.Web.Controllers
                             Decimal qtyChanged = oldSale.QTY - item.QTY;
                             oldSale.QTY = item.QTY;
                             oldSale.Product.QTY += qtyChanged;
-                            Log l = new Log()
+                            /*Log l = new Log()
                             {
                                 ProductID = oldSale.ProductID,
                                 QTY = qtyChanged
                             };
                             l.Update();
-                            ctx.Logs.Add(l);
-
+                            ctx.Logs.Add(l);*/
+                            ProductLog.GenerateLog(ctx, item.ProductID, qtyChanged);
 
                             oldSale.Update();
                         }
