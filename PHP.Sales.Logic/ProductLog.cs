@@ -13,14 +13,17 @@ namespace PHP.Sales.Logic
             Product oldProduct = ctx.Products.Where(x => x.ID == PID).FirstOrDefault();
 
             decimal oldQTY = (oldProduct != null) ? oldProduct.QTY : 0;
+            decimal qtyChanged = oldQTY + newQTY;
 
-            Log l = new Log()
-            {
-                ProductID = PID,
-                QTY = oldQTY + newQTY
-            };
-            l.Update();
-            ctx.Logs.Add(l);
+            if (qtyChanged != 0 || newQTY != 0) {
+                Log l = new Log()
+                {
+                    ProductID = PID,
+                    QTY = qtyChanged
+                };
+                l.Update();
+                ctx.Logs.Add(l);
+            }
         }
     }
 }

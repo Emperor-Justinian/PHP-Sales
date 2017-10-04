@@ -23,9 +23,9 @@
                             <th>
                                 Product ID
                             </th>
-                            <th>
+                            <!--<th>
                                 Name
-                            </th>
+                            </th>-->
                             <th>
                                QTY
                             </th>
@@ -42,11 +42,13 @@
                             <tr>
                                 <td>
                                     @Html.HiddenFor(m => m.SalesList[i].ID)
-                                    @Html.TextBoxFor(m => m.SalesList[i].ProductID)
+                                    @*Html.TextBoxFor(m => m.SalesList[i].ProductID)*@
+
+                                    @Html.Action("AddProduct", new { selected = Model.SalesList[i].ProductID, row = i })
                                 </td>                      
-                                <td>                       
-                                    @Html.TextBoxFor(m => m.SalesList[i].Name)
-                                </td>                      
+                                <!--<td>                       
+                                    @*Html.TextBoxFor(m => m.SalesList[i].Name)*@
+                                </td>-->                      
                                 <td>                       
                                     @Html.TextBoxFor(m => m.SalesList[i].QTY)
                                 </td>                      

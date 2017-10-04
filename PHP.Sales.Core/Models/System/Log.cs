@@ -13,6 +13,7 @@ namespace PHP.Sales.Core.Models.System
         [Required(ErrorMessage = "A Product Name is required")]
         [DisplayName("Product ID")]
         public Guid ProductID { get; set; }
+        public virtual Product Product { get; set; }
 
         [Required(ErrorMessage = "An update message is required")]
         [DisplayName("StockChange")]

@@ -13,7 +13,7 @@ namespace PHP.Sales.Web.Controllers
 {
     public class TransactionController : Controller
     {
-        public IEnumerable<SelectListItem> GetProducts()
+        public IEnumerable<SelectListItem> GetProducts(Guid? selected)
         {
             SalesDbContext ctx = new SalesDbContext();
 
@@ -23,15 +23,21 @@ namespace PHP.Sales.Web.Controllers
                 Text = x.Name
             });
 
-            return new SelectList(Products, "Value", "Text");
+            return new SelectList(Products, "Value", "Text", selected);
         }
 
-        public ViewResult AddProduct()
+        public ViewResult AddProduct(Guid? selected, int row)
         {
             var model = new ProductListViewModel()
             {
-                Products = GetProducts()
+                Products = GetProducts(selected),
+                row = row
             };
+
+            if(selected != null)
+            {
+                model.ProductId = (Guid)selected;
+            }
 
             return View("_ProductListSelector", model);
         }
@@ -230,24 +236,23 @@ namespace PHP.Sales.Web.Controllers
                                 oldTransaction.Sales.Add(oldSale); 
                                 oldTransaction.Update();
                             }
-
-                            //oldSale.Name = item.Name;
+                            
                             oldSale.GST = item.GST;
                             oldSale.Price = item.Price;
                             oldSale.ProductID = item.ProductID;
+                            oldSale.Product = ctx.Products.Where(y => y.ID == item.ProductID).FirstOrDefault();
                             Decimal qtyChanged = oldSale.QTY - item.QTY;
+
+                            //@TODO: IF CHANGE IN PRODUCT, ALTER BOTH PRODUCTS QTYS
+
                             oldSale.QTY = item.QTY;
-                            oldSale.Product.QTY += qtyChanged;
-                            /*Log l = new Log()
-                            {
-                                ProductID = oldSale.ProductID,
-                                QTY = qtyChanged
-                            };
-                            l.Update();
-                            ctx.Logs.Add(l);*/
-                            ProductLog.GenerateLog(ctx, item.ProductID, qtyChanged);
 
                             oldSale.Update();
+
+                            oldSale.Product.QTY += qtyChanged;
+                            oldSale.Product.Update();
+
+                            ProductLog.GenerateLog(ctx, item.ProductID, qtyChanged);
                         }
 
                         ctx.SaveChanges();
