@@ -1,4 +1,5 @@
-﻿@model IEnumerable<PHP.Sales.Core.Models.System.Log>
+﻿@using PHP.Sales.Core.Models.System
+@model IEnumerable<Log>
 
 @{
     ViewBag.Title = "Index";
@@ -18,7 +19,7 @@
             @Html.DisplayNameFor(model => model.ProductID)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Message)
+            @Html.DisplayNameFor(model => model.QTY)
         </th>
         <th></th>
     </tr>
@@ -32,12 +33,7 @@
             @Html.DisplayFor(modelItem => item.ProductID)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.Message)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.ID }) |
-            @Html.ActionLink("Details", "Details", new { id=item.ID }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.ID })
+            @Html.DisplayFor(modelItem => item.QTY)
         </td>
     </tr>
 }

@@ -24,7 +24,7 @@ namespace PHP.Sales.Web.Controllers
         {
             if (id == null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                return RedirectToAction("Index");
             }
             using (var ctx = new SalesDbContext())
             {
@@ -76,7 +76,7 @@ namespace PHP.Sales.Web.Controllers
         {
             if (id == null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                return RedirectToAction("Index");
             }
             using (var ctx = new SalesDbContext())
             {

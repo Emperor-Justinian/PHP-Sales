@@ -26,12 +26,5 @@ namespace PHP.Sales.DataAccess
 
             base.OnModelCreating(modelBuilder);
         }
-
-        //still being worked on
-        public override int SaveChanges()
-        {
-
-            return base.SaveChanges();
-        }
     }
 }
