@@ -11,10 +11,11 @@ namespace PHP.Sales.Core.Models.System
          */
         public Guid TransactionID { get; set; }
         public virtual Transaction Transaction { get; set; }
-        
-        [Required(ErrorMessage = "A product name is required")]
+
+        [Required(ErrorMessage = "A product ID is required")]
         [DisplayName("Product ID")]
-        public string ProductID { get; set; }
+        public Guid ProductID { get; set; }
+        public virtual Product Product { get; set; }
 
         [Required(ErrorMessage = "A product name is required")]
         [DisplayName("Name")]
@@ -22,7 +23,7 @@ namespace PHP.Sales.Core.Models.System
 
         [Required(ErrorMessage = "A Quantity is required")]
         [DisplayFormat(DataFormatString = "{0:F2}", ApplyFormatInEditMode = true)]
-        [DisplayName("Quanity")]
+        [DisplayName("Quantity")]
         public decimal QTY { get; set; }
 
         [Required(ErrorMessage = "A price is required")]

@@ -60,13 +60,13 @@
                     @Html.DisplayFor(m => m.SalesList[i].GST)
                 </td>
                 <td></td>
-                <td>
-                    @if (Model.SalesList[i].GST == false)
+                <td style="text-align: right">
+                    $@if (Model.SalesList[i].GST == false)
                     {
-                            @(sale = Math.Round(Model.SalesList[i].QTY * Model.SalesList[i].Price, 2))
+                        @(sale = Math.Round(Model.SalesList[i].QTY * Model.SalesList[i].Price, 2))
                     } else
                     {
-                            @(sale = Math.Round(Model.SalesList[i].QTY * (Model.SalesList[i].Price * (decimal)1.1), 2))
+                        @(sale = Math.Round(Model.SalesList[i].QTY * (Model.SalesList[i].Price * (decimal)1.1), 2))
                     }
                     @{
                         total += sale;
@@ -80,10 +80,9 @@
         }
         <tr>
 
-            <td colspan="5"></td>
-            <td><b>Total Price: </b></td>
-            <td>
-               @(total)
+            <td colspan="6" style="text-align: right"><b>Total Price: </b></td>
+            <td style="text-align: right">
+               $@(total)
             </td>
             <td></td>
         </tr>

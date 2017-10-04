@@ -1,0 +1,58 @@
+﻿@model IEnumerable<PHP.Sales.Core.Models.System.Product>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Name)
+        </th>
+
+        <th style="text-align: right">
+            @Html.DisplayNameFor(model => model.QTY)
+        </th>
+        <th style="text-align: right">
+            @Html.DisplayNameFor(model => model.Price)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Discontinued)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Name)
+        </td>
+        <td style="text-align: right">
+            @Html.DisplayFor(modelItem => item.QTY)
+        </td>
+        <td style="text-align: right">
+            @Html.DisplayFor(modelItem => item.Price)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Discontinued)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.ID }) |
+            @Html.ActionLink("Details", "Details", new { id=item.ID })
+            @if (item.Discontinued == false)
+            {
+                @Html.Raw("| ")
+                @Html.ActionLink("Discontinue", "Delete", new { id = item.ID })
+            }
+            
+        </td>
+    </tr>
+}
+
+</table>

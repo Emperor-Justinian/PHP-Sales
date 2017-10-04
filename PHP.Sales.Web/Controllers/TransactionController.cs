@@ -6,11 +6,35 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 using PHP.Sales.Web.ViewModels;
+using System.Net;
 
 namespace PHP.Sales.Web.Controllers
 {
     public class TransactionController : Controller
     {
+        public IEnumerable<SelectListItem> GetProducts()
+        {
+            SalesDbContext ctx = new SalesDbContext();
+
+            var Products = ctx.Products.Select(x => new SelectListItem
+            {
+                Value = x.ID.ToString(),
+                Text = x.Name
+            });
+
+            return new SelectList(Products, "Value", "Text");
+        }
+
+        public ViewResult AddProduct()
+        {
+            var model = new ProductListViewModel()
+            {
+                Products = GetProducts()
+            };
+
+            return View("_ProductListSelector", model);
+        }
+
         // GET: Transaction
         /// <summary>
         /// Display the Transaction landing page
@@ -22,7 +46,7 @@ namespace PHP.Sales.Web.Controllers
 
             using (var ctx = new SalesDbContext())
             {
-                models = ctx.Transactions.ToList();
+                models = ctx.Transactions.OrderBy(x => x.SaleTime).ToList();
             }
 
             return View(models);
@@ -57,6 +81,14 @@ namespace PHP.Sales.Web.Controllers
 
                     foreach(Sale s in viewModel.SalesList)
                     {
+                        Decimal OldQTY = ctx.Products.Where(x => x.ID == s.ProductID).FirstOrDefault().QTY;
+                        Log l = new Log()
+                        {
+                            ProductID = s.ProductID,
+                            QTY = OldQTY - s.QTY
+                        };
+                        l.Update();
+                        ctx.Logs.Add(l);
                         s.Update();
                     }
 
@@ -105,11 +137,15 @@ namespace PHP.Sales.Web.Controllers
         /// </summary>
         /// <param name="id">Transaction ID</param>
         /// <returns>View with Sales data from the Transaction</returns>
-        public ActionResult Edit(Guid id)
+        public ActionResult Edit(Guid? id)
         {
+            if (id == null)
+            {
+                return RedirectToAction("Index");
+            }
             using (var ctx = new SalesDbContext())
             {
-                var txn = ctx.Transactions.Include("Sales").Where(t => t.ID.Equals(id)).FirstOrDefault();
+                var txn = ctx.Transactions.Include("Sales").Where(t => t.ID == id).FirstOrDefault();
 
                 if(txn != null)
                 {
@@ -135,11 +171,15 @@ namespace PHP.Sales.Web.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public ActionResult Read(Guid id)
+        public ActionResult Read(Guid? id)
         {
+            if (id == null)
+            {
+                return RedirectToAction("Index");
+            }
             using (var ctx = new SalesDbContext())
             {
-                var txn = ctx.Transactions.Include("Sales").Where(t => t.ID.Equals(id)).FirstOrDefault();
+                var txn = ctx.Transactions.Include("Sales").Where(t => t.ID == id).FirstOrDefault();
 
                 if (txn != null)
                 {
@@ -184,15 +224,25 @@ namespace PHP.Sales.Web.Controllers
                             if(oldSale == null)
                             {
                                 oldSale = new Sale();
-                                oldTransaction.Sales.Add(oldSale);
+                                oldTransaction.Sales.Add(oldSale); 
                                 oldTransaction.Update();
                             }
 
-                            oldSale.Name = item.Name;
+                            //oldSale.Name = item.Name;
                             oldSale.GST = item.GST;
                             oldSale.Price = item.Price;
                             oldSale.ProductID = item.ProductID;
+                            Decimal qtyChanged = oldSale.QTY - item.QTY;
                             oldSale.QTY = item.QTY;
+                            oldSale.Product.QTY += qtyChanged;
+                            Log l = new Log()
+                            {
+                                ProductID = oldSale.ProductID,
+                                QTY = qtyChanged
+                            };
+                            l.Update();
+                            ctx.Logs.Add(l);
+
 
                             oldSale.Update();
                         }
