@@ -9,19 +9,19 @@
 
     //CREATE CHART
     var chart = new LineChart();
-    chart.ComplexData.Labels.AddRange(new[] { "January", "Feburary", "March" });
+    chart.ComplexData.Labels.AddRange(new[] { "January", "Feburary", "March", "","","","" });
     chart.ComplexData.Datasets.AddRange(new List<ComplexDataset>
     {
         new ComplexDataset
         {
-            Data = new List<double> {102, 60, 20},
+            Data = new List<double> {102, 60, 20, 17, 25, 78, 10},
             Label = "Stock",
             StrokeColor = "rgba(255,0,0,0)",
             FillColor = "rgba(255,0,0,0.5)"
         },
         new ComplexDataset
         {
-            Data = new List<double> {62, 32, 10},
+            Data = new List<double> {62, 32, 10, 0, 10, 28, 10},
             Label = "Sales",
             StrokeColor = "rgba(0,0,0,0)",
             FillColor = "rgba(0,0,0,0.5)"
@@ -67,11 +67,17 @@
             @Html.DisplayFor(model => model.End)
         </dd>
     </dl>
+</div>
+<div class="row">
+    <div class="col-sm-6">
 
-    @*DISPLAY CHART*@
+    </div>
+    <div class="col-sm-6">
+        @*DISPLAY CHART*@
 
-    <canvas id="Chart"></canvas>
-    @Html.CreateChart("Chart", chart)
+        <canvas id="Chart" style="width: 100%"></canvas>
+        @Html.CreateChart("Chart", chart)
+    </div>
 </div>
 <p>
     @Html.ActionLink("Edit", "Edit", new { id = Model.ID }) |
