@@ -16,7 +16,9 @@ namespace PHP.Sales.Web.Controllers
         // GET: Log
         public ActionResult Index()
         {
-            using (var ctx = new SalesDbContext()) { return View(ctx.Products.ToList()); }
+            using (var ctx = new SalesDbContext()) {
+                return View(ctx.Logs.Include("Product").OrderBy(x => x.TimeStamp).ToList());
+            }
         }
     }
 }

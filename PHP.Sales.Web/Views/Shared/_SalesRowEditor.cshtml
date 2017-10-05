@@ -8,10 +8,7 @@
 
 <div id="editorRows">
     <div>
-        @Html.TextBox(String.Concat("SalesList[", value, "].ProductID"), Model.ProductID)
-    </div>
-    <div>
-        @Html.TextBox(String.Concat("SalesList[", value, "].Name"), Model.Name)
+        @Html.Action("AddProduct", new { selected = Model.ProductID, row = value })
     </div>
     <div>
         @Html.TextBox(String.Concat("SalesList[", value, "].QTY"), Model.QTY)

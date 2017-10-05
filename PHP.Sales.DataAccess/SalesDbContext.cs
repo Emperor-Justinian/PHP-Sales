@@ -9,8 +9,8 @@ namespace PHP.Sales.DataAccess
         public SalesDbContext() 
             :base("sales.db")
         {
-            Configuration.LazyLoadingEnabled = false;
-            Configuration.ProxyCreationEnabled = false;
+            Configuration.LazyLoadingEnabled = true;
+            Configuration.ProxyCreationEnabled = true;
         }
 
         public DbSet<Transaction> Transactions { get; set; }
@@ -25,13 +25,6 @@ namespace PHP.Sales.DataAccess
             modelBuilder.Configurations.Add(new ProductConfiguration());
 
             base.OnModelCreating(modelBuilder);
-        }
-
-        //still being worked on
-        public override int SaveChanges()
-        {
-
-            return base.SaveChanges();
         }
     }
 }

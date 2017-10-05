@@ -188,6 +188,10 @@
       <Project>{3C32233E-4E0D-4634-B921-C9FA87D4AD6A}</Project>
       <Name>PHP.Sales.DataAccess</Name>
     </ProjectReference>
+    <ProjectReference Include="..\PHP.Sales.Logic\PHP.Sales.Logic.csproj">
+      <Project>{885114D6-3503-444D-9FD8-25163B9B5AA5}</Project>
+      <Name>PHP.Sales.Logic</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
