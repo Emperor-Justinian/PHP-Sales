@@ -259,14 +259,15 @@ namespace PHP.Sales.Web.Controllers
                                 oldSale.Product.QTY += oldSale.QTY;
                                 oldSale.Product.Update();
 
-                                ProductLog.GenerateLog(ctx, item.ProductID, oldSale.QTY);
+                                ProductLog.GenerateLog(ctx, item.ProductID, oldSale.QTY); //FIX THIS!!
 
                                 //DETUCT ALL OF NEW
+                                item.Product = ctx.Products.Where(z => z.ID == item.ProductID).FirstOrDefault();
                                 oldSale.Product = item.Product;
                                 oldSale.Product.QTY -= item.QTY;
                                 oldSale.Product.Update();
 
-                                ProductLog.GenerateLog(ctx, item.ProductID, -item.QTY);
+                                ProductLog.GenerateLog(ctx, item.ProductID, -item.QTY); //FIX THIS!
                             }
 
                             oldSale.GST = item.GST;

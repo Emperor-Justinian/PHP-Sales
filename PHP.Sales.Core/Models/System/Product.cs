@@ -8,7 +8,7 @@ namespace PHP.Sales.Core.Models.System
     {
 
         [Required(ErrorMessage = "A product name is required")]
-        [DisplayName("Name")]
+        [DisplayName("Product Name")]
         public string Name { get; set; }
 
         [Required(ErrorMessage = "A quantity is required")]

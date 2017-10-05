@@ -1,0 +1,79 @@
+﻿@using Chart.Mvc.ComplexChart
+@using Chart.Mvc.Extensions
+
+@model PHP.Sales.Core.Models.System.Report
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    //CREATE CHART
+    var chart = new LineChart();
+    chart.ComplexData.Labels.AddRange(new[] { "January", "Feburary", "March" });
+    chart.ComplexData.Datasets.AddRange(new List<ComplexDataset>
+    {
+        new ComplexDataset
+        {
+            Data = new List<double> {102, 60, 20},
+            Label = "Stock",
+            StrokeColor = "rgba(255,0,0,0)",
+            FillColor = "rgba(255,0,0,0.5)"
+        },
+        new ComplexDataset
+        {
+            Data = new List<double> {62, 32, 10},
+            Label = "Sales",
+            StrokeColor = "rgba(0,0,0,0)",
+            FillColor = "rgba(0,0,0,0.5)"
+        },
+    });
+}
+<script src="~/Scripts/Chart.js"></script>
+<h2>Details</h2>
+
+<div>
+    <h4>Report</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Product.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Product.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Start)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Start)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.End)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.End)
+        </dd>
+    </dl>
+
+    @*DISPLAY CHART*@
+
+    <canvas id="Chart"></canvas>
+    @Html.CreateChart("Chart", chart)
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.ID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

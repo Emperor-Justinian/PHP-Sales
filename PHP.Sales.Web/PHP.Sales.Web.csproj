@@ -167,11 +167,11 @@
     <Content Include="Views\Transaction\Read.cshtml" />
     <Content Include="Views\Transaction\Return.cshtml" />
     <Content Include="Views\Shared\_SalesRowEditor.cshtml" />
-    <Content Include="Views\Reports\Create.cshtml" />
-    <Content Include="Views\Reports\Delete.cshtml" />
-    <Content Include="Views\Reports\Details.cshtml" />
-    <Content Include="Views\Reports\Edit.cshtml" />
-    <Content Include="Views\Reports\Index.cshtml" />
+    <Content Include="Views\Report\Create.cshtml" />
+    <Content Include="Views\Report\Delete.cshtml" />
+    <Content Include="Views\Report\Details.cshtml" />
+    <Content Include="Views\Report\Edit.cshtml" />
+    <Content Include="Views\Report\Index.cshtml" />
     <Content Include="Views\Product\Create.cshtml" />
     <Content Include="Views\Product\Delete.cshtml" />
     <Content Include="Views\Product\Details.cshtml" />
@@ -180,6 +180,7 @@
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Log\Index.cshtml" />
     <Content Include="Views\Shared\_ProductListSelector.cshtml" />
+    <Content Include="Views\Shared\_ReportProductListSelector.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -189,6 +190,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Models\" />
+    <Folder Include="Views\_SaleRowEditor\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\PHP.Sales.Core\PHP.Sales.Core.csproj">

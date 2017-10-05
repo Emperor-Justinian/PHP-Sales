@@ -8,17 +8,47 @@ using System.Web;
 using System.Web.Mvc;
 using PHP.Sales.Core.Models.System;
 using PHP.Sales.DataAccess;
+using PHP.Sales.Core.Extensions;
+using PHP.Sales.Web.ViewModels;
 
 namespace PHP.Sales.Web.Controllers
 {
     public class ReportController : Controller
     {
-        private SalesDbContext db = new SalesDbContext();
+        public IEnumerable<SelectListItem> GetProducts(Guid? selected)
+        {
+            SalesDbContext ctx = new SalesDbContext();
 
+            var Products = ctx.Products.Select(x => new SelectListItem
+            {
+                Value = x.ID.ToString(),
+                Text = x.Name
+            });
+
+            return new SelectList(Products, "Value", "Text", selected);
+        }
+
+        public ViewResult AddProduct(Guid? selected)
+        {
+            var model = new ProductListViewModel()
+            {
+                Products = GetProducts(selected)
+            };
+
+            if (selected != null)
+            {
+                model.ProductId = (Guid)selected;
+            }
+
+            return View("_ProductListSelector", model);
+        }
         // GET: Reports
         public ActionResult Index()
         {
-            return View(db.Reports.ToList());
+            using (var ctx = new SalesDbContext())
+            {
+                return View(ctx.Reports.ToList());
+            }
         }
 
         // GET: Reports/Details/5
@@ -26,14 +56,18 @@ namespace PHP.Sales.Web.Controllers
         {
             if (id == null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                return RedirectToAction("Index");
             }
-            Report report = db.Reports.Find(id);
-            if (report == null)
+            using (var ctx = new SalesDbContext())
             {
-                return HttpNotFound();
+                Report report = ctx.Reports.Find(id);
+                if (report == null)
+                {
+                    return HttpNotFound();
+                }
+                report.Product = ctx.Products.Where(x => x.ID == report.ProductID).FirstOrDefault();
+                return View(report);
             }
-            return View(report);
         }
 
         // GET: Reports/Create
@@ -47,14 +81,17 @@ namespace PHP.Sales.Web.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ID,Name,Start,End")] Report report)
+        public ActionResult Create(Report report)
         {
             if (ModelState.IsValid)
             {
-                report.ID = Guid.NewGuid();
-                db.Reports.Add(report);
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                using (var ctx = new SalesDbContext())
+                {
+                    report.Update();
+                    ctx.Reports.Add(report);
+                    ctx.SaveChanges();
+                    return RedirectToAction("Index");
+                }
             }
 
             return View(report);
@@ -67,12 +104,15 @@ namespace PHP.Sales.Web.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Report report = db.Reports.Find(id);
-            if (report == null)
+            using (var ctx = new SalesDbContext())
             {
-                return HttpNotFound();
+                Report report = ctx.Reports.Find(id);
+                if (report == null)
+                {
+                    return HttpNotFound();
+                }
+                return View(report);
             }
-            return View(report);
         }
 
         // POST: Reports/Edit/5
@@ -80,13 +120,16 @@ namespace PHP.Sales.Web.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ID,Name,Start,End")] Report report)
+        public ActionResult Edit(Report report)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(report).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                using (var ctx = new SalesDbContext())
+                {
+                    ctx.Entry(report).State = EntityState.Modified;
+                    ctx.SaveChanges();
+                    return RedirectToAction("Index");
+                }
             }
             return View(report);
         }
@@ -98,12 +141,15 @@ namespace PHP.Sales.Web.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Report report = db.Reports.Find(id);
-            if (report == null)
+            using (var ctx = new SalesDbContext())
             {
-                return HttpNotFound();
+                Report report = ctx.Reports.Find(id);
+                if (report == null)
+                {
+                    return HttpNotFound();
+                }
+                return View(report);
             }
-            return View(report);
         }
 
         // POST: Reports/Delete/5
@@ -111,19 +157,25 @@ namespace PHP.Sales.Web.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(Guid id)
         {
-            Report report = db.Reports.Find(id);
-            db.Reports.Remove(report);
-            db.SaveChanges();
-            return RedirectToAction("Index");
+            using (var ctx = new SalesDbContext())
+            {
+                Report report = ctx.Reports.Find(id);
+                ctx.Reports.Remove(report);
+                ctx.SaveChanges();
+                return RedirectToAction("Index");
+            }
         }
 
         protected override void Dispose(bool disposing)
         {
-            if (disposing)
+            using (var ctx = new SalesDbContext())
             {
-                db.Dispose();
+                if (disposing)
+                {
+                    ctx.Dispose();
+                }
+                base.Dispose(disposing);
             }
-            base.Dispose(disposing);
         }
     }
 }
