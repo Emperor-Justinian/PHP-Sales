@@ -17,9 +17,6 @@
     <table class="table">
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.SalesList.First().ProductID)
-            </th>
-            <th>
                 @Html.DisplayNameFor(model => model.SalesList.First().Name)
             </th>
             <th>
@@ -45,9 +42,6 @@
             <tr>
                 <td>
                     @Html.HiddenFor(m => m.SalesList[i].ID)
-                    @Html.DisplayFor(m => m.SalesList[i].ProductID)
-                </td>
-                <td>
                     @Html.DisplayFor(m => m.SalesList[i].Name)
                 </td>
                 <td>

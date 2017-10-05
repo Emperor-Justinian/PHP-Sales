@@ -1,4 +1,4 @@
-﻿﻿﻿using PHP.Sales.Core.Models.System;
+﻿﻿using PHP.Sales.Core.Models.System;
 using PHP.Sales.DataAccess;
 using PHP.Sales.Core.Extensions;
 using System;
@@ -31,7 +31,7 @@ namespace PHP.Sales.Web.Controllers
             var model = new ProductListViewModel()
             {
                 Products = GetProducts(selected),
-                row = row
+                Row = row
             };
 
             if(selected != null)
@@ -230,6 +230,7 @@ namespace PHP.Sales.Web.Controllers
                         {
                             var oldSale = oldTransaction.Sales.Where(x => x.ID == item.ID).FirstOrDefault();
 
+                            //ADD NEW SALE
                             if(oldSale == null)
                             {
                                 oldSale = new Sale();
@@ -237,22 +238,44 @@ namespace PHP.Sales.Web.Controllers
                                 oldTransaction.Update();
                             }
                             
+                            //OVERWRITE SALE
+                            
+                            //CHECK IF SAME PRODUCT
+                            if(oldSale.ProductID == item.ProductID)
+                            {
+                                //LOG CHANGE IN PRODUCT COUNT
+                                oldSale.Product = ctx.Products.Where(y => y.ID == item.ProductID).FirstOrDefault();
+                                Decimal qtyChanged = oldSale.QTY - item.QTY;
+
+                                oldSale.Product.QTY += qtyChanged;
+                                oldSale.Product.Update();
+
+                                ProductLog.GenerateLog(ctx, item.ProductID, qtyChanged);
+                            } else
+                            {
+                                oldSale.Product = ctx.Products.Where(y => y.ID == item.ProductID).FirstOrDefault();
+                                //RETURN ALL OF OLD
+
+                                oldSale.Product.QTY += oldSale.QTY;
+                                oldSale.Product.Update();
+
+                                ProductLog.GenerateLog(ctx, item.ProductID, oldSale.QTY);
+
+                                //DETUCT ALL OF NEW
+                                oldSale.Product = item.Product;
+                                oldSale.Product.QTY -= item.QTY;
+                                oldSale.Product.Update();
+
+                                ProductLog.GenerateLog(ctx, item.ProductID, -item.QTY);
+                            }
+
                             oldSale.GST = item.GST;
                             oldSale.Price = item.Price;
                             oldSale.ProductID = item.ProductID;
-                            oldSale.Product = ctx.Products.Where(y => y.ID == item.ProductID).FirstOrDefault();
-                            Decimal qtyChanged = oldSale.QTY - item.QTY;
-
-                            //@TODO: IF CHANGE IN PRODUCT, ALTER BOTH PRODUCTS QTYS
 
                             oldSale.QTY = item.QTY;
 
                             oldSale.Update();
-
-                            oldSale.Product.QTY += qtyChanged;
-                            oldSale.Product.Update();
-
-                            ProductLog.GenerateLog(ctx, item.ProductID, qtyChanged);
                         }
 
                         ctx.SaveChanges();

@@ -11,6 +11,6 @@ namespace PHP.Sales.Web.ViewModels
     {
         public Guid ProductId { get; set; }
         public IEnumerable<SelectListItem> Products { get; set; }
-        public int row { get; set; }
+        public int Row { get; set; }
     }
 }
