@@ -40,7 +40,7 @@ namespace PHP.Sales.Web.Controllers
                 model.ProductId = (Guid)selected;
             }
 
-            return View("_ProductListSelector", model);
+            return View("_ReportProductListSelector", model);
         }
         // GET: Reports
         public ActionResult Index()
