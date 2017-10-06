@@ -102,16 +102,15 @@ namespace PHP.Sales.Web.Controllers
             {
                 if (ModelState.IsValid)
                 {
+                    var oldProduct = ctx.Products.Where(x => x.ID == product.ID).FirstOrDefault();
+
+                    oldProduct.Name = product.Name;
+                    oldProduct.QTY = product.QTY;
+                    oldProduct.LowWarn = product.LowWarn;
+                    oldProduct.Price = product.Price;
+                    oldProduct.Discontinued = product.Discontinued;
+
                     ProductLog.GenerateLog(ctx, product.ID, -product.QTY);
-                    ctx.Entry(product).State = EntityState.Modified;
-                    /*Decimal OldQTY = ctx.Products.Where(x => x.ID == product.ID).FirstOrDefault().QTY;
-                    Log l = new Log()
-                    {
-                        ProductID = product.ID,
-                        QTY = OldQTY - product.QTY
-                    };
-                    l.Update();
-                    ctx.Logs.Add(l);*/
                     ctx.SaveChanges();                    
                     return RedirectToAction("Index");
                 }
