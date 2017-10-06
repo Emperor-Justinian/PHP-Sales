@@ -190,7 +190,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Models\" />
-    <Folder Include="Views\_SaleRowEditor\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\PHP.Sales.Core\PHP.Sales.Core.csproj">

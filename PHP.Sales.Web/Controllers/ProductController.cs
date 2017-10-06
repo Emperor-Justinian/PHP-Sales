@@ -12,8 +12,6 @@ namespace PHP.Sales.Web.Controllers
 {
     public class ProductController : Controller
     {
-        //private SalesctxContext ctx = new SalesctxContext();
-
         // GET: Products
         public ActionResult Index()
         {
@@ -58,13 +56,7 @@ namespace PHP.Sales.Web.Controllers
                     product.ID = Guid.NewGuid();
                     ctx.Products.Add(product);
                     ProductLog.GenerateLog(ctx, product.ID, product.QTY);
-                    /*Log l = new Log()
-                    {
-                        ProductID = product.ID,
-                        QTY = product.QTY
-                    };
-                    l.Update();
-                    ctx.Logs.Add(l);*/
+
                     ctx.SaveChanges();
                     return RedirectToAction("Index");
                 }

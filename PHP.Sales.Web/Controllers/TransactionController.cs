@@ -298,7 +298,7 @@ namespace PHP.Sales.Web.Controllers
         /// </summary>
         /// <param name="sale"></param>
         /// <returns>A row form</returns>
-        public ViewResult TransactionEditorRow(List<Sale> sale)
+        public ViewResult _SalesRowEditor(Sale sale)
         {
             return View(sale);
         }
@@ -307,12 +307,9 @@ namespace PHP.Sales.Web.Controllers
         /// Creates a new empty row for the Creator Form
         /// </summary>
         /// <returns>An empty row</returns>
-        public ViewResult BlankRowEditor()
+        public ViewResult BlankRowEditor(int? value)
         {
-            return View("TransactionEditorRow", new List<Sale>()
-            {
-                new Sale()
-            });
+            return View("_SalesRowEditor", new Sale());
         }
     }
 }
