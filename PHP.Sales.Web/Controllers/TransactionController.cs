@@ -96,7 +96,7 @@ namespace PHP.Sales.Web.Controllers
                         l.Update();
                         ctx.Logs.Add(l);*/
 
-                        ProductLog.GenerateLog(ctx, s.ProductID, -s.QTY);
+                        ProductLog.GenerateSaleLog(ctx, s.ProductID, s.QTY);
                         s.Update();
                     }
 
@@ -249,7 +249,7 @@ namespace PHP.Sales.Web.Controllers
                                 oldSale.Product.QTY += qtyChanged;
                                 oldSale.Product.Update();
 
-                                ProductLog.GenerateLog(ctx, item.ProductID, qtyChanged);
+                                ProductLog.GenerateSaleLog(ctx, item.ProductID, qtyChanged);
                             } else
                             {
                                 oldSale.Product = ctx.Products.Where(y => y.ID == item.ProductID).FirstOrDefault();
@@ -258,7 +258,7 @@ namespace PHP.Sales.Web.Controllers
                                 oldSale.Product.QTY += oldSale.QTY;
                                 oldSale.Product.Update();
 
-                                ProductLog.GenerateLog(ctx, item.ProductID, oldSale.QTY); //FIX THIS!!
+                                ProductLog.GenerateSaleLog(ctx, item.ProductID, -oldSale.QTY); //FIX THIS!!
 
                                 //DETUCT ALL OF NEW
                                 item.Product = ctx.Products.Where(z => z.ID == item.ProductID).FirstOrDefault();
@@ -266,7 +266,7 @@ namespace PHP.Sales.Web.Controllers
                                 oldSale.Product.QTY -= item.QTY;
                                 oldSale.Product.Update();
 
-                                ProductLog.GenerateLog(ctx, item.ProductID, -item.QTY); //FIX THIS!
+                                ProductLog.GenerateSaleLog(ctx, item.ProductID, item.QTY); //FIX THIS!
                             }
 
                             oldSale.GST = item.GST;
