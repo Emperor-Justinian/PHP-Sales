@@ -70,8 +70,16 @@ namespace PHP.Sales.Web.Controllers
                 chart.Report.Product = ctx.Products.Where(x => x.ID == chart.Report.ProductID).FirstOrDefault();
 
                 //GET DATA
-                ctx.Logs.Where(x => x.ProductID == chart.Report.ProductID).Where(x => x.TimeStamp >= chart.Report.Start).Where(x => x.TimeStamp < chart.Report.End).ToList();
-                ctx.Sales.Where(x => x.ProductID == chart.Report.ProductID).Where(x => x.Transaction.SaleTime >= chart.Report.Start).Where(x => x.Transaction.SaleTime < chart.Report.End).ToList();
+                var data1 = ctx.Logs
+                                .Where(x => x.ProductID == chart.Report.ProductID)
+                                .Where(x => x.TimeStamp >= chart.Report.Start.Date)
+                                .Where(x => x.TimeStamp <= chart.Report.End.Date)
+                                .ToList();
+                var data2 = ctx.Sales
+                                .Where(x => x.ProductID == chart.Report.ProductID)
+                                .Where(x => x.Transaction.SaleTime >= chart.Report.Start.Date)
+                                .Where(x => x.Transaction.SaleTime <= chart.Report.End.Date)
+                                .ToList();
 
                 return View(chart);
             }
