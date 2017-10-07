@@ -8,18 +8,16 @@ namespace PHP.Sales.Logic
 {
     public static class ProductLog
     {
-        public static void GenerateProductLog(SalesDbContext ctx, Guid PID, decimal newQTY)
+        public static void GenerateProductLog(SalesDbContext ctx, Product product, decimal newQTY)
         {
-            Product oldProduct = ctx.Products.Where(x => x.ID == PID).FirstOrDefault();
-
-            decimal oldQTY = (oldProduct != null) ? oldProduct.QTY : 0;
+            decimal oldQTY = (product != null) ? product.QTY : 0;
             decimal qtyChanged = oldQTY + newQTY;
 
             if (qtyChanged != 0 || newQTY != 0)
             {
                 Log l = new Log()
                 {
-                    ProductID = PID,
+                    ProductID = product.ID,
                     QTY = qtyChanged
                 };
                 l.Update();
@@ -27,15 +25,13 @@ namespace PHP.Sales.Logic
             }
         }
 
-        public static void GenerateSaleLog(SalesDbContext ctx, Guid PID, decimal qtyChanged)
+        public static void GenerateSaleLog(SalesDbContext ctx, Product product, decimal qtyChanged)
         {
-            Product oldProduct = ctx.Products.Where(x => x.ID == PID).FirstOrDefault();
-
             if (qtyChanged != 0)
             {
                 Log l = new Log()
                 {
-                    ProductID = PID,
+                    ProductID = product.ID,
                     QTY = -qtyChanged
                 };
                 l.Update();

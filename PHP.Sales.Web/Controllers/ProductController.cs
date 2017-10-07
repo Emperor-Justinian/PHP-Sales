@@ -53,7 +53,7 @@ namespace PHP.Sales.Web.Controllers
                 {
                     product.ID = Guid.NewGuid();
                     ctx.Products.Add(product);
-                    ProductLog.GenerateProductLog(ctx, product.ID, product.QTY);
+                    ProductLog.GenerateProductLog(ctx, product, product.QTY);
 
                     ctx.SaveChanges();
                     return RedirectToAction("Index");
@@ -100,7 +100,7 @@ namespace PHP.Sales.Web.Controllers
                     oldProduct.Price = product.Price;
                     oldProduct.Discontinued = product.Discontinued;
 
-                    ProductLog.GenerateProductLog(ctx, product.ID, -product.QTY);
+                    ProductLog.GenerateProductLog(ctx, product, -product.QTY);
                     ctx.SaveChanges();                    
                     return RedirectToAction("Index");
                 }

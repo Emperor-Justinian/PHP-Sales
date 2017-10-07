@@ -93,7 +93,7 @@ namespace PHP.Sales.GenerateDatabase
                 foreach(Product p in prods)
                 {
                     p.Update();
-                    ProductLog.GenerateProductLog(ctx, p.ID, p.QTY);
+                    ProductLog.GenerateProductLog(ctx, p, p.QTY);
                 }
                 ctx.Products.AddRange(prods);
 
@@ -414,7 +414,7 @@ namespace PHP.Sales.GenerateDatabase
 
                 foreach(Sale s in tran7.Sales)
                 {
-                    ProductLog.GenerateSaleLog(ctx, s.ProductID, s.QTY);
+                    ProductLog.GenerateSaleLog(ctx, s.Product, s.QTY);
                 }
                 
                 tran7.Update();
@@ -432,7 +432,7 @@ namespace PHP.Sales.GenerateDatabase
 
                 foreach (Sale s in tran6.Sales)
                 {
-                    ProductLog.GenerateSaleLog(ctx, s.ProductID, s.QTY);
+                    ProductLog.GenerateSaleLog(ctx, s.Product, s.QTY);
                 }
 
                 tran6.Update();
@@ -466,7 +466,7 @@ namespace PHP.Sales.GenerateDatabase
 
                 foreach (Sale s in tran5.Sales)
                 {
-                    ProductLog.GenerateSaleLog(ctx, s.ProductID, s.QTY);
+                    ProductLog.GenerateSaleLog(ctx, s.Product, s.QTY);
                 }
 
                 tran5.Update();
@@ -484,7 +484,7 @@ namespace PHP.Sales.GenerateDatabase
 
                 foreach (Sale s in tran4.Sales)
                 {
-                    ProductLog.GenerateSaleLog(ctx, s.ProductID, s.QTY);
+                    ProductLog.GenerateSaleLog(ctx, s.Product, s.QTY);
                 }
 
                 tran4.Update();
@@ -502,7 +502,7 @@ namespace PHP.Sales.GenerateDatabase
 
                 foreach (Sale s in tran3.Sales)
                 {
-                    ProductLog.GenerateSaleLog(ctx, s.ProductID, s.QTY);
+                    ProductLog.GenerateSaleLog(ctx, s.Product, s.QTY);
                 }
 
                 tran3.Update();
@@ -518,7 +518,7 @@ namespace PHP.Sales.GenerateDatabase
 
                 foreach (Sale s in tran2.Sales)
                 {
-                    ProductLog.GenerateSaleLog(ctx, s.ProductID, s.QTY);
+                    ProductLog.GenerateSaleLog(ctx, s.Product, s.QTY);
                 }
 
                 tran2.Update();
@@ -532,7 +532,7 @@ namespace PHP.Sales.GenerateDatabase
 
                 foreach (Sale s in tran1.Sales)
                 {
-                    ProductLog.GenerateSaleLog(ctx, s.ProductID, s.QTY);
+                    ProductLog.GenerateSaleLog(ctx, s.Product, s.QTY);
                 }
 
                 tran1.Update();
@@ -544,7 +544,6 @@ namespace PHP.Sales.GenerateDatabase
                 {
                     Name = "Test Report",
                     Product = prods[0],
-                    ProductID = prods[0].ID,
                     Start = DateTime.Now,
                     End = DateTime.Now.AddDays(1)
                 };
