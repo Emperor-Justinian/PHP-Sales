@@ -1,6 +1,6 @@
-﻿using PHP.Sales.Core.Models.System;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using PHP.Sales.Core.Models.System;
 
 namespace PHP.Sales.Web.ViewModels
 {

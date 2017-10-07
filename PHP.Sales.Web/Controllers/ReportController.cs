@@ -4,7 +4,6 @@ using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
-using System.Web;
 using System.Web.Mvc;
 using PHP.Sales.Core.Models.System;
 using PHP.Sales.DataAccess;
@@ -60,13 +59,21 @@ namespace PHP.Sales.Web.Controllers
             }
             using (var ctx = new SalesDbContext())
             {
-                Report report = ctx.Reports.Find(id);
-                if (report == null)
+                ChartViewModel chart = new ChartViewModel()
+                {
+                    Report = ctx.Reports.Find(id)
+                };
+                if (chart.Report == null)
                 {
                     return HttpNotFound();
                 }
-                report.Product = ctx.Products.Where(x => x.ID == report.ProductID).FirstOrDefault();
-                return View(report);
+                chart.Report.Product = ctx.Products.Where(x => x.ID == chart.Report.ProductID).FirstOrDefault();
+
+                //GET DATA
+                ctx.Logs.Where(x => x.TimeStamp >= chart.Report.Start).Where(x => x.TimeStamp < chart.Report.End).ToList();
+                ctx.Sales.Where(x => x.Transaction.SaleTime >= chart.Report.Start).Where(x => x.Transaction.SaleTime < chart.Report.End).ToList();
+
+                return View(chart);
             }
         }
 

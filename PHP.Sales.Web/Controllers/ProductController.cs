@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using System.Web.Mvc;
 using PHP.Sales.Core.Models.System;
-using PHP.Sales.Core.Extensions;
 using PHP.Sales.DataAccess;
 using PHP.Sales.Logic;
 

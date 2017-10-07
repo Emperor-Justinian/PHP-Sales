@@ -1,12 +1,11 @@
-﻿﻿using PHP.Sales.Core.Models.System;
-using PHP.Sales.DataAccess;
-using PHP.Sales.Core.Extensions;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
+using PHP.Sales.Core.Models.System;
+using PHP.Sales.DataAccess;
+using PHP.Sales.Core.Extensions;
 using PHP.Sales.Web.ViewModels;
-using System.Net;
 using PHP.Sales.Logic;
 
 namespace PHP.Sales.Web.Controllers
