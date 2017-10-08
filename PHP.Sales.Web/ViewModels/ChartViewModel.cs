@@ -6,14 +6,19 @@ namespace PHP.Sales.Web.ViewModels
 {
     public class ChartViewModel
     {
-        public class DataSet
+        public ChartViewModel()
+        {
+            Data = new Dictionary<DateTime, StockSaleSet>();
+        }
+
+        public class StockSaleSet
         {
             public decimal Stock { get; set; }
             public decimal Sale { get; set; }
         }
 
         public Report Report { get; set; }
-        public IDictionary<DateTime, DataSet> Data { get; set; }
+        public Dictionary<DateTime, StockSaleSet> Data { get; set; }
 
         /*
          * DateTime     => Stock, Sale

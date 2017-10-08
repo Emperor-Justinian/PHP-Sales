@@ -548,6 +548,8 @@ namespace PHP.Sales.GenerateDatabase
                     End = DateTime.Now.AddDays(1)
                 };
 
+                report1.Update();
+
                 ctx.Reports.Add(report1);
                 
                 // Save Transaction Database

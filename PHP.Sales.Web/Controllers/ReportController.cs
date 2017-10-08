@@ -9,6 +9,7 @@ using PHP.Sales.Core.Models.System;
 using PHP.Sales.DataAccess;
 using PHP.Sales.Core.Extensions;
 using PHP.Sales.Web.ViewModels;
+using static PHP.Sales.Web.ViewModels.ChartViewModel;
 
 namespace PHP.Sales.Web.Controllers
 {
@@ -80,6 +81,32 @@ namespace PHP.Sales.Web.Controllers
                                 .Where(x => x.Transaction.SaleTime >= chart.Report.Start.Date)
                                 .Where(x => x.Transaction.SaleTime <= chart.Report.End.Date)
                                 .ToList();
+                DateTime check = chart.Report.Start.Date;
+                do
+                {
+                    decimal stock = 0;
+                    decimal sale = 0;
+
+                    var dayResult1 = data1.Where(X => X.TimeStamp.Date == check).ToList();
+                    foreach (Log l in dayResult1)
+                    {
+                        stock += l.QTY;
+                    }
+                    var dayResult2 = data2.Where(X => X.Transaction.SaleTime.Date == check).ToList();
+                    foreach (var s in dayResult2)
+                    {
+                        sale += s.QTY;
+                    }
+
+                    StockSaleSet daySet = new StockSaleSet()
+                    {
+                        Sale = sale,
+                        Stock = stock
+                    };
+
+                    chart.Data.Add(check, daySet);
+                    check = check.AddDays(1);
+                } while (check <= chart.Report.End.Date);
 
                 return View(chart);
             }

@@ -4,24 +4,27 @@
 @model PHP.Sales.Web.ViewModels.ChartViewModel
 
 @{
-    ViewBag.Title = "Details";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+                ViewBag.Title = "Details";
+                Layout = "~/Views/Shared/_Layout.cshtml";
 
-    //CREATE CHART
-    var chart = new LineChart();
-    chart.ComplexData.Labels.AddRange(new[] { "January", "Feburary", "March", "","","","" });
-    chart.ComplexData.Datasets.AddRange(new List<ComplexDataset>
+                //CREATE CHART
+                var chart = new LineChart();
+                //chart.ComplexData.Labels.AddRange(new[] { "January", "Feburary", "March", "", "", "", "" });
+                chart.ComplexData.Labels.AddRange(Model.Data.Select(x => x.Key.Date.ToString("dd/MM/yyyy")).ToArray());
+                chart.ComplexData.Datasets.AddRange(new List<ComplexDataset>
     {
         new ComplexDataset
         {
-            Data = new List<double> {102, 60, 20, 17, 25, 78, 10},
+            //Data = new List<double> {102, 60, 20, 17, 25, 78, 10},
+            Data = Model.Data.Select(x => (double)x.Value.Stock).ToList(),
             Label = "Stock",
             StrokeColor = "rgba(255,0,0,0)",
             FillColor = "rgba(255,0,0,0.5)"
         },
         new ComplexDataset
         {
-            Data = new List<double> {62, 32, 10, 0, 10, 28, 10},
+            //Data = new List<double> {62, 32, 10, 0, 10, 28, 10},
+            Data = Model.Data.Select(x => (double)x.Value.Sale).ToList(),
             Label = "Sales",
             StrokeColor = "rgba(0,0,0,0)",
             FillColor = "rgba(0,0,0,0.5)"
