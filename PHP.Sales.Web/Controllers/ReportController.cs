@@ -68,7 +68,7 @@ namespace PHP.Sales.Web.Controllers
                 {
                     return HttpNotFound();
                 }
-                chart.Report.Product = ctx.Products.Where(x => x.ID == chart.Report.ProductID).FirstOrDefault();
+                chart.Report.Product = ctx.Products.FirstOrDefault(x => x.ID == chart.Report.ProductID);
 
                 //GET DATA
                 var data1 = ctx.Logs
@@ -84,19 +84,10 @@ namespace PHP.Sales.Web.Controllers
                 DateTime check = chart.Report.Start.Date;
                 do
                 {
-                    decimal stock = 0;
-                    decimal sale = 0;
-
-                    var dayResult1 = data1.Where(X => X.TimeStamp.Date == check).ToList();
-                    foreach (Log l in dayResult1)
-                    {
-                        stock += l.QTY;
-                    }
-                    var dayResult2 = data2.Where(X => X.Transaction.SaleTime.Date == check).ToList();
-                    foreach (var s in dayResult2)
-                    {
-                        sale += s.QTY;
-                    }
+                    //var dayResult1 = data1.Where(X => X.TimeStamp.Date == check).ToList();
+                    //var dayResult2 = data2.Where(X => X.Transaction.SaleTime.Date == check).ToList();
+                    decimal stock = data1.Where(X => X.TimeStamp.Date == check).Sum(l => l.QTY);
+                    decimal sale = data2.Where(X => X.Transaction.SaleTime.Date == check).Sum(s => s.QTY);
 
                     StockSaleSet daySet = new StockSaleSet()
                     {
