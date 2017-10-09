@@ -18,7 +18,7 @@ namespace PHP.Sales.DataAccess
         public DbSet<Product> Products { get; set; }
         public DbSet<Sale> Sales { get; set; }
         public DbSet<Log> Logs { get; set; }
-        public DbSet<Log> StockSnapshot { get; set; }
+        public DbSet<Stock> StockSnapshot { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {

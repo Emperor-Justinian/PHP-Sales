@@ -52,7 +52,7 @@ namespace PHP.Sales.Web.Controllers
 
             using (var ctx = new SalesDbContext())
             {
-                models = ctx.Transactions.OrderBy(x => x.SaleTime).ToList();
+                models = ctx.Transactions.OrderByDescending(x => x.SaleTime).ToList();
             }
 
             return View(models);

@@ -46,6 +46,8 @@
     <Compile Include="Extensions\TransactionExtensions.cs" />
     <Compile Include="Extensions\EntityExtensions.cs" />
     <Compile Include="Models\BaseEntity.cs" />
+    <Compile Include="Models\LogEntity.cs" />
+    <Compile Include="Models\System\StockSnapshot.cs" />
     <Compile Include="Models\System\Log.cs" />
     <Compile Include="Models\System\Product.cs" />
     <Compile Include="Models\System\Report.cs" />

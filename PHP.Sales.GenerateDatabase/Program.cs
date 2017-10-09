@@ -540,46 +540,119 @@ namespace PHP.Sales.GenerateDatabase
                 ctx.Transactions.Add(tran1);
 
                 //ADD REPORT
-                Report report1 = new Report()
-                {
-                    Name = "Test Report",
-                    Product = prods[0],
-                    Start = DateTime.Now,
-                    End = DateTime.Now.AddDays(1)
+                List<Report> reports = new List<Report>() {
+                    new Report()
+                    {
+                        Name = "Test Report",
+                        Product = prods[0],
+                        Start = DateTime.Now,
+                        End = DateTime.Now.AddDays(1)
+                    },
+                    new Report()
+                    {
+                        Name = "Test Weekly Report",
+                        Product = prods[2],
+                        Start = DateTime.Now.AddDays(-7),
+                        End = DateTime.Now.AddDays(-1)
+                    },
+                    new Report()
+                    {
+                        Name = "Test Monthly Report",
+                        Product = prods[2],
+                        Start = DateTime.Now.AddMonths(-1),
+                        End = DateTime.Now.AddDays(-1)
+                    }
                 };
 
-                report1.Update();
+                foreach (var r in reports)
+                    r.Update();
 
-                ctx.Reports.Add(report1);
+                ctx.Reports.AddRange(reports);
 
                 //ADD STOCK SNAPSHOT
 
-                List<Log> snapshots = new List<Log>() {
-                    new Log()
+                List<Stock> snapshots = new List<Stock>() {
+                    /*new Stock()
                     {
                         Product = prods[0],
                         TimeStamp = DateTime.Now.Date,
                         QTY = 30
                     },
-                    new Log()
+                    new Stock()
                     {
                         Product = prods[0],
                         TimeStamp = DateTime.Now.AddDays(-1).Date,
                         QTY = 37
                     },
-                    new Log()
+                    new Stock()
                     {
                         Product = prods[1],
                         TimeStamp = DateTime.Now.Date,
                         QTY = 38
                     },
-                    new Log()
+                    new Stock()
                     {
                         Product = prods[1],
                         TimeStamp = DateTime.Now.AddDays(-1).Date,
                         QTY = 42
-                    },
+                    },*/
                 };
+
+                DateTime check = DateTime.Now.AddDays(-40).Date;
+                Random rand = new Random();
+
+                do
+                {
+                    foreach (var p in prods)
+                    {
+                        Stock stock = new Stock()
+                        {
+                            Product = p,
+                            TimeStamp = check.Date,
+                            QTY = (decimal)rand.NextDouble() * rand.Next(150)
+                        };
+                        stock.Update();
+                        snapshots.Add(stock);
+
+                        int i = rand.Next(6);
+                        for (var j = 0; j < i; j++)
+                        {
+                            Transaction t = new Transaction()
+                            {
+                                PayMethod = (PaymentType)rand.Next(3),
+                            };
+
+                            int k = rand.Next(10);
+                            for (var l = 0; l < k; l++)
+                            {
+                                Sale s = new Sale()
+                                {
+                                    Product = prods[rand.Next(prods.Count)],
+                                    QTY = (decimal)rand.NextDouble() * rand.Next(10),
+                                    GST = (rand.NextDouble() > 0.5) ? true : false,
+                                    Void = false
+                                };
+                                s.Price = s.Product.Price;
+                                s.Update();
+                               
+                                Log log = new Log()
+                                {
+                                    ProductID = s.Product.ID,
+                                    QTY = -s.QTY,
+                                    TimeStamp = t.SaleTime
+                                };
+                                log.Update();
+                                ctx.Logs.Add(log);
+
+                                t.Sales.Add(s);
+                            }
+                            t.Update();
+                            t.SaleTime = check.AddMinutes(rand.Next(60 * 24));
+                            ctx.Transactions.Add(t);
+                        }
+                    }
+                    check = check.AddDays(+1);
+                } while (check.Date <= DateTime.Now.Date);
 
                 ctx.StockSnapshot.AddRange(snapshots);
 
