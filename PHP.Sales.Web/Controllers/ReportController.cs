@@ -15,11 +15,16 @@ namespace PHP.Sales.Web.Controllers
 {
     public class ReportController : Controller
     {
+        /// <summary>
+        /// Retrieve all the Products from the database
+        /// </summary>
+        /// <param name="selected">Selected product</param>
+        /// <returns>A list of products in a SelectList format</returns>
         public IEnumerable<SelectListItem> GetProducts(Guid? selected)
         {
             SalesDbContext ctx = new SalesDbContext();
 
-            var Products = ctx.Products.Select(x => new SelectListItem
+            var Products = ctx.Products.Where(x => x.Discontinued == true).Select(x => new SelectListItem
             {
                 Value = x.ID.ToString(),
                 Text = x.Name
@@ -28,6 +33,11 @@ namespace PHP.Sales.Web.Controllers
             return new SelectList(Products, "Value", "Text", selected);
         }
 
+        /// <summary>
+        /// List of the products for a selection
+        /// </summary>
+        /// <param name="selected">Selected product</param>
+        /// <returns>A selection list</returns>
         public ViewResult AddProduct(Guid? selected)
         {
             var model = new ProductListViewModel()
@@ -42,7 +52,12 @@ namespace PHP.Sales.Web.Controllers
 
             return View("_ReportProductListSelector", model);
         }
+
         // GET: Reports
+        /// <summary>
+        /// Display the Reports landing page
+        /// </summary>
+        /// <returns>List of all repors</returns>
         public ActionResult Index()
         {
             using (var ctx = new SalesDbContext())
@@ -104,6 +119,10 @@ namespace PHP.Sales.Web.Controllers
         }
 
         // GET: Reports/Create
+        /// <summary>
+        /// Create an empty report
+        /// </summary>
+        /// <returns></returns>
         public ActionResult Create()
         {
             return View();
@@ -112,8 +131,12 @@ namespace PHP.Sales.Web.Controllers
         // POST: Reports/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
+        /// <summary>
+        /// Create and process a report
+        /// </summary>
+        /// <param name="report">Report to be created</param>
+        /// <returns>Report display</returns>
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public ActionResult Create(Report report)
         {
             if (ModelState.IsValid)
@@ -131,6 +154,11 @@ namespace PHP.Sales.Web.Controllers
         }
 
         // GET: Reports/Edit/5
+        /// <summary>
+        /// Edit Report Contents
+        /// </summary>
+        /// <param name="id">Report ID</param>
+        /// <returns>Report display</returns>
         public ActionResult Edit(Guid? id)
         {
             if (id == null)
@@ -151,6 +179,11 @@ namespace PHP.Sales.Web.Controllers
         // POST: Reports/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
+        /// <summary>
+        /// Edit and process Report details
+        /// </summary>
+        /// <param name="report">Report</param>
+        /// <returns>Report view</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit(Report report)
@@ -168,6 +201,11 @@ namespace PHP.Sales.Web.Controllers
         }
 
         // GET: Reports/Delete/5
+        /// <summary>
+        /// Ask to Remove a report
+        /// </summary>
+        /// <param name="id">Report ID</param>
+        /// <returns></returns>
         public ActionResult Delete(Guid? id)
         {
             if (id == null)
@@ -186,6 +224,11 @@ namespace PHP.Sales.Web.Controllers
         }
 
         // POST: Reports/Delete/5
+        /// <summary>
+        /// Remove a report from the Database
+        /// </summary>
+        /// <param name="id">Report ID</param>
+        /// <returns></returns>
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(Guid id)

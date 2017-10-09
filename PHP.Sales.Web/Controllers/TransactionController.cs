@@ -12,11 +12,16 @@ namespace PHP.Sales.Web.Controllers
 {
     public class TransactionController : Controller
     {
+        /// <summary>
+        /// Retrieve all the Products from the database
+        /// </summary>
+        /// <param name="selected">Selected product</param>
+        /// <returns>A list of products in a SelectList format</returns>
         public IEnumerable<SelectListItem> GetProducts(Guid? selected)
         {
             SalesDbContext ctx = new SalesDbContext();
 
-            var Products = ctx.Products.Select(x => new SelectListItem
+            var Products = ctx.Products.Where(x => x.Discontinued == true).Select(x => new SelectListItem
             {
                 Value = x.ID.ToString(),
                 Text = x.Name
@@ -25,6 +30,12 @@ namespace PHP.Sales.Web.Controllers
             return new SelectList(Products, "Value", "Text", selected);
         }
 
+        /// <summary>
+        /// List of the products for a selection
+        /// </summary>
+        /// <param name="selected">Selected product</param>
+        /// <param name="row">Row number for form generation</param>
+        /// <returns>A selection list</returns>
         public ViewResult AddProduct(Guid? selected, int row)
         {
             var model = new ProductListViewModel()
@@ -87,15 +98,6 @@ namespace PHP.Sales.Web.Controllers
 
                     foreach(Sale s in viewModel.SalesList)
                     {
-                        /*Decimal OldQTY = ctx.Products.Where(x => x.ID == s.ProductID).FirstOrDefault().QTY;
-                        Log l = new Log()
-                        {
-                            ProductID = s.ProductID,
-                            QTY = OldQTY - s.QTY
-                        };
-                        l.Update();
-                        ctx.Logs.Add(l);*/
-
                         ProductLog.GenerateSaleLog(ctx, s.Product, s.QTY);
                         s.Update();
                     }

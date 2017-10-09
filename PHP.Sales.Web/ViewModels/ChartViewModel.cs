@@ -4,13 +4,22 @@ using PHP.Sales.Core.Models.System;
 
 namespace PHP.Sales.Web.ViewModels
 {
+    /// <summary>
+    /// View Model for collecting Sales and Stock information for a report view
+    /// </summary>
     public class ChartViewModel
     {
+        /// <summary>
+        /// Initalise the View Model with an empty dictionary
+        /// </summary>
         public ChartViewModel()
         {
             Data = new Dictionary<DateTime, StockSaleSet>();
         }
 
+        /// <summary>
+        /// Model of the data to be stored
+        /// </summary>
         public class StockSaleSet
         {
             public decimal Stock { get; set; }
@@ -18,16 +27,10 @@ namespace PHP.Sales.Web.ViewModels
         }
 
         public Report Report { get; set; }
-        public Dictionary<DateTime, StockSaleSet> Data { get; set; }
 
-        /*
-         * DateTime     => Stock, Sale
-         * 2010-10-01   => 10,    1
-         * 2010-10-02   => 13,    2
-         * 2010-10-03   => 12,    1
-         * 2010-10-04   => 20,    7
-         * 2010-10-05   => 17,    0
-         * 2010-10-06   => 15,    10
-         */
+        /// <summary>
+        /// Dataset dictionary for the data.
+        /// </summary>
+        public Dictionary<DateTime, StockSaleSet> Data { get; set; }
     }
 }

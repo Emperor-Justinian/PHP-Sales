@@ -10,6 +10,10 @@ namespace PHP.Sales.Web.ViewModels
         ///     Trasnaction ID Editing
         /// </summary>
         public Guid TransactionId { get; set; }
+        
+        /// <summary>
+        /// Payment method
+        /// </summary>
         public PaymentType Payment { get; set; }
 
         /// <summary>
