@@ -4,14 +4,14 @@
 @model PHP.Sales.Web.ViewModels.ChartViewModel
 
 @{
-                ViewBag.Title = "Details";
-                Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 
-                //CREATE CHART
-                var chart = new LineChart();
-                //chart.ComplexData.Labels.AddRange(new[] { "January", "Feburary", "March", "", "", "", "" });
-                chart.ComplexData.Labels.AddRange(Model.Data.Select(x => x.Key.Date.ToString("dd/MM/yyyy")).ToArray());
-                chart.ComplexData.Datasets.AddRange(new List<ComplexDataset>
+    //CREATE CHART
+    var chart = new LineChart();
+    //chart.ComplexData.Labels.AddRange(new[] { "January", "Feburary", "March", "", "", "", "" });
+    chart.ComplexData.Labels.AddRange(Model.Data.Select(x => x.Key.Date.ToString("dd/MM/yyyy")).ToArray());
+    chart.ComplexData.Datasets.AddRange(new List<ComplexDataset>
     {
         new ComplexDataset
         {

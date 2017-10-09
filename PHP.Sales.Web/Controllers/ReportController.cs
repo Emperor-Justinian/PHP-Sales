@@ -71,7 +71,7 @@ namespace PHP.Sales.Web.Controllers
                 chart.Report.Product = ctx.Products.FirstOrDefault(x => x.ID == chart.Report.ProductID);
 
                 //GET DATA
-                var data1 = ctx.Logs
+                var data1 = ctx.StockSnapshot
                                 .Where(x => x.ProductID == chart.Report.ProductID)
                                 .Where(x => x.TimeStamp >= chart.Report.Start.Date)
                                 .Where(x => x.TimeStamp <= chart.Report.End.Date)

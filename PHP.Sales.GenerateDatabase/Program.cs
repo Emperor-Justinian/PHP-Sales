@@ -551,6 +551,38 @@ namespace PHP.Sales.GenerateDatabase
                 report1.Update();
 
                 ctx.Reports.Add(report1);
+
+                //ADD STOCK SNAPSHOT
+
+                List<Log> snapshots = new List<Log>() {
+                    new Log()
+                    {
+                        Product = prods[0],
+                        TimeStamp = DateTime.Now.Date,
+                        QTY = 30
+                    },
+                    new Log()
+                    {
+                        Product = prods[0],
+                        TimeStamp = DateTime.Now.AddDays(-1).Date,
+                        QTY = 37
+                    },
+                    new Log()
+                    {
+                        Product = prods[1],
+                        TimeStamp = DateTime.Now.Date,
+                        QTY = 38
+                    },
+                    new Log()
+                    {
+                        Product = prods[1],
+                        TimeStamp = DateTime.Now.AddDays(-1).Date,
+                        QTY = 42
+                    },
+                };
+
+                ctx.StockSnapshot.AddRange(snapshots);
+
                 
                 // Save Transaction Database
                 ctx.SaveChanges();
