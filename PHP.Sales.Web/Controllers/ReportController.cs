@@ -4,12 +4,12 @@ using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
-using System.Web;
 using System.Web.Mvc;
 using PHP.Sales.Core.Models.System;
 using PHP.Sales.DataAccess;
 using PHP.Sales.Core.Extensions;
 using PHP.Sales.Web.ViewModels;
+using static PHP.Sales.Web.ViewModels.ChartViewModel;
 
 namespace PHP.Sales.Web.Controllers
 {
@@ -60,13 +60,46 @@ namespace PHP.Sales.Web.Controllers
             }
             using (var ctx = new SalesDbContext())
             {
-                Report report = ctx.Reports.Find(id);
-                if (report == null)
+                ChartViewModel chart = new ChartViewModel()
+                {
+                    Report = ctx.Reports.Find(id)
+                };
+                if (chart.Report == null)
                 {
                     return HttpNotFound();
                 }
-                report.Product = ctx.Products.Where(x => x.ID == report.ProductID).FirstOrDefault();
-                return View(report);
+                chart.Report.Product = ctx.Products.FirstOrDefault(x => x.ID == chart.Report.ProductID);
+
+                //GET DATA
+                var data1 = ctx.Logs
+                                .Where(x => x.ProductID == chart.Report.ProductID)
+                                .Where(x => x.TimeStamp >= chart.Report.Start.Date)
+                                .Where(x => x.TimeStamp <= chart.Report.End.Date)
+                                .ToList();
+                var data2 = ctx.Sales
+                                .Where(x => x.ProductID == chart.Report.ProductID)
+                                .Where(x => x.Transaction.SaleTime >= chart.Report.Start.Date)
+                                .Where(x => x.Transaction.SaleTime <= chart.Report.End.Date)
+                                .ToList();
+                DateTime check = chart.Report.Start.Date;
+                do
+                {
+                    //var dayResult1 = data1.Where(X => X.TimeStamp.Date == check).ToList();
+                    //var dayResult2 = data2.Where(X => X.Transaction.SaleTime.Date == check).ToList();
+                    decimal stock = data1.Where(X => X.TimeStamp.Date == check).Sum(l => l.QTY);
+                    decimal sale = data2.Where(X => X.Transaction.SaleTime.Date == check).Sum(s => s.QTY);
+
+                    StockSaleSet daySet = new StockSaleSet()
+                    {
+                        Sale = sale,
+                        Stock = stock
+                    };
+
+                    chart.Data.Add(check, daySet);
+                    check = check.AddDays(1);
+                } while (check <= chart.Report.End.Date);
+
+                return View(chart);
             }
         }
 

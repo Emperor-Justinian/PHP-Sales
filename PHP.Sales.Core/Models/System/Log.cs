@@ -16,7 +16,7 @@ namespace PHP.Sales.Core.Models.System
         public virtual Product Product { get; set; }
 
         [Required(ErrorMessage = "An update message is required")]
-        [DisplayName("StockChange")]
+        [DisplayName("Stock Change")]
         public decimal QTY { get; set; }
     }
 }

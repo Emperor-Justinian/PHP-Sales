@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using System.Web.Mvc;
 using PHP.Sales.Core.Models.System;
-using PHP.Sales.Core.Extensions;
 using PHP.Sales.DataAccess;
 using PHP.Sales.Logic;
 
@@ -12,8 +10,6 @@ namespace PHP.Sales.Web.Controllers
 {
     public class ProductController : Controller
     {
-        //private SalesctxContext ctx = new SalesctxContext();
-
         // GET: Products
         public ActionResult Index()
         {
@@ -57,14 +53,8 @@ namespace PHP.Sales.Web.Controllers
                 {
                     product.ID = Guid.NewGuid();
                     ctx.Products.Add(product);
-                    ProductLog.GenerateLog(ctx, product.ID, product.QTY);
-                    /*Log l = new Log()
-                    {
-                        ProductID = product.ID,
-                        QTY = product.QTY
-                    };
-                    l.Update();
-                    ctx.Logs.Add(l);*/
+                    ProductLog.GenerateProductLog(ctx, product, product.QTY);
+
                     ctx.SaveChanges();
                     return RedirectToAction("Index");
                 }
@@ -110,7 +100,7 @@ namespace PHP.Sales.Web.Controllers
                     oldProduct.Price = product.Price;
                     oldProduct.Discontinued = product.Discontinued;
 
-                    ProductLog.GenerateLog(ctx, product.ID, -product.QTY);
+                    ProductLog.GenerateProductLog(ctx, product, -product.QTY);
                     ctx.SaveChanges();                    
                     return RedirectToAction("Index");
                 }

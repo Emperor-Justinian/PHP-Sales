@@ -50,13 +50,13 @@
                                     @*Html.TextBoxFor(m => m.SalesList[i].Name)*@
                                 </td>-->                      
                                 <td>                       
-                                    @Html.TextBoxFor(m => m.SalesList[i].QTY)
+                                    @Html.EditorFor(m => m.SalesList[i].QTY, new { htmlAttributes = new { @class = "form-control" } })
                                 </td>                      
                                 <td>                       
-                                    @Html.TextBoxFor(m => m.SalesList[i].Price)
+                                    @Html.EditorFor(m => m.SalesList[i].Price, new { htmlAttributes = new { @class = "form-control" } })
                                 </td>                      
                                 <td>                       
-                                    @Html.CheckBoxFor(m => m.SalesList[i].GST)
+                                    @Html.EditorFor(m => m.SalesList[i].GST, new { htmlAttributes = new { @class = "form-control" } })
                                 </td>
                             </tr>
                         }

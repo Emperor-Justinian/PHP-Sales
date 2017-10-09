@@ -1,27 +1,30 @@
 ﻿@using Chart.Mvc.ComplexChart
 @using Chart.Mvc.Extensions
 
-@model PHP.Sales.Core.Models.System.Report
+@model PHP.Sales.Web.ViewModels.ChartViewModel
 
 @{
-    ViewBag.Title = "Details";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+                ViewBag.Title = "Details";
+                Layout = "~/Views/Shared/_Layout.cshtml";
 
-    //CREATE CHART
-    var chart = new LineChart();
-    chart.ComplexData.Labels.AddRange(new[] { "January", "Feburary", "March", "","","","" });
-    chart.ComplexData.Datasets.AddRange(new List<ComplexDataset>
+                //CREATE CHART
+                var chart = new LineChart();
+                //chart.ComplexData.Labels.AddRange(new[] { "January", "Feburary", "March", "", "", "", "" });
+                chart.ComplexData.Labels.AddRange(Model.Data.Select(x => x.Key.Date.ToString("dd/MM/yyyy")).ToArray());
+                chart.ComplexData.Datasets.AddRange(new List<ComplexDataset>
     {
         new ComplexDataset
         {
-            Data = new List<double> {102, 60, 20, 17, 25, 78, 10},
+            //Data = new List<double> {102, 60, 20, 17, 25, 78, 10},
+            Data = Model.Data.Select(x => (double)x.Value.Stock).ToList(),
             Label = "Stock",
             StrokeColor = "rgba(255,0,0,0)",
             FillColor = "rgba(255,0,0,0.5)"
         },
         new ComplexDataset
         {
-            Data = new List<double> {62, 32, 10, 0, 10, 28, 10},
+            //Data = new List<double> {62, 32, 10, 0, 10, 28, 10},
+            Data = Model.Data.Select(x => (double)x.Value.Sale).ToList(),
             Label = "Sales",
             StrokeColor = "rgba(0,0,0,0)",
             FillColor = "rgba(0,0,0,0.5)"
@@ -36,35 +39,35 @@
     <hr />
     <dl class="dl-horizontal">
         <dt>
-            @Html.DisplayNameFor(model => model.Name)
+            @Html.DisplayNameFor(model => model.Report.Name)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Name)
+            @Html.DisplayFor(model => model.Report.Name)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.Product.Name)
+            @Html.DisplayNameFor(model => model.Report.Product.Name)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Product.Name)
+            @Html.DisplayFor(model => model.Report.Product.Name)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.Start)
+            @Html.DisplayNameFor(model => model.Report.Start)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Start)
+            @Html.DisplayFor(model => model.Report.Start)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.End)
+            @Html.DisplayNameFor(model => model.Report.End)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.End)
+            @Html.DisplayFor(model => model.Report.End)
         </dd>
     </dl>
 </div>
@@ -80,6 +83,6 @@
     </div>
 </div>
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.ID }) |
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Report.ID }) |
     @Html.ActionLink("Back to List", "Index")
 </p>

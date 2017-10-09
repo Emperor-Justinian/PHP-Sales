@@ -6,19 +6,20 @@
 
 @model Sale
 
-<div id="editorRows">
-    <div>
+<tr class="form-inline" id="editorRows">
+    <td>
         @Html.Action("AddProduct", "Transaction", new { selected = Model.ProductID, row = value })
-    </div>
-    <div>
-        @Html.TextBox(String.Concat("SalesList[", value, "].QTY"), Model.QTY)
-    </div>
-    <div>
-        @Html.TextBox(String.Concat("SalesList[", value, "].Price"), Model.Price)
-    </div>
-    <div>
-        @Html.CheckBox(String.Concat("SalesList[", value, "].GST"), Model.GST)
-
+    </td>
+    <td>
+        @Html.TextBox(String.Concat("SalesList[", value, "].QTY"), Model.QTY, new { @class = "form-control" })
+    </td>
+    <td>
+        @Html.TextBox(String.Concat("SalesList[", value, "].Price"), Model.Price, new { @class = "form-control" })
+    </td>
+    <td>
+        @Html.CheckBox(String.Concat("SalesList[", value, "].GST"), Model.GST, new { @class = "form-control" })
+    </td>
+    <td>
         <a href="#" class="deleteRow">delete</a>
-    </div>
-</div>
+    </td>
+</tr>

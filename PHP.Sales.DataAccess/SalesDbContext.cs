@@ -1,6 +1,6 @@
-﻿using PHP.Sales.Core.Models.System;
+﻿using System.Data.Entity;
+using PHP.Sales.Core.Models.System;
 using PHP.Sales.DataAccess.Configurations;
-using System.Data.Entity;
 
 namespace PHP.Sales.DataAccess
 {

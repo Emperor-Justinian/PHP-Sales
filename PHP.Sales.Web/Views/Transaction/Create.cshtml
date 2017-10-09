@@ -14,25 +14,21 @@
     <div class="edit-transaction__form">
         @using (Html.BeginForm())
         {
-            <b>@Html.DisplayNameFor(model => model.Payment): </b>
-            @Html.EnumDropDownListFor(model => model.Payment)
-            <div class="form-group" id="editorRows">
-                <!-- LIST OUT SALES CONTENTS -->
-                
-                <div class="form-header">
-                    <div>
-                        Product
-                    </div>
-                    <div>
-                        Quantity
-                    </div>
-                    <div>
-                        Price
-                    </div>
-                    <div>
-                        GST
-                    </div>
-                </div>
+            <div class="form-group form-inline">
+                <b>@Html.DisplayNameFor(model => model.Payment): </b>
+                @Html.EnumDropDownListFor(model => model.Payment, new { @class = "form-control" })
+            </div>
+            <table class="form-group" id="editorRows">
+                <thead>
+                    <tr class="form-header">
+                        <th>Product</th>
+                        <th>Quantity</th>
+                        <th>Price</th>
+                        <th>GST</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
                 @if (Model != null)
                 {
                     for (i = 0; i < Model.SalesList.Count; i++)
@@ -44,7 +40,8 @@
                 {
                     @Html.Partial("_SalesRowEditor", new Sale(), new ViewDataDictionary { { "num", i } })
                 }
-            </div>
+                </tbody>
+            </table>
             @Html.ActionLink("Add another...", "_SalesRowEditor", new Sale(), new { id = "addItem" })
             <input type="submit" value="Submit" />
         }
