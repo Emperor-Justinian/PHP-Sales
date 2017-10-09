@@ -18,18 +18,20 @@
             //Data = new List<double> {102, 60, 20, 17, 25, 78, 10},
             Data = Model.Data.Select(x => (double)x.Value.Stock).ToList(),
             Label = "Stock",
-            StrokeColor = "rgba(255,0,0,0)",
-            FillColor = "rgba(255,0,0,0.5)"
+            StrokeColor = "rgba(255,0,0,0.8)",
+            FillColor = "rgba(255,0,0,0.1)"
         },
         new ComplexDataset
         {
             //Data = new List<double> {62, 32, 10, 0, 10, 28, 10},
             Data = Model.Data.Select(x => (double)x.Value.Sale).ToList(),
             Label = "Sales",
-            StrokeColor = "rgba(0,0,0,0)",
-            FillColor = "rgba(0,0,0,0.5)"
+            StrokeColor = "rgba(64,64,255,0.8)",
+            FillColor = "rgba(64,64,255,0.2)"
         },
     });
+    chart.ChartConfiguration.ScaleLineWidth = 2;
+    chart.ChartConfiguration.Responsive = true;
 }
 <script src="~/Scripts/Chart.js"></script>
 <h2>Details</h2>
@@ -72,8 +74,28 @@
     </dl>
 </div>
 <div class="row">
-    <div class="col-sm-6">
-
+    <div class="col-sm-6 table-responsive">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Day</th>
+                    <th>Date</th>
+                    <th>Sold</th>
+                    <th>Stock</th>
+                </tr>
+            </thead>
+            <tbody>
+            @foreach (var s in Model.Data)
+            {
+                <tr>
+                    <td>@Html.Raw(s.Key.ToString("dddd"))</td>
+                    <td>@Html.Raw(s.Key.ToString("dd/MM/yyyy"))</td>
+                    <td>@Html.DisplayFor(x => x.Data[s.Key].Sale)</td>
+                    <td>@Html.DisplayFor(x => x.Data[s.Key].Stock)</td>
+                </tr>
+            }
+            </tbody>
+        </table>
     </div>
     <div class="col-sm-6">
         @*DISPLAY CHART*@
