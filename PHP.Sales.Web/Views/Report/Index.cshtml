@@ -38,7 +38,9 @@
         <td>
             @Html.ActionLink("Edit", "Edit", new { id=item.ID }) |
             @Html.ActionLink("Details", "Details", new { id=item.ID }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.ID })
+            @Html.ActionLink("Delete", "Delete", new { id=item.ID }) | 
+            @*<input id="ExportCSV" type="submit" value="Export CSV">*@
+            @Html.ActionLink("Export CSV", "ExportCSV", new { id=item.ID })
         </td>
     </tr>
 }

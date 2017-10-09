@@ -10,6 +10,7 @@ using PHP.Sales.DataAccess;
 using PHP.Sales.Core.Extensions;
 using PHP.Sales.Web.ViewModels;
 using static PHP.Sales.Web.ViewModels.ChartViewModel;
+using Jitbit.Utils;
 
 namespace PHP.Sales.Web.Controllers
 {
@@ -252,6 +253,77 @@ namespace PHP.Sales.Web.Controllers
                 }
                 base.Dispose(disposing);
             }
+        }
+
+        //// GET: Reports/ExportCSV
+        //public ActionResult ExportCSV(Guid? id)
+        //{
+        //    if (id == null)
+        //    {
+        //        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+        //    }
+        //    using (var ctx = new SalesDbContext())
+        //    {
+        //        Report report = ctx.Reports.Find(id);
+        //        if (report == null)
+        //        {
+        //            return HttpNotFound();
+        //        }
+        //        return View(report);
+        //    }
+        //}
+
+        // POST: Reports/ExportCSV
+        public ActionResult ExportCSV(Guid? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            //[HttpPost]
+            //[ValidateAntiForgeryToken]
+            //public ActionResult ExportCSV(Report report)
+            //{
+            if (ModelState.IsValid)
+            {
+                using (var ctx = new SalesDbContext())
+                {
+                    CsvExport myExport = new CsvExport();
+                    Report report = ctx.Reports.Find(id);
+
+                    myExport.AddRow();
+                    myExport["Item"] = report.Name.ToString();
+                    myExport["Sales"] = report.Product.QTY.ToString();
+
+                    string dateYear = report.Start.Year.ToString();
+                    string dateMonth = report.Start.Month.ToString();
+                    string dateDay = report.Start.Day.ToString();
+
+                    string startDate = dateYear + "." + dateMonth + "." + dateDay;
+
+                    myExport["Date Start"] = startDate;
+
+                    dateYear = report.End.Year.ToString();
+                    dateMonth = report.End.Month.ToString();
+                    dateDay = report.End.Day.ToString();
+
+                    string endDate = dateYear + "." + dateMonth + "." + dateDay;
+
+                    myExport["Date End"] = endDate;
+
+                    // Then you can do any of the following three output options:
+                    //string myCsv = myExport.Export();
+                    string csvName = "report-" + startDate + "-" + endDate + ".csv";
+                    string csvpath = "..\\..\\";
+
+                    //File(myExport.ExportToBytes(), "text/csv", csvName);
+                    myExport.ExportToFile(csvpath+csvName);
+
+                    //byte[] myCsvData = myExport.ExportToBytes();
+                    return RedirectToAction("Index");
+                }
+            }
+            return View();
         }
     }
 }
