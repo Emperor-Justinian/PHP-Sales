@@ -11,6 +11,7 @@ using PHP.Sales.Core.Extensions;
 using PHP.Sales.Web.ViewModels;
 using static PHP.Sales.Web.ViewModels.ChartViewModel;
 using Jitbit.Utils;
+using PHP.Sales.Logic;
 
 namespace PHP.Sales.Web.Controllers
 {
@@ -274,6 +275,7 @@ namespace PHP.Sales.Web.Controllers
         //}
 
         // POST: Reports/ExportCSV
+        [HttpPost]
         public ActionResult ExportCSV(Guid? id)
         {
             if (id == null)
@@ -324,6 +326,130 @@ namespace PHP.Sales.Web.Controllers
                 }
             }
             return View();
+        }
+
+        // GET: Report/Prediction?q=m|w
+        public ActionResult Prediction(Guid? ProductID, int? Type)
+        {
+            PredictionChartViewModel chart = new PredictionChartViewModel();
+
+            if(ProductID == null || Type == null) {
+                return View();
+            }
+            if (Type == (int)PredictType.MONTHLY && ProductID != null)
+            {
+                using (var ctx = new SalesDbContext())
+                {
+                    chart.Name = "Weekly Sales Report";
+                    chart.ProductID = (Guid)ProductID;
+
+                    chart.Start = DateTime.Now.Date.AddDays((int)DateTime.Now.DayOfYear);
+                    chart.End = DateTime.Now.Date;
+
+                    var sales = ctx.Sales.Where(x => x.ProductID == ProductID)
+                                .Where(x => x.Transaction.SaleTime.Date >= DateTime.Now.Date.AddDays((int)DateTime.Now.DayOfYear))
+                                .ToList();
+
+                    List<double> list = new List<double>();
+                    DateTime check = chart.Start;
+                    do
+                    {
+                        list.Add((double)sales
+                            .Where(x => x.Transaction.SaleTime.Date == check)
+                            .Where(x => x.Transaction.SaleTime.Date < check.AddMonths(1))
+                            .Sum(i => i.QTY));
+                        check = check.AddMonths(1);
+                    } while (check <= chart.End);
+
+                    Algorithum algorithum = new Algorithum(list.ToArray(), 3);
+
+                    check = chart.Start;
+                    int PredictCount = 0;
+                    do
+                    {
+                        if (check <= chart.End.Date)
+                        {
+                            chart.CurrentCycle.Add(check.Date, new PredictModel()
+                            {
+                                Value = (double)sales.Where(x => x.Transaction.SaleTime.Date == check).Sum(i => i.QTY),
+                                IsPredict = false
+                            });
+                        }
+                        else if (check < chart.Start.Date.AddDays(7))
+                        {
+                            chart.CurrentCycle.Add(check, new PredictModel()
+                            {
+                                Value = algorithum.Prediction(++PredictCount),
+                                IsPredict = true
+                            });
+                        }
+                        else
+                        {
+                            chart.NextCycle.Add(check, new PredictModel()
+                            {
+                                Value = algorithum.Prediction(++PredictCount),
+                                IsPredict = true
+                            });
+                        }
+                        check = check.AddMonths(1);
+                    } while (check < chart.Start.AddYears(2));
+                }
+            } else
+            {
+                using (var ctx = new SalesDbContext())
+                {
+                    chart.Name = "Weekly Sales Report";
+                    chart.Product = ctx.Products.Where(x => x.ID == ProductID).FirstOrDefault();
+                    chart.Start = DateTime.Now.Date.AddDays((int)DateTime.Now.DayOfWeek);
+                    chart.End = DateTime.Now.Date;
+
+                    var sales = ctx.Sales.Where(x => x.ProductID == ProductID)
+                               .Where(x => x.Transaction.SaleTime.Date >= DateTime.Now.Date.AddDays((int)DateTime.Now.DayOfWeek - 35))
+                               .ToList();
+
+                    List<double> list = new List<double>();
+                    DateTime check = chart.Start;
+                    do
+                    {
+                        list.Add((double)sales.Where(x => x.Transaction.SaleTime.Date == check).Sum(i => i.QTY));
+                        check = check.AddDays(1);
+                    } while (check <= chart.End);
+
+                    Algorithum algorithum = new Algorithum(list.ToArray(), 7);
+
+                    check = chart.Start;
+                    int PredictCount = 0;
+                    do
+                    {
+                        if (check <= chart.End.Date)
+                        {
+                            chart.CurrentCycle.Add(check.Date, new PredictModel() {
+                                Value = (double)sales.Where(x => x.Transaction.SaleTime.Date == check).Sum(i => i.QTY),
+                                IsPredict = false
+                            });
+                        }
+                        else if(check < chart.Start.Date.AddDays(7))
+                        {
+                            chart.CurrentCycle.Add(check, new PredictModel()
+                            {
+                                Value = algorithum.Prediction(++PredictCount),
+                                IsPredict = true
+                            });
+                        }
+                        else
+                        {
+                            chart.NextCycle.Add(check, new PredictModel()
+                            {
+                                Value = algorithum.Prediction(++PredictCount),
+                                IsPredict = true
+                            });
+                        }
+                        check = check.AddDays(1);
+                    } while (check < chart.Start.AddDays(14));
+                }
+            }
+
+            return View(chart);
         }
     }
 }
