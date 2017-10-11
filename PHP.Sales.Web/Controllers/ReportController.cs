@@ -292,7 +292,7 @@ namespace PHP.Sales.Web.Controllers
                     Report report = ctx.Reports.Find(id);
 
                     myExport.AddRow();
-                    myExport["Item"] = report.Name.ToString();
+                    myExport["Item"] = report.Product.Name.ToString();
                     myExport["Sales"] = report.Product.QTY.ToString();
 
                     string dateYear = report.Start.Year.ToString();
@@ -314,16 +314,68 @@ namespace PHP.Sales.Web.Controllers
                     // Then you can do any of the following three output options:
                     //string myCsv = myExport.Export();
                     string csvName = "report-" + startDate + "-" + endDate + ".csv";
-                    string csvpath = "..\\..\\";
+                    string csvpath = "C:\\reports\\";
 
                     //File(myExport.ExportToBytes(), "text/csv", csvName);
                     myExport.ExportToFile(csvpath+csvName);
 
-                    //byte[] myCsvData = myExport.ExportToBytes();
+                    byte[] myCsvData = myExport.ExportToBytes();
+
+                    
+
+
                     return RedirectToAction("Index");
                 }
             }
-            return View();
+            return RedirectToAction("Index");
         }
+
+        // GET: Reports/Edit/5
+        /// <summary>
+        /// Edit Report Contents
+        /// </summary>
+        /// <param name="createCSV">CSV ID</param>
+        /// <returns>Report display</returns>
+        //public ActionResult exportcsv(guid? id)
+        //{
+        //    if (id == null)
+        //    {
+        //        return new httpstatuscoderesult(httpstatuscode.badrequest);
+        //    }
+        //    using (var ctx = new salesdbcontext())
+        //    {
+        //        report report = ctx.reports.find(id);
+        //        if (report == null)
+        //        {
+        //            return httpnotfound();
+        //        }
+        //        return view(report);
+        //    }
+        //}
+
+        //// post: reports/edit/5
+        //// to protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        //// more details see https://go.microsoft.com/fwlink/?linkid=317598.
+        ///// <summary>
+        ///// edit and process report details
+        ///// </summary>
+        ///// <param name="csv">csv</param>
+        ///// <returns>report view</returns>
+        //[httppost]
+        //[validateantiforgerytoken]
+        //public actionresult exportcsv(report report)
+        //{
+        //    if (modelstate.isvalid)
+        //    {
+        //        using (var ctx = new salesdbcontext())
+        //        {
+        //            ctx.entry(report).state = entitystate.modified;
+        //            ctx.savechanges();
+        //            return redirecttoaction("index");
+        //        }
+        //    }
+        //    return view(report);
+        //}
+
     }
 }
