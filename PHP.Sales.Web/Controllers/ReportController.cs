@@ -256,6 +256,38 @@ namespace PHP.Sales.Web.Controllers
             }
         }
 
+        private string fileNameBuilder(Guid? id)
+        {
+            string reportName = null;
+
+            if (id == null)
+            {
+                return null;
+            }
+            if (ModelState.IsValid)
+            {
+                using (var ctx = new SalesDbContext())
+                {
+                    Report report = ctx.Reports.Find(id);
+
+                    string dateYear = report.Start.Year.ToString();
+                    string dateMonth = report.Start.Month.ToString();
+                    string dateDay = report.Start.Day.ToString();
+
+                    string startDate = dateYear + "." + dateMonth + "." + dateDay;
+
+                    dateYear = report.End.Year.ToString();
+                    dateMonth = report.End.Month.ToString();
+                    dateDay = report.End.Day.ToString();
+
+                    string endDate = dateYear + "." + dateMonth + "." + dateDay;
+                    reportName = "report-" + startDate + "-" + endDate + ".csv";
+                }
+            }
+
+            return reportName;
+        }
+
         //// GET: Reports/ExportCSV
         //public ActionResult ExportCSV(Guid? id)
         //{
@@ -316,7 +348,7 @@ namespace PHP.Sales.Web.Controllers
                     // Then you can do any of the following three output options:
                     //string myCsv = myExport.Export();
                     string csvName = "report-" + startDate + "-" + endDate + ".csv";
-                    string csvpath = "..\\..\\";
+                    string csvpath = "C:\\reports\\";
 
                     //File(myExport.ExportToBytes(), "text/csv", csvName);
                     myExport.ExportToFile(csvpath+csvName);
@@ -325,7 +357,25 @@ namespace PHP.Sales.Web.Controllers
                     return RedirectToAction("Index");
                 }
             }
-            return View();
+            return RedirectToAction("Index");
+        }
+
+        public void DownloadFile(Guid? id)
+        {
+            string fileName = fileNameBuilder(id);
+            System.Web.HttpResponse response = System.Web.HttpContext.Current.Response;
+            response.ClearContent();
+            response.Clear();
+            response.ContentType = "text/csv";
+            response.AddHeader("Content-Disposition", "attachment; filename=" + fileName + ";");
+            response.TransmitFile("C:\\reports\\"+fileName);
+            response.Flush();
+            response.End();
+        }
+
+        protected void btnDownload_Click(object sender, EventArgs e)
+        {
+            Response.Redirect("PathToHttpHandler/DownloadFile.ashx");
         }
 
         // GET: Report/Prediction?q=m|w

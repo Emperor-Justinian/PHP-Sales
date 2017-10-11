@@ -42,6 +42,8 @@
             @Html.ActionLink("Delete", "Delete", new { id=item.ID }) | 
             @*<input id="ExportCSV" type="submit" value="Export CSV">*@
             @Html.ActionLink("Export CSV", "ExportCSV", new { id=item.ID })
+            @Html.ActionLink("Download File", "DownloadFile", new { id=item.ID})
+            <asp:Button ID="btnDownload" runat="server" Text="Download File" OnClick="btnDownload_Click" />
         </td>
     </tr>
 }
