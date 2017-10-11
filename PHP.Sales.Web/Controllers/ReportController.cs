@@ -399,7 +399,8 @@ namespace PHP.Sales.Web.Controllers
                 using (var ctx = new SalesDbContext())
                 {
                     chart.Name = "Weekly Sales Report";
-                    chart.Product = ctx.Products.Where(x => x.ID == ProductID).FirstOrDefault();
+                    chart.ProductID = (Guid)ProductID;
+
                     chart.Start = DateTime.Now.Date.AddDays((int)DateTime.Now.DayOfWeek);
                     chart.End = DateTime.Now.Date;
 
