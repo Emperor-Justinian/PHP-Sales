@@ -1,0 +1,102 @@
+﻿@using PHP.Sales.Web.ViewModels
+@using Chart.Mvc.ComplexChart
+@using Chart.Mvc.Extensions
+
+@model PHP.Sales.Web.ViewModels.PredictionChartViewModel
+
+@{
+    ViewBag.Title = "Prediction";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    var chart = new LineChart();
+    List<string> labels;
+    //Days for Weekly, Date for Monthly
+    if(Model.Type == PredictType.MONTHLY) {
+        labels = new List<string>() { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" };
+        chart.ComplexData.Labels.AddRange(labels);
+    }
+    else {
+        labels = new List<string>() { "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday" };
+        chart.ComplexData.Labels.AddRange(labels);
+    }
+    chart.ComplexData.Datasets.AddRange(new List<ComplexDataset>
+    {
+        new ComplexDataset
+        {
+            //Data = new List<double> {102, 60, 20, 17, 25, 78, 10},
+            Data = Model.CurrentCycle.Where(x => x.Value.IsPredict == false).Select(x => x.Value.Value).ToList(),
+            Label = "Current Cycle",
+            StrokeColor = "rgba(255,0,0,0.8)",
+            FillColor = "rgba(255,0,0,0.1)"
+        },
+        new ComplexDataset
+        {
+            //Data = new List<double> {62, 32, 10, 0, 10, 28, 10},
+            Data = Model.NextCycle.Select(x => x.Value.Value).ToList(),
+            Label = "Next Cycle Prediction",
+            StrokeColor = "rgba(64,64,255,0.8)",
+            FillColor = "rgba(64,64,255,0.2)"
+        },
+    });
+
+    if (Model.CurrentCycle.Where(x => x.Value.IsPredict == true).Count() != 0)
+    {
+        chart.ComplexData.Datasets.Add(new ComplexDataset
+        {
+            //Data = new List<double> {62, 32, 10, 0, 10, 28, 10},
+            Data = Model.CurrentCycle.Where(x => x.Value.IsPredict == true).Select(x => x.Value.Value).ToList(),
+            Label = "Current Cycle Prediction",
+            StrokeColor = "rgba(64,64,255,0.8)",
+            FillColor = "rgba(64,64,255,0.2)"
+        });
+    }
+}
+
+<script src="~/Scripts/Chart.js"></script>
+<h2>Prediction</h2>
+
+<div>
+    <h4>@Model.Type Prediction Report</h4>
+    <form method="GET">
+        <b>@Html.DisplayNameFor(model => model.ProductID): </b>
+        @Html.Action("AddProduct", new { selected = Model.ProductID })
+
+        <b>@Html.DisplayNameFor(model => model.Type): </b>
+        @Html.EnumDropDownListFor(model => model.Type, new { @class = "form-control" })
+    </form>
+    <div class="col-sm-6">
+        @*
+            Day | Sale/Prediction | Following Cycle Prediction
+        *@
+        <table>
+            <thead>
+                <tr>
+                    <th>Period</th>
+                    <th>Sale/Prediction</th>
+                    <th>Next Cycle Prediction</th>
+                </tr>
+            </thead>
+            <tbody>
+            @for(var i = 0; i < Model.CurrentCycle.Count; i++)
+            {
+                <tr>
+                    <td>@labels.ElementAt(i)</td>
+                    @if (Model.CurrentCycle.ElementAt(i).Value.IsPredict == true)
+                    {
+                        <td><span style="color: dimgrey; font-style:italic">@Model.CurrentCycle.ElementAt(i)</span></td>
+                    }
+                    else
+                    {
+                        <td>@Model.CurrentCycle.ElementAt(i)</td>
+                    }
+                    <td><span style="color: dimgrey; font-style:italic">@Model.NextCycle.ElementAt(i)</span></td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
+    <div class="col-sm-6">
+        <canvas id="Chart" style="width: 100%"></canvas>
+        @Html.CreateChart("Chart", chart)
+    </div>
+</div>

@@ -149,6 +149,7 @@
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModels\ChartViewModel.cs" />
+    <Compile Include="ViewModels\PredictionChartViewModel.cs" />
     <Compile Include="ViewModels\ProductListViewModel.cs" />
     <Compile Include="ViewModels\TransactionRowViewModel.cs" />
   </ItemGroup>
@@ -183,6 +184,7 @@
     <Content Include="Views\Log\Index.cshtml" />
     <Content Include="Views\Shared\_ProductListSelector.cshtml" />
     <Content Include="Views\Shared\_ReportProductListSelector.cshtml" />
+    <Content Include="Views\Report\Prediction.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
