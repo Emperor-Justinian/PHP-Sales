@@ -307,7 +307,7 @@ namespace PHP.Sales.Web.Controllers
         //}
 
         // POST: Reports/ExportCSV
-        [HttpPost]
+        //[HttpPost]
         public ActionResult ExportCSV(Guid? id)
         {
             if (id == null)
@@ -325,33 +325,77 @@ namespace PHP.Sales.Web.Controllers
                     CsvExport myExport = new CsvExport();
                     Report report = ctx.Reports.Find(id);
 
-                    myExport.AddRow();
-                    myExport["Item"] = report.Name.ToString();
-                    myExport["Sales"] = report.Product.QTY.ToString();
+                    //from snapshot code
+                    ChartViewModel chart = new ChartViewModel()
+                    {
+                        Report = ctx.Reports.Find(id)
+                    };
+                    if (chart.Report == null)
+                    {
+                        return HttpNotFound();
+                    }
+                    chart.Report.Product = ctx.Products.FirstOrDefault(x => x.ID == chart.Report.ProductID);
 
-                    string dateYear = report.Start.Year.ToString();
-                    string dateMonth = report.Start.Month.ToString();
-                    string dateDay = report.Start.Day.ToString();
+                    //GET DATA
+                    var data1 = ctx.StockSnapshot
+                                    .Where(x => x.ProductID == chart.Report.ProductID)
+                                    .Where(x => x.TimeStamp >= chart.Report.Start.Date)
+                                    .Where(x => x.TimeStamp <= chart.Report.End.Date)
+                                    .ToList();
+                    var data2 = ctx.Sales
+                                    .Where(x => x.ProductID == chart.Report.ProductID)
+                                    .Where(x => x.Transaction.SaleTime >= chart.Report.Start.Date)
+                                    .Where(x => x.Transaction.SaleTime <= chart.Report.End.Date)
+                                    .ToList();
+                    DateTime check = chart.Report.Start.Date;
 
-                    string startDate = dateYear + "." + dateMonth + "." + dateDay;
+                    do
+                    {
+                        decimal stock = data1.Where(X => X.TimeStamp.Date == check).Sum(l => l.QTY);
+                        decimal sale = data2.Where(X => X.Transaction.SaleTime.Date == check).Sum(s => s.QTY);
 
-                    myExport["Date Start"] = startDate;
+                        myExport.AddRow();
+                        myExport["Item"] = chart.Report.Product.Name;
+                        myExport["Date"] = check.Year.ToString() + "." + check.Month.ToString() + "." + check.Day.ToString();
+                        myExport["Sale"] = sale;
+                        myExport["Stock"] = stock;
 
-                    dateYear = report.End.Year.ToString();
-                    dateMonth = report.End.Month.ToString();
-                    dateDay = report.End.Day.ToString();
+                        check = check.AddDays(1);
+                    } while (check <= chart.Report.End.Date);
 
-                    string endDate = dateYear + "." + dateMonth + "." + dateDay;
+                    
+                    //myExport["Sales"] = report.Product.QTY.ToString();
+                    //myExport["Stock"] = 
 
-                    myExport["Date End"] = endDate;
+
+                    //string dateYear = report.Start.Year.ToString();
+                    //string dateMonth = report.Start.Month.ToString();
+                    //string dateDay = report.Start.Day.ToString();
+
+                    //string startDate = dateYear + "." + dateMonth + "." + dateDay;
+
+                    //myExport["Date Start"] = startDate;
+
+                    //dateYear = report.End.Year.ToString();
+                    //dateMonth = report.End.Month.ToString();
+                    //dateDay = report.End.Day.ToString();
+
+                    //string endDate = dateYear + "." + dateMonth + "." + dateDay;
+
+                    //myExport["Date End"] = endDate;
 
                     // Then you can do any of the following three output options:
                     //string myCsv = myExport.Export();
-                    string csvName = "report-" + startDate + "-" + endDate + ".csv";
+
+                    string csvName = fileNameBuilder(id);
+
+                    //string csvName = "report-" + startDate + "-" + endDate + ".csv";
                     string csvpath = "C:\\reports\\";
 
                     //File(myExport.ExportToBytes(), "text/csv", csvName);
                     myExport.ExportToFile(csvpath+csvName);
+
+                    DownloadFile(csvName);
 
                     //byte[] myCsvData = myExport.ExportToBytes();
                     return RedirectToAction("Index");
@@ -360,9 +404,10 @@ namespace PHP.Sales.Web.Controllers
             return RedirectToAction("Index");
         }
 
-        public void DownloadFile(Guid? id)
+        //public void DownloadFile(Guid? id)
+        public void DownloadFile(string fileName)
         {
-            string fileName = fileNameBuilder(id);
+            //string fileName = fileNameBuilder(id);
             System.Web.HttpResponse response = System.Web.HttpContext.Current.Response;
             response.ClearContent();
             response.Clear();
