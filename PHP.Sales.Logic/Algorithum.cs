@@ -7,6 +7,8 @@ namespace PHP.Sales.Logic
     {
         int RecordLength;
         int SeasonLength;
+
+        double regGrad;
         
         private double[] unAdjReg;
         private double[] seasonalIndex;
@@ -24,7 +26,7 @@ namespace PHP.Sales.Logic
             double[] adjReg = new double[record.Length];
 
             unAdjReg = new double[record.Length];
-            seasonalIndex = new double[record.Length];
+            seasonalIndex = new double[SeasonLength];
             
             // Compute arrasy for use with linear regression 
             for (int i = 0 ; i < record.Length ; i++)
@@ -38,12 +40,12 @@ namespace PHP.Sales.Logic
             // Calculate the linear coefficents for the regression function
             double aVal = ((record.Sum()) * (xSqVals.Sum()) - (xSum * xyVals.Sum())) / ((record.Length * xSqVals.Sum()) - Math.Pow(xSum, 2));
 
-            double bVal = (record.Length * (xyVals.Sum()) - xSum * (record.Sum())) / (record.Length * xSqVals.Sum() - Math.Pow(xSum, 2));
+            regGrad = (record.Length * (xyVals.Sum()) - xSum * (record.Sum())) / (record.Length * xSqVals.Sum() - Math.Pow(xSum, 2));
 
             // Compute UnAdjusted array
             for (int i = 0 ; i < record.Length ; i++)
             {
-                unAdjReg[i] = aVal + bVal * (i + 1);// record[i];
+                unAdjReg[i] = aVal + regGrad * (i + 1);// record[i];
             }
 
             // Compute Demand Forcast Array
@@ -53,24 +55,30 @@ namespace PHP.Sales.Logic
             }
 
             //Create Seasonal index for all of the time periods
-            if (record.Length == seasonLength)
+            if (record.Length == SeasonLength)
                 seasonalIndex = demandForecast;
             else // if monthly sales is larger than 12 ie 24, 36, etc
             {
-                for (int i = 0; i < seasonLength; i++)
+                for (int i = 0; i < SeasonLength; i++)
                 {
                     double sumDemand = 0;
+                    int seasonCycle = 0;
+
+                    int cycleCount = (RecordLength % SeasonLength == 0) ? RecordLength / SeasonLength : (RecordLength / SeasonLength) + 1;
+                    while ((seasonCycle*SeasonLength+i) < demandForecast.Count())
+                    {
+                        sumDemand += demandForecast[i + (seasonCycle++ * SeasonLength)];
+                    }
+
 
                     //DEAL WITH MID-CYCLES
-                    for (int j = 0; j < (record.Length / seasonLength) ; j++)
+                    /*for (int j = 0; j < (record.Length / seasonLength) ; j++)
                     {
-                        sumDemand += demandForecast[i+(j* seasonLength)];
-                    }
+                        sumDemand += demandForecast[i+(j*seasonLength)];
+                        if (j % seasonLength == 0) seasonCycle++;
+                    }*/
 
-                    for (int j = 0; j < (record.Length / seasonLength); j++)
-                    {
-                        seasonalIndex[i+(j* seasonLength)] = sumDemand / (record.Length / seasonLength);
-                    }
+                    seasonalIndex[i] = sumDemand / (record.Length / cycleCount);
                 }
             }
 
@@ -91,7 +99,7 @@ namespace PHP.Sales.Logic
             //double a = unAdjReg.Last();
             //double b = (unAdjReg.Last() - unAdjReg[unAdjReg.Length - 2]);
             //double c = seasonalIndex[seasonalIndex.Length - 4];
-            return (unAdjReg.Last() + (unAdjReg.Last() - unAdjReg[unAdjReg.Length - cycleEvent])) * seasonalIndex[seasonalIndex.Length - SeasonLength];
+            return (unAdjReg.Last() + regGrad*cycleEvent * seasonalIndex[(RecordLength + cycleEvent) % SeasonLength]);
         }
     }
 }
