@@ -26,7 +26,7 @@ namespace PHP.Sales.Web.Controllers
         {
             SalesDbContext ctx = new SalesDbContext();
 
-            var Products = ctx.Products.Where(x => x.Discontinued == true).Select(x => new SelectListItem
+            var Products = ctx.Products.Select(x => new SelectListItem
             {
                 Value = x.ID.ToString(),
                 Text = x.Name
@@ -427,30 +427,36 @@ namespace PHP.Sales.Web.Controllers
         public ActionResult Prediction(Guid? ProductID, int? Type)
         {
             PredictionChartViewModel chart = new PredictionChartViewModel();
+            DateTime beginRange;
 
-            if(ProductID == null || Type == null) {
-                return View();
+            if (ProductID == null || Type == null) {
+                return View(chart);
             }
             if (Type == (int)PredictType.MONTHLY && ProductID != null)
             {
                 using (var ctx = new SalesDbContext())
                 {
-                    chart.Name = "Weekly Sales Report";
+                    chart.Name = "Monthly Sales Report";
                     chart.ProductID = (Guid)ProductID;
+                    chart.Product = ctx.Products.Where(x => x.ID == ProductID).FirstOrDefault();
 
-                    chart.Start = DateTime.Now.Date.AddDays((int)DateTime.Now.DayOfYear);
-                    chart.End = DateTime.Now.Date;
+                    chart.Type = PredictType.MONTHLY;
 
-                    var sales = ctx.Sales.Where(x => x.ProductID == ProductID)
-                                .Where(x => x.Transaction.SaleTime.Date >= DateTime.Now.Date.AddDays((int)DateTime.Now.DayOfYear))
+                    chart.Start = DateTime.Today.AddDays(-DateTime.Now.DayOfYear+1);
+                    chart.End = chart.Start.AddYears(+2).AddDays(-1);
+
+                    beginRange = DateTime.Today.AddDays(-DateTime.Now.DayOfYear + 1);
+
+                    var sales = ctx.Sales.Where(x => x.Product.ID == ProductID)
+                                .Where(x => x.Transaction.SaleTime >= beginRange)
                                 .ToList();
 
                     List<double> list = new List<double>();
-                    DateTime check = chart.Start;
+                    DateTime check = beginRange;
                     do
                     {
                         list.Add((double)sales
-                            .Where(x => x.Transaction.SaleTime.Date == check)
+                            .Where(x => x.Transaction.SaleTime.Date >= check)
                             .Where(x => x.Transaction.SaleTime.Date < check.AddMonths(1))
                             .Sum(i => i.QTY));
                         check = check.AddMonths(1);
@@ -462,15 +468,17 @@ namespace PHP.Sales.Web.Controllers
                     int PredictCount = 0;
                     do
                     {
-                        if (check <= chart.End.Date)
+                        if (check <= DateTime.Today)
                         {
                             chart.CurrentCycle.Add(check.Date, new PredictModel()
                             {
-                                Value = (double)sales.Where(x => x.Transaction.SaleTime.Date == check).Sum(i => i.QTY),
+                                Value = (double)sales.Where(x => x.Transaction.SaleTime.Date >= check)
+                                                    .Where(x => x.Transaction.SaleTime.Date < check.AddMonths(1))
+                                                    .Sum(i => i.QTY),
                                 IsPredict = false
                             });
                         }
-                        else if (check < chart.Start.Date.AddDays(7))
+                        else if (check < chart.Start.AddYears(1))
                         {
                             chart.CurrentCycle.Add(check, new PredictModel()
                             {
@@ -495,16 +503,21 @@ namespace PHP.Sales.Web.Controllers
                 {
                     chart.Name = "Weekly Sales Report";
                     chart.ProductID = (Guid)ProductID;
+                    chart.Product = ctx.Products.Where(x => x.ID == ProductID).FirstOrDefault();
 
-                    chart.Start = DateTime.Now.Date.AddDays((int)DateTime.Now.DayOfWeek);
-                    chart.End = DateTime.Now.Date;
+                    chart.Type = PredictType.WEEKLY;
 
-                    var sales = ctx.Sales.Where(x => x.ProductID == ProductID)
-                               .Where(x => x.Transaction.SaleTime.Date >= DateTime.Now.Date.AddDays((int)DateTime.Now.DayOfWeek - 35))
+                    chart.Start = DateTime.Today.AddDays(-(int)DateTime.Now.DayOfWeek);
+                    chart.End = chart.Start.AddDays(14);
+
+                    beginRange = DateTime.Today.AddDays((double)(DateTime.Now.DayOfWeek - 35));
+
+                    var sales = ctx.Sales.Where(x => x.Product.ID == ProductID)
+                               .Where(x => x.Transaction.SaleTime >= beginRange)
                                .ToList();
 
                     List<double> list = new List<double>();
-                    DateTime check = chart.Start;
+                    DateTime check = beginRange;
                     do
                     {
                         list.Add((double)sales.Where(x => x.Transaction.SaleTime.Date == check).Sum(i => i.QTY));
@@ -517,7 +530,7 @@ namespace PHP.Sales.Web.Controllers
                     int PredictCount = 0;
                     do
                     {
-                        if (check <= chart.End.Date)
+                        if (check <= DateTime.Today)
                         {
                             chart.CurrentCycle.Add(check.Date, new PredictModel() {
                                 Value = (double)sales.Where(x => x.Transaction.SaleTime.Date == check).Sum(i => i.QTY),

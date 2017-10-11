@@ -21,7 +21,7 @@ namespace PHP.Sales.Web.Controllers
         {
             SalesDbContext ctx = new SalesDbContext();
 
-            var Products = ctx.Products.Where(x => x.Discontinued == true).Select(x => new SelectListItem
+            var Products = ctx.Products.Where(x => x.Discontinued == false).Select(x => new SelectListItem
             {
                 Value = x.ID.ToString(),
                 Text = x.Name

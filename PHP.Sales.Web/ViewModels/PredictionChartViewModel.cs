@@ -35,6 +35,7 @@ namespace PHP.Sales.Web.ViewModels
 
         [DisplayName("Product")]
         public Guid ProductID { get; set; }
+        public Product Product { get; set; }
 
         public DateTime Start { get; set; }
         public DateTime End { get; set; }

@@ -85,7 +85,7 @@ namespace PHP.Sales.Logic
             // Calculate prediction model
             for (int i = 0; i < record.Length; i++)
             {
-                adjReg[i] = unAdjReg[i] * seasonalIndex[i];
+                adjReg[i] = unAdjReg[i] * seasonalIndex[i % SeasonLength];
             }
         }
 
@@ -99,7 +99,8 @@ namespace PHP.Sales.Logic
             //double a = unAdjReg.Last();
             //double b = (unAdjReg.Last() - unAdjReg[unAdjReg.Length - 2]);
             //double c = seasonalIndex[seasonalIndex.Length - 4];
-            return (unAdjReg.Last() + regGrad*cycleEvent * seasonalIndex[(RecordLength + cycleEvent) % SeasonLength]);
+            double predict = (unAdjReg.Last() + regGrad*cycleEvent * seasonalIndex[(RecordLength + cycleEvent) % SeasonLength]);
+            return (predict > 0) ? predict : 0;
         }
     }
 }
