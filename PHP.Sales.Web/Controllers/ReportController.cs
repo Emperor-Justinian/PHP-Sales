@@ -308,7 +308,7 @@ namespace PHP.Sales.Web.Controllers
 
         // POST: Reports/ExportCSV
         //[HttpPost]
-        public ActionResult ExportCSV(Guid? id)
+        public ActionResult ExportCSV(Guid? id, int sel)
         {
             if (id == null)
             {
@@ -390,14 +390,17 @@ namespace PHP.Sales.Web.Controllers
                     string csvName = fileNameBuilder(id);
 
                     //string csvName = "report-" + startDate + "-" + endDate + ".csv";
-                    string csvpath = "C:\\reports\\";
+                    if (sel == 1)
+                    {
+                        string csvpath = "C:\\reports\\";
+                        myExport.ExportToFile(csvpath + csvName);
+                        DownloadFile(csvName);
 
-                    //File(myExport.ExportToBytes(), "text/csv", csvName);
-                    myExport.ExportToFile(csvpath+csvName);
-
-                    DownloadFile(csvName);
-
-                    //byte[] myCsvData = myExport.ExportToBytes();
+                    } else if (sel == 2)
+                    {
+                        byte[] myCsvData = myExport.ExportToBytes();
+                        DownloadFile(csvName, myCsvData);
+                    } 
                     return RedirectToAction("Index");
                 }
             }
@@ -418,10 +421,23 @@ namespace PHP.Sales.Web.Controllers
             response.End();
         }
 
-        protected void btnDownload_Click(object sender, EventArgs e)
+        public void DownloadFile(string fileName, byte[] csvData)
         {
-            Response.Redirect("PathToHttpHandler/DownloadFile.ashx");
+            //string fileName = fileNameBuilder(id);
+            System.Web.HttpResponse response = System.Web.HttpContext.Current.Response;
+            response.ClearContent();
+            response.Clear();
+            response.ContentType = "text/csv";
+            response.AddHeader("Content-Disposition", "attachment; filename=" + fileName + ";");
+            response.BinaryWrite(csvData);
+            response.Flush();
+            response.End();
         }
+
+        //protected void btnDownload_Click(object sender, EventArgs e)
+        //{
+        //    Response.Redirect("PathToHttpHandler/DownloadFile.ashx");
+        //}
 
         // GET: Report/Prediction?q=m|w
         public ActionResult Prediction(Guid? ProductID, int? Type)

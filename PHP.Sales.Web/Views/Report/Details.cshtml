@@ -105,6 +105,8 @@
     </div>
 </div>
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.Report.ID }) |
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Report.ID }) | 
+    @Html.ActionLink("Export CSV", "ExportCSV", new { id = Model.Report.ID, sel = 2 }) | 
+    @*@Html.ActionLink("Export CSV", "ExportCSV", new { id = Model.Report.ID, sel = 1 })*@
     @Html.ActionLink("Back to List", "Index")
 </p>
