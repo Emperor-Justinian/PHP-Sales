@@ -26,7 +26,8 @@ namespace PHP.Sales.Core.Models.System
         public decimal QTY { get; set; }
 
         [Required(ErrorMessage = "A price is required")]
-        [DisplayFormat(DataFormatString = "{0:C}", ApplyFormatInEditMode = true)]
+        [DataType(DataType.Currency)]
+        //[DisplayFormat(DataFormatString = "{0:C}", ApplyFormatInEditMode = true)]
         [DisplayName("Price")]
         public decimal Price { get; set; }
         

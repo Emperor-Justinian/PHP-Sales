@@ -5,4 +5,4 @@
 
 @model ProductListViewModel
 
-@Html.DropDownList(String.Concat("SalesList[", Model.row, "].ProductID"), Model.Products)
+@Html.DropDownList(String.Concat("SalesList[", Model.Row, "].ProductID"), Model.Products, new { @class = "form-control" })

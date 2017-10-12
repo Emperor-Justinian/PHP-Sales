@@ -1,12 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data;
-using System.Data.Entity;
 using System.Linq;
-using System.Net;
-using System.Web;
 using System.Web.Mvc;
-using PHP.Sales.Core.Models.System;
 using PHP.Sales.DataAccess;
 
 namespace PHP.Sales.Web.Controllers
@@ -14,6 +9,10 @@ namespace PHP.Sales.Web.Controllers
     public class LogController : Controller
     {
         // GET: Log
+        /// <summary>
+        /// Print the log of product quantity chnages
+        /// </summary>
+        /// <returns></returns>
         public ActionResult Index()
         {
             using (var ctx = new SalesDbContext()) {

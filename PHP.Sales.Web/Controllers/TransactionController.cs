@@ -1,23 +1,27 @@
-﻿﻿using PHP.Sales.Core.Models.System;
-using PHP.Sales.DataAccess;
-using PHP.Sales.Core.Extensions;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
+using PHP.Sales.Core.Models.System;
+using PHP.Sales.DataAccess;
+using PHP.Sales.Core.Extensions;
 using PHP.Sales.Web.ViewModels;
-using System.Net;
 using PHP.Sales.Logic;
 
 namespace PHP.Sales.Web.Controllers
 {
     public class TransactionController : Controller
     {
+        /// <summary>
+        /// Retrieve all the Products from the database
+        /// </summary>
+        /// <param name="selected">Selected product</param>
+        /// <returns>A list of products in a SelectList format</returns>
         public IEnumerable<SelectListItem> GetProducts(Guid? selected)
         {
             SalesDbContext ctx = new SalesDbContext();
 
-            var Products = ctx.Products.Select(x => new SelectListItem
+            var Products = ctx.Products.Where(x => x.Discontinued == false).Select(x => new SelectListItem
             {
                 Value = x.ID.ToString(),
                 Text = x.Name
@@ -26,6 +30,12 @@ namespace PHP.Sales.Web.Controllers
             return new SelectList(Products, "Value", "Text", selected);
         }
 
+        /// <summary>
+        /// List of the products for a selection
+        /// </summary>
+        /// <param name="selected">Selected product</param>
+        /// <param name="row">Row number for form generation</param>
+        /// <returns>A selection list</returns>
         public ViewResult AddProduct(Guid? selected, int row)
         {
             var model = new ProductListViewModel()
@@ -53,7 +63,7 @@ namespace PHP.Sales.Web.Controllers
 
             using (var ctx = new SalesDbContext())
             {
-                models = ctx.Transactions.OrderBy(x => x.SaleTime).ToList();
+                models = ctx.Transactions.OrderByDescending(x => x.SaleTime).ToList();
             }
 
             return View(models);
@@ -88,16 +98,7 @@ namespace PHP.Sales.Web.Controllers
 
                     foreach(Sale s in viewModel.SalesList)
                     {
-                        /*Decimal OldQTY = ctx.Products.Where(x => x.ID == s.ProductID).FirstOrDefault().QTY;
-                        Log l = new Log()
-                        {
-                            ProductID = s.ProductID,
-                            QTY = OldQTY - s.QTY
-                        };
-                        l.Update();
-                        ctx.Logs.Add(l);*/
-
-                        ProductLog.GenerateLog(ctx, s.ProductID, -s.QTY);
+                        ProductLog.GenerateSaleLog(ctx, s.Product, s.QTY);
                         s.Update();
                     }
 
@@ -250,7 +251,7 @@ namespace PHP.Sales.Web.Controllers
                                 oldSale.Product.QTY += qtyChanged;
                                 oldSale.Product.Update();
 
-                                ProductLog.GenerateLog(ctx, item.ProductID, qtyChanged);
+                                ProductLog.GenerateSaleLog(ctx, item.Product, qtyChanged);
                             } else
                             {
                                 oldSale.Product = ctx.Products.Where(y => y.ID == item.ProductID).FirstOrDefault();
@@ -259,14 +260,15 @@ namespace PHP.Sales.Web.Controllers
                                 oldSale.Product.QTY += oldSale.QTY;
                                 oldSale.Product.Update();
 
-                                ProductLog.GenerateLog(ctx, item.ProductID, oldSale.QTY);
+                                ProductLog.GenerateSaleLog(ctx, item.Product, -oldSale.QTY); //FIX THIS!!
 
                                 //DETUCT ALL OF NEW
+                                item.Product = ctx.Products.Where(z => z.ID == item.ProductID).FirstOrDefault();
                                 oldSale.Product = item.Product;
                                 oldSale.Product.QTY -= item.QTY;
                                 oldSale.Product.Update();
 
-                                ProductLog.GenerateLog(ctx, item.ProductID, -item.QTY);
+                                ProductLog.GenerateSaleLog(ctx, item.Product, item.QTY); //FIX THIS!
                             }
 
                             oldSale.GST = item.GST;
@@ -297,7 +299,7 @@ namespace PHP.Sales.Web.Controllers
         /// </summary>
         /// <param name="sale"></param>
         /// <returns>A row form</returns>
-        public ViewResult TransactionEditorRow(List<Sale> sale)
+        public ViewResult _SalesRowEditor(Sale sale)
         {
             return View(sale);
         }
@@ -306,12 +308,9 @@ namespace PHP.Sales.Web.Controllers
         /// Creates a new empty row for the Creator Form
         /// </summary>
         /// <returns>An empty row</returns>
-        public ViewResult BlankRowEditor()
+        public ViewResult BlankRowEditor(int? value)
         {
-            return View("TransactionEditorRow", new List<Sale>()
-            {
-                new Sale()
-            });
+            return View("_SalesRowEditor", new Sale());
         }
     }
 }

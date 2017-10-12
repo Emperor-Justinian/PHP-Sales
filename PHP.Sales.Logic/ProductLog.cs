@@ -1,6 +1,4 @@
-﻿using System;
-using System.Linq;
-using PHP.Sales.Core.Models.System;
+﻿using PHP.Sales.Core.Models.System;
 using PHP.Sales.DataAccess;
 using PHP.Sales.Core.Extensions;
 
@@ -8,18 +6,42 @@ namespace PHP.Sales.Logic
 {
     public static class ProductLog
     {
-        public static void GenerateLog(SalesDbContext ctx, Guid PID, decimal newQTY)
+        /// <summary>
+        /// Log the change in Quantity from reciving new product stock
+        /// </summary>
+        /// <param name="ctx">Database Context</param>
+        /// <param name="product">Product</param>
+        /// <param name="newQTY">Amount added</param>
+        public static void GenerateProductLog(SalesDbContext ctx, Product product, decimal newQTY)
         {
-            Product oldProduct = ctx.Products.Where(x => x.ID == PID).FirstOrDefault();
+            decimal oldQTY = (product != null) ? product.QTY : 0;
 
-            decimal oldQTY = (oldProduct != null) ? oldProduct.QTY : 0;
-            decimal qtyChanged = oldQTY + newQTY;
-
-            if (qtyChanged != 0 || newQTY != 0) {
+            if (newQTY != 0)
+            {
                 Log l = new Log()
                 {
-                    ProductID = PID,
-                    QTY = qtyChanged
+                    ProductID = product.ID,
+                    QTY = newQTY
+                };
+                l.Update();
+                ctx.Logs.Add(l);
+            }
+        }
+
+        /// <summary>
+        /// Log the change in Quantity from the sale of stock
+        /// </summary>
+        /// <param name="ctx">Database Context</param>
+        /// <param name="product">Product</param>
+        /// <param name="newQTY">Amount sold</param>
+        public static void GenerateSaleLog(SalesDbContext ctx, Product product, decimal qtyChanged)
+        {
+            if (qtyChanged != 0)
+            {
+                Log l = new Log()
+                {
+                    ProductID = product.ID,
+                    QTY = -qtyChanged
                 };
                 l.Update();
                 ctx.Logs.Add(l);

@@ -1,0 +1,8 @@
+﻿﻿﻿@using PHP.Sales.Web.ViewModels
+@{
+    Layout = null;
+}
+
+@model ProductListViewModel
+
+@Html.DropDownList(String.Concat("ProductID"), Model.Products, new { @class = "form-control" })

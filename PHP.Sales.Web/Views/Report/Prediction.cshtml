@@ -1,0 +1,112 @@
+﻿@using PHP.Sales.Web.ViewModels
+@using Chart.Mvc.ComplexChart
+@using Chart.Mvc.Extensions
+
+@model PHP.Sales.Web.ViewModels.PredictionChartViewModel
+
+@{
+    ViewBag.Title = "Prediction";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    List<string> labels = new List<string>();
+    var chart = new LineChart();
+
+    if (Model != null)
+    {
+        //Days for Weekly, Date for Monthly
+        if (Model.Type == PredictType.MONTHLY)
+        {
+            labels.AddRange(new List<string>() { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" });
+            chart.ComplexData.Labels.AddRange(labels);
+        }
+        else
+        {
+            labels.AddRange(new List<string>() { "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday" });
+            chart.ComplexData.Labels.AddRange(labels);
+        }
+        chart.ComplexData.Datasets.AddRange(new List<ComplexDataset>
+        {
+            new ComplexDataset
+            {
+                //Data = new List<double> {102, 60, 20, 17, 25, 78, 10},
+                Data = Model.CurrentCycle.Select(x => x.Value.Value).ToList(),
+                Label = "Current Cycle",
+                StrokeColor = "rgba(255,0,0,0.8)",
+                FillColor = "rgba(255,0,0,0.1)"
+            },
+            new ComplexDataset
+            {
+                //Data = new List<double> {62, 32, 10, 0, 10, 28, 10},
+                Data = Model.NextCycle.Select(x => x.Value.Value).ToList(),
+                Label = "Next Cycle Prediction",
+                StrokeColor = "rgba(64,64,255,0.8)",
+                FillColor = "rgba(64,64,255,0.2)"
+            },
+        });
+
+    }
+}
+
+<script src="~/Scripts/Chart.js"></script>
+<h2>Prediction Report</h2>
+
+<form method="GET" class="form-inline">
+    <b>@Html.DisplayNameFor(model => model.ProductID): </b>
+    @Html.Action("AddProduct", new { selected = Model.ProductID })
+
+    <b>@Html.DisplayNameFor(model => model.Type): </b>
+    @Html.EnumDropDownListFor(model => model.Type, new { @class = "form-control" })
+
+    <input type="submit" class="btn btn-default"/>
+</form>
+
+@if (Model.ProductID != Guid.Empty)
+{
+<hr />
+<h4 class="text-center">@Model.Type Report for @Model.Product.Name</h4>
+<div class="row">
+    <div class="col-sm-6">
+        @*
+            Day | Sale/Prediction | Following Cycle Prediction
+        *@
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Period</th>
+                    <th>Sale/Prediction</th>
+                    <th>Next Cycle Prediction</th>
+                </tr>
+            </thead>
+            @if (Model.CurrentCycle.Count != 0)
+            {
+                <tbody>
+                    @for (var i = 0; i < labels.Count; i++)
+                    {
+                        <tr>
+                            <td>@labels.ElementAt(i)</td>
+                            @if (Model.CurrentCycle.ElementAt(i).Value.IsPredict == true)
+                            {
+                                <td><span style="color: grey; font-style:italic">@Model.CurrentCycle.ElementAt(i).Value.Value</span></td>
+                            }
+                            else
+                            {
+                                <td>@Model.CurrentCycle.ElementAt(i).Value.Value</td>
+                            }
+                            <td>
+                                @if (i < Model.NextCycle.Count)
+                                {
+                                    <span style="color: grey; font-style:italic">@Model.NextCycle.ElementAt(i).Value.Value</span>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            }
+        </table>
+    </div>
+    <div class="col-sm-6">
+        <canvas id="Chart" style="width: 100%"></canvas>
+        @Html.CreateChart("Chart", chart)
+    </div>
+</div>
+}

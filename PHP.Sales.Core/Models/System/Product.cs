@@ -8,7 +8,7 @@ namespace PHP.Sales.Core.Models.System
     {
 
         [Required(ErrorMessage = "A product name is required")]
-        [DisplayName("Name")]
+        [DisplayName("Product Name")]
         public string Name { get; set; }
 
         [Required(ErrorMessage = "A quantity is required")]
@@ -19,7 +19,8 @@ namespace PHP.Sales.Core.Models.System
         [DisplayName("Low Stock Threshold")]
         public decimal LowWarn { get; set; }
 
-        [DisplayFormat(DataFormatString = "{0:C}", ApplyFormatInEditMode = true)]
+        //[DisplayFormat(DataFormatString = "{0:C}", ApplyFormatInEditMode = true)]
+        [DataType(DataType.Currency)]
         [Required(ErrorMessage = "A unit price is required")]
         [DisplayName("Unit Price")]
         public decimal Price { get; set; }
