@@ -41,16 +41,17 @@ namespace PHP.Sales.Logic.Tests
         public void SeasonalAdjustment()
         {
             //arrange
-            double[] record = { 72, 110, 117, 172, 76, 112, 130, 194, 78, 119, 128, 201 };
+            //double[] record = { 72, 110, 117, 172, 76, 112, 130, 194, 78, 119, 128, 201 };
+            double[] data = {72, 110, 117, 172, 76, 112, 130, 194, 78};
 
-            Algorithum a = new Algorithum(record, 3);
+            Algorithum a = new Algorithum(data, 3);
 
             //act
             double e = a.Prediction(1);
 
             //assert
-            Assert.GreaterOrEqual(e, 160, "The event is lower than expected");
-            Assert.LessOrEqual(e, 163, "The event is greater than expected");
+            Assert.GreaterOrEqual(e, 136, "The event is lower than expected");
+            Assert.LessOrEqual(e, 140, "The event is greater than expected");
         }
 
         [Test()]

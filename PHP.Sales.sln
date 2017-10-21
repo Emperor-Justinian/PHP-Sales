@@ -21,7 +21,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PHP.Sales.DataAccess", "PHP
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PHP.Sales.GenerateDatabase", "PHP.Sales.GenerateDatabase\PHP.Sales.GenerateDatabase.csproj", "{9FBF18B8-9802-447C-83BD-EAC232678901}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PHP.Sales.LogicTests1", "PHP.Sales.LogicTests1\PHP.Sales.LogicTests1.csproj", "{8D614975-DAB0-4DFB-B519-574891489170}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PHP.Sales.LogicTests", "PHP.Sales.LogicTests\PHP.Sales.LogicTests.csproj", "{8D614975-DAB0-4DFB-B519-574891489170}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
