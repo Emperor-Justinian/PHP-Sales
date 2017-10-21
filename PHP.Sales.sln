@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26730.12
+VisualStudioVersion = 15.0.27004.2005
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_Bootstrapper", "_Bootstrapper", "{6899A753-E875-4F47-BA64-AA35448EE06A}"
 EndProject
@@ -20,6 +20,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PHP.Sales.DataAccess", "PHP.Sales.DataAccess\PHP.Sales.DataAccess.csproj", "{3C32233E-4E0D-4634-B921-C9FA87D4AD6A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PHP.Sales.GenerateDatabase", "PHP.Sales.GenerateDatabase\PHP.Sales.GenerateDatabase.csproj", "{9FBF18B8-9802-447C-83BD-EAC232678901}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PHP.Sales.LogicTests1", "PHP.Sales.LogicTests1\PHP.Sales.LogicTests1.csproj", "{8D614975-DAB0-4DFB-B519-574891489170}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -47,6 +49,10 @@ Global
 		{9FBF18B8-9802-447C-83BD-EAC232678901}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9FBF18B8-9802-447C-83BD-EAC232678901}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9FBF18B8-9802-447C-83BD-EAC232678901}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8D614975-DAB0-4DFB-B519-574891489170}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8D614975-DAB0-4DFB-B519-574891489170}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8D614975-DAB0-4DFB-B519-574891489170}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8D614975-DAB0-4DFB-B519-574891489170}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
